@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .block1 {
+            width: 300px;
+            height: 300px;
+            background: lightskyblue;
+            padding: 10px;
+            padding-right: 20px;
+            border: #ffffff;
+            float: outside;
+            border-radius: 25px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .field {
+
+        }
+    </style>
+</head>
+<body>
+<div class="block1">
+    <form role="form" th:action="@{/sign-in}" th:method="post">
+        <fieldset>
+            <legend>Login</legend>
+            <div>
+                <br/>
+                <label>Username</label>
+                <input type="text" id="username" name="username">
+            </div>
+
+            <div>
+                <br/>
+                <label>Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+
+            <div>
+                <br/>
+                <input type="submit">
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>
