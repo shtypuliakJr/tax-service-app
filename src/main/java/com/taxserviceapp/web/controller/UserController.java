@@ -8,6 +8,7 @@ public class UserController {
 
     @GetMapping("user")
     public String userPage() {
+
         return "user-page";
     }
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style type="text/css">
+    <style>
         .block1 {
             width: 300px;
             height: 300px;
@@ -19,26 +19,23 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        .field {
-
-        }
     </style>
 </head>
 <body>
 <div class="block1">
-    <form role="form" th:action="@{/sign-in}" th:method="post">
+    <form role="form" th:action="/signin" th:object="user" th:method="post">
         <fieldset>
             <legend>Login</legend>
             <div>
                 <br/>
-                <label>Username</label>
-                <input type="text" id="username" name="username">
+                <label for="username">Username</label>
+                <input type="text" th:field = "*{username}" id ="username">
             </div>
 
             <div>
                 <br/>
-                <label>Password</label>
-                <input type="password" id="password" name="password">
+                <label for="password">Password</label>
+                <input type= "password" th:field = "*{password}" id ="password">
             </div>
 
             <div>

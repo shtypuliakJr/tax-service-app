@@ -1,30 +1,24 @@
 package com.taxserviceapp.controller;
 
-import com.taxserviceapp.service.InfoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.taxserviceapp.data.entity.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
+@Controller("/sign-in")
 public class SignInController {
 
-    @Autowired
-    private InfoService infoService;
-
-    @GetMapping("/sign-in")
+    @GetMapping
     public String signInPage() {
-        //model.addAttribute("userLogin", new User);
         return "sign-in";
     }
 
-    @PostMapping("sign-in")
+    @PostMapping
     public String userHomePage(@RequestBody User user) {
         if (user.getUsername().equals("user")) {
-            return "user/user";
+            System.out.println("sign-in - here 2");
+            return "redirect:user/user";
         }
         return "Oops";
     }

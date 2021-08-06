@@ -1,5 +1,6 @@
 package com.taxserviceapp.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,20 +17,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable().httpBasic()
-                .and()
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/main", "/sign-up", "/sign-in", "/hello").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER")
-                .anyRequest().authenticated()
+                    .antMatchers("/", "/main", "/sign-up", "/sign-in").permitAll()
+                    .antMatchers("/api", "/api/**").permitAll()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/user/**").hasRole("USER")
+                    .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/sign-in")
-                .defaultSuccessUrl("/user/user")
+                    .loginPage("/sign-in")
+                    .permitAll()
+                    .defaultSuccessUrl("/user/user", true)
+//                    .failureUrl("login?error")
                 .and()
                 .logout()
-                .permitAll();
+                    .permitAll();
 //                .and()
 //                .exceptionHandling().accessDeniedPage("/error/403");
     }
@@ -40,13 +43,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
         auth.inMemoryAuthentication()
-                .withUser("user").password("user").authorities("USER")
+                .withUser("user").password("user").roles("USER")
                 .and()
-                .withUser("admin").password("admin").authorities("ADMIN");
+                .withUser("admin").password("admin").roles("ADMIN");
     }
 
 //    @Bean
