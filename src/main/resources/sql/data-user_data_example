@@ -1,4 +1,4 @@
-INSERT INTO user(first_name, last_name, username, password, email, age, ipn, date)
+INSERT INTO user(first_name, last_name, username, user_password, email, age, ipn, date)
 VALUES ('Arthur', 'Shtypuliak', 'rifleman', '1234', 'shtepa@gmail.com', '20','123456789123', NOW());
 
 

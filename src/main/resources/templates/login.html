@@ -23,24 +23,25 @@
 </head>
 <body>
 <div class="block1">
-    <form role="form" th:action="/signin" th:object="user" th:method="post">
+    <form name="login" method="POST">
+
         <fieldset>
             <legend>Login</legend>
             <div>
                 <br/>
-                <label for="username">Username</label>
-                <input type="text" th:field = "*{username}" id ="username">
+                <label for="email">Email</label>
+                <input type="text" placeholder="Email" id="email" name="email"  required>
             </div>
 
             <div>
                 <br/>
                 <label for="password">Password</label>
-                <input type= "password" th:field = "*{password}" id ="password">
+                <input type="password" placeholder="Password" id="password" name="password" required/>
             </div>
 
             <div>
                 <br/>
-                <input type="submit">
+                <button type="submit">Log in</button>
             </div>
 
         </fieldset>

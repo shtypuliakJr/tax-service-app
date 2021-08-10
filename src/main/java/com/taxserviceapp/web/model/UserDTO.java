@@ -1,27 +1,40 @@
 package com.taxserviceapp.web.model;
 
-import lombok.Data;
+import com.taxserviceapp.data.entity.UserRole;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.LocalDate;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-@Data
+// ToDo: 1) patter + 2) error exception + 3) Size
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class UserDTO {
 
+    @NonNull
+    @Size(min = 2, max = 20)
     private String firstName;
 
+    @NonNull
     private String lastName;
 
-    private String username;
-
+    @NonNull
     private String password;
 
+    @NonNull
     private String email;
 
+    @NonNull
     private int age;
 
+    @NonNull
     private String ipn;
+
+    @NotNull
+    private UserRole userRole;
 
 }

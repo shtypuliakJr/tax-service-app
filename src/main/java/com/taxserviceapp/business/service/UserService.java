@@ -1,30 +1,29 @@
-package com.taxserviceapp.service;
+package com.taxserviceapp.business.service;
 
+import com.taxserviceapp.data.dao.UserRepository;
 import com.taxserviceapp.data.entity.User;
-import com.taxserviceapp.dao.UserRepository;
+import com.taxserviceapp.web.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
-
-    private final UserRepository userRepository;
+public class UserService implements UserDetailsService {
 
     @Autowired
-    public UserService(UserRepository userRepository) {this.userRepository = userRepository;}
+    private UserRepository userRepository;
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
-    }
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public void addUser(User user) {
-        userRepository.save(user);
+        System.out.println("Email:" + email);
+        return userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("No such user"));
     }
 }
