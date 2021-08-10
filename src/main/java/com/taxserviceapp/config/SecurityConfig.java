@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -22,28 +23,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable()
-                .authorizeRequests()
+        http.csrf().disable();
+
+        http.authorizeRequests()
                 .antMatchers("/", "/main", "/registration").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasAuthority(UserRole.USER.getAuthority())
+                .antMatchers("/user/**", "/test").hasRole(UserRole.USER.getAuthority())
                 .anyRequest().authenticated();
 
         http.formLogin()
                 .loginPage("/login")
                 .permitAll()
-                .defaultSuccessUrl("/main")
-                .failureUrl("/login?error");
+                .defaultSuccessUrl("/test", true)
+                .failureUrl("/login?error")
+                .usernameParameter("email")
+                .passwordParameter("password");
 
         http.logout()
+                .permitAll()
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true);
     }
-
+    @Bean
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+        return new MySimpleUrlAuthenticationSuccessHandler();
+    }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());

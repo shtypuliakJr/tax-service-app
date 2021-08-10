@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:tiles="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -23,25 +24,24 @@
 </head>
 <body>
 <div class="block1">
-    <form name="login" method="POST">
+    <form name="f" th:action="@{/login}" method="post">
 
         <fieldset>
             <legend>Login</legend>
-            <div>
-                <br/>
-                <label for="email">Email</label>
-                <input type="text" placeholder="Email" id="email" name="email"  required>
-            </div>
 
-            <div>
-                <br/>
-                <label for="password">Password</label>
-                <input type="password" placeholder="Password" id="password" name="password" required/>
-            </div>
+            <label for="email">Email</label>
+            <input id="email" type="text" placeholder="Email" name="email" required>
+
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="Password" name="password" required/>
 
             <div>
                 <br/>
                 <button type="submit">Log in</button>
+            </div>
+
+            <div th:if="${param.error}" class="alert alert-error">
+                Invalid username and password.
             </div>
 
         </fieldset>
