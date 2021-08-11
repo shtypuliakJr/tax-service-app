@@ -30,14 +30,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/", "/main", "/registration").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**", "/test").hasRole(UserRole.USER.getAuthority())
+                .antMatchers("/inspector/**").hasRole(UserRole.INSPECTOR.getAuthority())
+                .antMatchers( "/user/**").hasAuthority(UserRole.USER.getAuthority())
                 .anyRequest().authenticated();
 
         http.formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .defaultSuccessUrl("/test", true)
+                .loginPage("/login").permitAll()
+                .successHandler(successHandler())
+//                .defaultSuccessUrl("/user/user")
+//                .defaultSuccessUrl("/inspector/inspector")
                 .failureUrl("/login?error")
                 .usernameParameter("email")
                 .passwordParameter("password");
@@ -45,12 +46,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout()
                 .permitAll()
                 .logoutSuccessUrl("/")
+//                .deleteCookies()
+//                .clearAuthentication(true)
                 .invalidateHttpSession(true);
     }
-    @Bean
-    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
-        return new MySimpleUrlAuthenticationSuccessHandler();
-    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
@@ -58,10 +58,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider
-                = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
+    @Bean
+    public LoginSuccessHandler successHandler() {
+        return new LoginSuccessHandler();
+    }
+
 }

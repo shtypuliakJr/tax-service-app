@@ -7,7 +7,13 @@
     <title>Title</title>
 </head>
 <body>
-user
+
+<form method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
+</form>
+Hello user
+
+<span th:text="${#authentication.getPrincipal()}"></span>
 <label> </label>
 </body>
 </html>

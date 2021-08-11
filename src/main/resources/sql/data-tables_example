@@ -1,23 +1,26 @@
-CREATE TABLE if not exists user
-(
-    id         BIGINT      NOT NULL AUTO_INCREMENT,
-    first_name VARCHAR(30) NOT NULL,
-    last_name  VARCHAR(40) NOT NULL,
-    username   VARCHAR(30) NOT NULL,
-    password   VARCHAR(30) NOT NULL,
-    email      VARCHAR(40) NOT NULL,
-    age        INT         NOT NULL,
-    ipn        VARCHAR(12) NOT NULL,
-    date       DATETIME    NOT NULL,
-    PRIMARY KEY (id)
+create table user
+(   
+    id            bigint auto_increment primary key,
+    email         varchar(40)                not null,
+    age           int                        not null,
+    ipn           varchar(12)                not null,
+    date          datetime                   not null,
+    user_role     enum ('USER', 'INSPECTOR') not null,
+    user_password varchar(30)                not null,
+    active        tinyint(1) default 1       null,
+
+    first_name    varchar(30)                not null,
+    last_name     varchar(40)                not null
 );
 
-CREATE TABLE IF NOT EXISTS temp
+
+
+create table report
 (
-    id BIGINT AUTO_INCREMENT,
-    first_name VARCHAR(30) NOT NULL,
-    last_name VARCHAR(30) NOT NULL,
-    username VARCHAR(30) NOT NULL,
-    PRIMARY KEY (id)
+    id         bigint auto_increment,
+    user_id    bigint not null ,
+    tax_period int  null,
+    constraint report_pk
+        primary key (id)
 );
 

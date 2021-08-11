@@ -1,8 +1,6 @@
 package com.taxserviceapp.web.controller;
 
 import com.taxserviceapp.business.service.RegistrationService;
-import com.taxserviceapp.business.service.UserService;
-import com.taxserviceapp.data.entity.User;
 import com.taxserviceapp.exceptions.UserAlreadyExistsException;
 import com.taxserviceapp.web.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
