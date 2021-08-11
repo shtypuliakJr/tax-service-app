@@ -1,12 +1,16 @@
 package com.taxserviceapp.data.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "report")
 public class Report {
 
@@ -30,5 +34,6 @@ public class Report {
     private LocalDate reportDate;
 
     @ManyToOne
+    @JoinColumn(name = "id", nullable = false)
     private User user;
 }

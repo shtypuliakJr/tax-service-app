@@ -13,4 +13,10 @@ public class InspectorController {
 
         return "inspector/inspector";
     }
+
+    @GetMapping("/user-list")
+    public String getInspectorPageUserList() {
+
+        return "redirect:/inspector/user-list";
+    }
 }

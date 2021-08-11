@@ -22,7 +22,7 @@ public class RegistrationService {
 
     public void registerNewUser(UserDTO userDto) throws UserAlreadyExistsException {
 
-        if (userRepository.findByEmail(userDto.getEmail()) != null) {
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("Email is reserved");
         }
 
@@ -35,6 +35,7 @@ public class RegistrationService {
                 .ipn(userDto.getIpn())
                 .userRole(UserRole.USER)
                 .dateOfRegistration(LocalDateTime.now())
+                .enabled(true)
                 .build();
 
         userRepository.save(user);

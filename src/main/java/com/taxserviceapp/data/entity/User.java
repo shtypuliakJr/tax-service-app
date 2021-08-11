@@ -1,6 +1,5 @@
 package com.taxserviceapp.data.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +11,11 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "user")
 public class User implements UserDetails {
 
@@ -48,14 +49,15 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Column(name = "active")
-    boolean enabled;
+    @Column(name = "active", nullable = false)
+    private boolean enabled;
 
-    public User() {
-    }
+    @OneToMany
+    @JoinColumn(name = "id")
+    private Set<Report> reports;
 
     @Builder
-    public User(String firstName, String lastName, String email, String password, int age, String ipn, UserRole userRole, LocalDateTime dateOfRegistration) {
+    public User(String firstName, String lastName, String email, String password, int age, String ipn, UserRole userRole, LocalDateTime dateOfRegistration, boolean enabled) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -64,6 +66,7 @@ public class User implements UserDetails {
         this.ipn = ipn;
         this.userRole = userRole;
         this.dateOfRegistration = dateOfRegistration;
+        this.enabled = enabled;
     }
 
     @Override

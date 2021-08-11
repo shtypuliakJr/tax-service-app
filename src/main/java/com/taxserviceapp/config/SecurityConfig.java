@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/", "/main", "/registration").permitAll()
-                .antMatchers("/inspector/**").hasRole(UserRole.INSPECTOR.getAuthority())
+                .antMatchers("/inspector/**").hasAuthority(UserRole.INSPECTOR.getAuthority())
                 .antMatchers( "/user/**").hasAuthority(UserRole.USER.getAuthority())
                 .anyRequest().authenticated();
 
