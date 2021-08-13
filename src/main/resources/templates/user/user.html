@@ -12,8 +12,15 @@
     <input type="submit" value="Logout"/>
 </form>
 Hello user
+<span th:text="${#authentication.getName()}"></span>
+<span th:text="${reportList}"></span>
 
-<span th:text="${#authentication.getPrincipal()}"></span>
+
 <label> </label>
 </body>
 </html>
+
+<!--ToDo: user-page: -->
+<!--ToDo: 1) show all reports + sort choice and find-->
+<!--ToDo: 2) every report has link to page with info and functions (delete, edit, push)-->
+

@@ -20,8 +20,12 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final UserDetailsService userDetailsService;
+
     @Autowired
-    private UserDetailsService userDetailsService;
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,8 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage("/login").permitAll()
                 .successHandler(successHandler())
-//                .defaultSuccessUrl("/user/user")
-//                .defaultSuccessUrl("/inspector/inspector")
                 .failureUrl("/login?error")
                 .usernameParameter("email")
                 .passwordParameter("password");
@@ -46,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout()
                 .permitAll()
                 .logoutSuccessUrl("/")
-//                .deleteCookies()
-//                .clearAuthentication(true)
+                .deleteCookies()
+                .clearAuthentication(true)
                 .invalidateHttpSession(true);
     }
 

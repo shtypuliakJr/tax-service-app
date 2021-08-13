@@ -4,36 +4,92 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+    <style>
+        .reg {
+            width: 300px;
+            height: 540px;
+            background: lightskyblue;
+            padding: 10px;
+            padding-right: 20px;
+            border: #ffffff;
+            float: outside;
+            border-radius: 25px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        input {
+            width: 300px;
+            height: 25px;
+        }
+        .center-block {
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+        }
+    </style>
 </head>
 <body>
-<!--ToDo: errors answer + upgrade view-->
-<form th:action="@{/registration}" th:object="${user}" method="post">
+<!--ToDo: errors output for valid info and user existence + upgrade view-->
+<div class="reg">
+    <form th:action="@{/registration}" th:object="${user}" method="post">
 
-    <label>First name:</label>
-    <div><input type="text" th:field="*{firstName}" required/></div>
+        <div style="text-align: center">
+            <label>Registration</label>
+        </div>
+        <br/>
 
-    <label>Last name:</label>
-    <div><input type="text" th:field="*{lastName}" required/></div>
+        <label>First name:
+            <input type="text" th:field="*{firstName}" required/>
+        </label>
+        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</p>
+        <br/>
 
-    <label>Password:</label>
-    <div><input type="password" th:field="*{password}" required/></div>
+        <label>Last name:
+            <input type="text" th:field="*{lastName}" required/>
+        </label>
+        <br/>
 
-    <label>Email:</label>
-    <div><input type="email" th:field="*{email}" required/></div>
+        <label>Email:
+            <input type="email" th:field="*{email}" required/>
+        </label>
+        <br/>
 
-    <label>Age:</label>
-    <div><input type="text" th:field="*{age}" required/></div>
+        <label>Password:
+            <input type="password" th:field="*{password}" required/>
+        </label>
+        <br/>
 
-    <label>IPN:</label>
-    <div><input type="text" th:field="*{ipn}" required/></div>
+        <label>Age:
+            <input style="align-content: center" type="text" th:field="*{age}" required/>
+        </label>
+        <br/>
 
-    <div>
-        <input type="submit" name="Register">
-    </div>
+        <label>IPN:
+            <input type="text" th:field="*{ipn}" required/>
+        </label>
+        <br/>
 
-    <a th:href="@{/login}">Already have an account?</a>
+        <input class="center-block" type="submit" value="Register">
+        <br/>
 
-</form>
+        <div th:if="${error}" class="alert alert-error">
+            User already exists
+        </div>
 
+        <div th:if="${#fields.hasAnyErrors()}">
+            <ul>
+                <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+            </ul>
+        </div>
+
+        <br/>
+
+        <a th:href="@{/login}">Already have an account?</a>
+
+    </form>
+</div>
 </body>
 </html>

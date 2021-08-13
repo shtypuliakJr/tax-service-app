@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -9,5 +11,12 @@ inspector
 <span th:text="${#authentication.getPrincipal()}"></span>
 
 <a th:href ="@{inspector/user-list}">User list</a>
+
+<br/>
+<tr th:each="user: ${users}">
+    <td th:text="${user.firstName}" />
+    <td th:text="${user.lastName}" />
+    <br/>
+</tr>
 </body>
 </html>

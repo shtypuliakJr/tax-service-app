@@ -6,8 +6,12 @@ import com.taxserviceapp.web.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 public class RegistrationController {
@@ -26,7 +30,13 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String processRegister(UserDTO user, Model model) {
+    public String processRegister(@Valid UserDTO user,
+                                  BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            System.out.println("errors");
+            model.addAttribute("user", user);
+            return "registration";
+        }
 
         try {
             registrationService.registerNewUser(user);

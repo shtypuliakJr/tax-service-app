@@ -26,15 +26,14 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
                                         Authentication authentication) throws ServletException, IOException {
 
         String inspectorUrl = "/inspector/inspector";
-        String userSuccessUrl = "/user/user";
 
+        String finalUrl = "/user/user";
         if (authentication.getAuthorities().contains(inspectorAuthority)) {
-            clearAuthenticationAttributes(request);
-            getRedirectStrategy().sendRedirect(request, response, inspectorUrl);
-        } else {
-
-            clearAuthenticationAttributes(request);
-            getRedirectStrategy().sendRedirect(request, response, userSuccessUrl);
+            finalUrl = inspectorUrl;
         }
+
+        clearAuthenticationAttributes(request);
+        getRedirectStrategy().sendRedirect(request, response, finalUrl);
+
     }
 }

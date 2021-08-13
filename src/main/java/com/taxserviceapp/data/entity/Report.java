@@ -34,6 +34,12 @@ public class Report {
     private LocalDate reportDate;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
+
+    @Column(name = "status")
+    private String problems;
+//
+    @Column(name = "comment")
+    private String comment;
 }

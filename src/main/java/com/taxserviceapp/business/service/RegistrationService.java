@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Service
 public class RegistrationService {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public RegistrationService(UserRepository userRepository) {

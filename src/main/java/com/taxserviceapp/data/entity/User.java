@@ -52,8 +52,7 @@ public class User implements UserDetails {
     @Column(name = "active", nullable = false)
     private boolean enabled;
 
-    @OneToMany
-    @JoinColumn(name = "id")
+    @OneToMany(mappedBy = "user")
     private Set<Report> reports;
 
     @Builder
