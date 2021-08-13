@@ -30,8 +30,9 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String processRegister(@Valid UserDTO user,
-                                  BindingResult result, Model model) {
+    public String processRegister(@Valid @ModelAttribute("user") UserDTO user,
+                                  BindingResult result,
+                                  Model model) {
         if (result.hasErrors()) {
             System.out.println("errors");
             model.addAttribute("user", user);

@@ -6,7 +6,7 @@
     <title>Title</title>
     <style>
         .login {
-            width: 300px;
+            width: 270px;
             height: 300px;
             background: lightskyblue;
             padding: 10px;
@@ -19,32 +19,61 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
+        input {
+            width: 270px;
+            height: 25px;
+        }
+
+        .center-block {
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .error-invalid {
+            width: 265px;
+            height: 20px;
+            background: #ff484a;
+            padding: 10px;
+            text-align: center;
+            padding-right: 20px;
+            float: outside;
+            border-radius: 25px;
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
 <body>
 <div class="login">
     <form name="f" th:action="@{/login}" method="post">
 
-        <fieldset>
-            <legend>Login</legend>
+        <div style="text-align: center">
+            <label>Login</label>
+        </div>
 
-            <label for="email">Email</label>
+        <label for="email">Email
             <input id="email" type="text" placeholder="Email" name="email" required>
+        </label>
 
-            <label for="password">Password</label>
+        <br/>
+
+        <label for="password">Password
             <input id="password" type="password" placeholder="Password" name="password" required/>
+        </label>
 
-            <div>
-                <br/>
-                <button type="submit">Log in</button>
-            </div>
+        <br/>
+        <input class="center-block" type="submit" value="Log in">
 
-            <div th:if="${param.error}" class="alert alert-error">
+        <br/>
+        <div th:if="${param.error}" class="alert alert-error">
+            <div class="error-invalid">
                 Invalid username and password.
             </div>
-
-
-        </fieldset>
+        </div>
     </form>
 
     <a th:href="@{/registration}">Does not registered?</a>

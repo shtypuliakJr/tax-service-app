@@ -1,5 +1,6 @@
 package com.taxserviceapp.web.controller;
 
+import com.taxserviceapp.business.service.UserPageService;
 import com.taxserviceapp.business.service.UserService;
 import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.User;
@@ -21,16 +22,15 @@ import java.util.Optional;
 public class UserPageController {
 
     @Autowired
-    UserService userService;
+    UserPageService userPageService;
 
     @GetMapping("/user")
     public String getUserPage(Model model) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User principal = (User) authentication.getPrincipal();
-        Optional<List<Report>> reportsByUserId = userService.getReportsByUserId(principal.getId());
-        reportsByUserId
-                .ifPresent(reports -> model.addAttribute("reportList", reportsByUserId));
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<List<Report>> reportsByUserId = userPageService.getReportsByUserId(principal.getId());
+        reportsByUserId.ifPresent(reports -> model.addAttribute("reportList", reportsByUserId));
 
         Optionals.ifPresentOrElse( reportsByUserId,
                 reports -> model.addAttribute("reportList", reportsByUserId),

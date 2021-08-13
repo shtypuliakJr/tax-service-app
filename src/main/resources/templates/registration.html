@@ -7,7 +7,7 @@
     <style>
         .reg {
             width: 300px;
-            height: 540px;
+            height: 600px;
             background: lightskyblue;
             padding: 10px;
             padding-right: 20px;
@@ -24,6 +24,7 @@
             width: 300px;
             height: 25px;
         }
+
         .center-block {
             display: block;
             margin-right: auto;
@@ -32,7 +33,6 @@
     </style>
 </head>
 <body>
-<!--ToDo: errors output for valid info and user existence + upgrade view-->
 <div class="reg">
     <form th:action="@{/registration}" th:object="${user}" method="post">
 
@@ -44,7 +44,6 @@
         <label>First name:
             <input type="text" th:field="*{firstName}" required/>
         </label>
-        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</p>
         <br/>
 
         <label>Last name:
@@ -79,15 +78,12 @@
             User already exists
         </div>
 
-        <div th:if="${#fields.hasAnyErrors()}">
-            <ul>
-                <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
-            </ul>
-        </div>
-
         <br/>
-
         <a th:href="@{/login}">Already have an account?</a>
+
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+        </div>
 
     </form>
 </div>
