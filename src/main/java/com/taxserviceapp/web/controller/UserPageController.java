@@ -1,17 +1,14 @@
 package com.taxserviceapp.web.controller;
 
 import com.taxserviceapp.business.service.UserPageService;
-import com.taxserviceapp.business.service.UserService;
 import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Optionals;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -27,16 +24,23 @@ public class UserPageController {
     @GetMapping("/user")
     public String getUserPage(Model model) {
 
-        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(user.getId());
+        try {
 
-        Optional<List<Report>> reportsByUserId = userPageService.getReportsByUserId(principal.getId());
-        reportsByUserId.ifPresent(reports -> model.addAttribute("reportList", reportsByUserId));
+            List<Report> reportsByUserId = userPageService.getReportsByUserId(user.getId());
+            reportsByUserId.forEach(System.out::println);
 
-        Optionals.ifPresentOrElse( reportsByUserId,
-                reports -> model.addAttribute("reportList", reportsByUserId),
-                () -> model.addAttribute("reportList",  "error")
-        );
-
+        } catch (Exception e) {
+            e.getStackTrace();
+            System.out.println("No result");
+        }
         return "user/user";
+    }
+
+    @GetMapping("/report-form")
+    public String addReport1(Model model) {
+        model.addAttribute("report", new Report());
+        return "user/report-form";
     }
 }

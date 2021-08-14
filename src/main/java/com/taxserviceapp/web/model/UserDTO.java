@@ -1,15 +1,12 @@
 package com.taxserviceapp.web.model;
 
-import com.taxserviceapp.data.entity.UserRole;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 
-// ToDo: 1) patter + 2) error exception + 3) Size
 
 @Getter
 @Setter

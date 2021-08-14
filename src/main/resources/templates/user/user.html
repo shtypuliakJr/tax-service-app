@@ -32,16 +32,10 @@
     </form>
 </div>
 
-<!--<div th:align="center">-->
-<!--    <span th:text="${#authentication.getName()}"></span>-->
-<!--</div>-->
-<!--<span th:text="${reportList}"></span>-->
 <div align="center">
-    <form method="POST" th:action="@{/addNewReport}">
-        <input type="button" value="Add new report"/>
-    </form>
+    <a th:href="@{/user/report-form}"><input type="button" value="Add report"/></a>
     <div class="main">
-        <span th:text="${reportList}"></span>
+<!--        <span th:text="${reportList}"></span>-->
     </div>
 </div>
 </body>
@@ -50,4 +44,4 @@
 <!--ToDo: user-page: -->
 <!--ToDo: 1) show all reports + sort choice and find-->
 <!--ToDo: 2) every report has link to page with info and functions (delete, edit, push)-->
-
+<!--ToDo: add localization-->

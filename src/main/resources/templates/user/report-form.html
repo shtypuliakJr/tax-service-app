@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .report {
+            width: 290px;
+            height: 330px;
+            background: lightskyblue;
+            padding: 10px;
+            padding-right: 20px;
+            border: #ffffff;
+            float: outside;
+            border-radius: 25px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        input {
+            width: 270px;
+            height: 25px;
+            margin-bottom: 10px;
+        }
+        label {
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<span sec:authentication="name">Username</span>
+<div class="report">
+    <form th:object="${report}" th:action="@{/add-report}" method="post">
+
+        <label>Income:
+            <input type="text" th:field="*{income}" required/>
+        </label>
+
+        <label>Tax rate:
+            <input type="text" th:field="*{taxRate}" required/>
+        </label>
+
+        <label>Tax period:
+            <input type="text" th:field="*{taxPeriod}" required/>
+        </label>
+
+        <label>Year:
+            <input type="text" th:field="*{year}" required/>
+        </label>
+
+        <label>Report date:
+            <input type="date" th:field="*{reportDate}" required/>
+        </label>
+
+        <input class="center-block" type="submit" value="Add report">
+
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>
