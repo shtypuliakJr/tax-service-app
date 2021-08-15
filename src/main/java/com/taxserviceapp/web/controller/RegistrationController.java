@@ -34,7 +34,6 @@ public class RegistrationController {
                                   BindingResult result,
                                   Model model) {
         if (result.hasErrors()) {
-            System.out.println("errors");
             model.addAttribute("user", user);
             return "registration";
         }

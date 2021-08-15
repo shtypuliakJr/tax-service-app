@@ -1,6 +1,7 @@
 package com.taxserviceapp.data.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,9 +9,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 
+// ToDo: add constructor with ReportDTO parameter
+
+
 @Entity
 @NoArgsConstructor
 @Data
+@Builder
 @AllArgsConstructor
 @Table(name = "report")
 public class Report implements Serializable {
@@ -40,7 +45,8 @@ public class Report implements Serializable {
     private User user;
 
     @Column(name = "status")
-    private String problems;
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
 //
     @Column(name = "comment")
     private String comment;
@@ -85,12 +91,12 @@ public class Report implements Serializable {
         this.user = user;
     }
 
-    public String getProblems() {
-        return problems;
+    public Status getProblems() {
+        return status;
     }
 
-    public void setProblems(String problems) {
-        this.problems = problems;
+    public void setProblems(Status status) {
+        this.status = status;
     }
 
     public String getComment() {
@@ -111,7 +117,7 @@ public class Report implements Serializable {
                 ", taxRate=" + taxRate +
                 ", reportDate=" + reportDate +
                 ", user=" + user +
-                ", problems='" + problems + '\'' +
+                ", status='" + status + '\'' +
                 ", comment='" + comment + '\'' +
                 '}';
     }

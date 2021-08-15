@@ -32,7 +32,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
             finalUrl = inspectorUrl;
         }
 
-        clearAuthenticationAttributes(request);
+        //clearAuthenticationAttributes(request);
         getRedirectStrategy().sendRedirect(request, response, finalUrl);
 
     }
