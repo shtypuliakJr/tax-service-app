@@ -19,10 +19,8 @@ public class UserPageService {
         this.reportRepository = reportRepository;
     }
     public List<Report> getReportsByUserId(Long userId) throws NoResultException {
-//        System.out.println("Count " + reportRepository.count());
-//        System.out.println("findAll");
-//        System.out.println(reportRepository.findAll().isEmpty());
-        return reportRepository.findAll();
+
+        return reportRepository.findReportsByUser_Id(userId).orElseThrow(() -> new NoResultException("No result"));
     }
 
     public Optional<Report> getReportById(Long id) {

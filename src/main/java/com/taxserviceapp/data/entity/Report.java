@@ -47,9 +47,12 @@ public class Report implements Serializable {
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
     private Status status;
-//
+
     @Column(name = "comment")
     private String comment;
+
+
+
 
     public Long getId() {
         return id;
@@ -91,11 +94,27 @@ public class Report implements Serializable {
         this.user = user;
     }
 
-    public Status getProblems() {
+    public TaxPeriod getTaxPeriod() {
+        return taxPeriod;
+    }
+
+    public void setTaxPeriod(TaxPeriod taxPeriod) {
+        this.taxPeriod = taxPeriod;
+    }
+
+    public Date getReportDate() {
+        return reportDate;
+    }
+
+    public void setReportDate(Date reportDate) {
+        this.reportDate = reportDate;
+    }
+
+    public Status getStatus() {
         return status;
     }
 
-    public void setProblems(Status status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

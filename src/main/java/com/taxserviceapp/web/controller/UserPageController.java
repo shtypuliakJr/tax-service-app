@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,18 +24,11 @@ public class UserPageController {
     UserPageService userPageService;
 
     @GetMapping("/user")
-    public String getUserPage(Model model) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        System.out.println(user.getId());
-        try {
-            List<Report> reportsByUserId = userPageService.getReportsByUserId(user.getId());
-            System.out.println("here" + reportsByUserId);
-            model.addAttribute("reportList", reportsByUserId);
-        } catch (Exception e) {
-            e.getStackTrace();
-            model.addAttribute("error", "No result");
-//            System.out.println("No result");
-        }
+    public String getUserPage(Authentication authentication, Model model) {
+        Long id = ((User) authentication.getPrincipal()).getId();
+
+        List<Report> reportsByUserId = userPageService.getReportsByUserId(id);
+        model.addAttribute("reportList", reportsByUserId);
         return "user/user";
     }
 }

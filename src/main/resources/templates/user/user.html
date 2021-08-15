@@ -7,8 +7,12 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
+        .background-main {
+
+        }
+
         .main {
-            width: 500px;
+            width: 600px;
             height: 600px;
             background: lightskyblue;
             padding: 10px 20px 10px 10px;
@@ -16,30 +20,127 @@
             float: outside;
             border-radius: 25px;
             position: absolute;
+
+        }
+
+        .container {
+            /*position: relative;*/
+        }
+
+        /*.child {*/
+        /*    width: 620px;*/
+        /*    height: 700px;*/
+        /*    background: cornflowerblue;*/
+        /*    padding: 10px 20px 10px 10px;*/
+        /*    border-radius: 25px;*/
+        /*    float: outside;*/
+        /*    position: absolute;*/
+        /*    top: 50%;*/
+        /*    left: 50%;*/
+        /*    transform: translate(-50%, -50%);*/
+        /*}*/
+
+        .main-background {
+            width: 800px;
+            height: 750px;
+            background: lightskyblue;
+            padding: 10px 20px 10px 10px;
+            border-radius: 25px;
+            float: outside;
+            position: absolute;
             top: 50%;
             left: 50%;
+            margin-right: -50%;
             transform: translate(-50%, -50%);
+        }
+
+        .main-list {
+            width: 600px;
+            height: 600px;
+            background: lightgrey;
+            padding: 10px 20px 10px 10px;
+            float: outside;
+            border-radius: 25px;
+            position: absolute;
+            top: 18%;
+        }
+
+
+        button {
+            width: 150px;
+            height: 50px;
+            text-align: left;
+            background-color: darkgray;
+            border: white solid 2px;
+            color: black;
+            float: outside;
+            border-radius: 25px;
+            padding: 16px 20px;
+            cursor: pointer;
+        }
+
+        table {
+            border: 1px solid black;
+            border-collapse: collapse;
+            width: 100%;
+            height: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
         }
 
     </style>
 </head>
 <body>
-<div align="right">
-    <span sec:authentication="name">Username</span>
-<!--    <span th:text="${#authentication.getName()}"></span>-->
-    <form method="POST" th:action="@{/logout}">
-        <input type="submit" value="Logout"/>
-    </form>
-</div>
+<span sec:authentication="name">Username</span>
 
-<div align="center">
-    <a th:href="@{/user/report-form}"><input type="button" value="Apply new report"/></a>
-    <div class="main">
-        <tr th:each="report: ${reportList}">
-            <td th:text="${report.year}" />
-            <td th:text="${report.status}" />
-        </tr>
-<!--        <span th:text="${reportList}"></span>-->
+<form method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
+</form>
+<div>
+    <div class="main-background">
+        <h3 align="center">Report list</h3>
+        <a th:href="@{/user/report-form}">
+            <button>Apply new report</button>
+        </a>
+        <br/>
+        <br/>
+        <br/>
+        <div class="container">
+            <div class="row">
+                <div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Income</th>
+                            <th>Tax rate</th>
+                            <th>Period</th>
+                            <th>Year</th>
+                            <th>Report Date</th>
+                            <th>Comment</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${reportList.isEmpty()}">
+                            <td colspan="7">No result</td>
+                        </tr>
+                        <tr th:each="report: ${reportList}">
+                            <td><span th:text="${report.income}">income</span></td>
+                            <td><span th:text="${report.taxRate}">taxRate</span></td>
+                            <td><span th:text="${report.taxPeriod}">taxPeriod</span></td>
+                            <td><span th:text="${report.year}">year</span></td>
+                            <td><span th:text="${report.reportDate}">reportDate</span></td>
+                            <td><span th:text="${report.comment}">comment</span></td>
+                            <td><span th:text="${report.status}">status</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
