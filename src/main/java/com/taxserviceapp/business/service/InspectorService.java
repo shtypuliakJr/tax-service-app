@@ -20,6 +20,4 @@ public class InspectorService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-
-
 }

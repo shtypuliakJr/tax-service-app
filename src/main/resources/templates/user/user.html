@@ -35,6 +35,10 @@
 <div align="center">
     <a th:href="@{/user/report-form}"><input type="button" value="Apply new report"/></a>
     <div class="main">
+        <tr th:each="report: ${reportList}">
+            <td th:text="${report.year}" />
+            <td th:text="${report.status}" />
+        </tr>
 <!--        <span th:text="${reportList}"></span>-->
     </div>
 </div>

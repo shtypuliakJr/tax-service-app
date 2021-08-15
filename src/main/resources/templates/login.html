@@ -20,9 +20,11 @@
             transform: translate(-50%, -50%);
         }
 
-        input {
+        input, label {
             width: 270px;
             height: 25px;
+            margin-bottom: 10px;
+            align-items: center;
         }
 
         .center-block {
@@ -66,8 +68,9 @@
         </label>
 
         <br/>
-        <input class="center-block" type="submit" value="Log in">
-
+        <div style="text-align: center">
+            <input class="center-block" type="submit" value="Log in">
+        </div>
         <br/>
         <div th:if="${param.error}" class="alert alert-error">
             <div class="error-invalid">

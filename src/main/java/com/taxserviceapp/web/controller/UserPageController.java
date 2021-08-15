@@ -25,23 +25,16 @@ public class UserPageController {
     @GetMapping("/user")
     public String getUserPage(Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(user.getId());
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-////            System.out.println(authentication.getPrincipal());
-////
-////            System.out.println(authentication.getDetails());
-//        System.out.println(authentication.getCredentials());
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        System.out.println(user.getId());
-//        try {
-//
-//            List<Report> reportsByUserId = userPageService.getReportsByUserId(user.getId());
-//            reportsByUserId.forEach(System.out::println);
-//
-//        } catch (Exception e) {
-//            e.getStackTrace();
+        try {
+            List<Report> reportsByUserId = userPageService.getReportsByUserId(user.getId());
+            System.out.println("here" + reportsByUserId);
+            model.addAttribute("reportList", reportsByUserId);
+        } catch (Exception e) {
+            e.getStackTrace();
+            model.addAttribute("error", "No result");
 //            System.out.println("No result");
-//        }
+        }
         return "user/user";
     }
 }

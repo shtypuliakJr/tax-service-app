@@ -12,7 +12,7 @@
             height: 330px;
             background: lightskyblue;
             padding: 10px;
-            padding-right: 20px;
+            padding-right: 10px;
             border: #ffffff;
             float: outside;
             border-radius: 25px;
@@ -23,7 +23,7 @@
         }
 
         input, label, select {
-            width: 270px;
+            width: 280px;
             height: 25px;
             margin-bottom: 10px;
             align-items: center;
@@ -33,9 +33,20 @@
 </head>
 
 <body>
-<span sec:authentication="name">Username</span>
-
+<div>
+    <div align="right">
+        <span sec:authentication="name">Email</span>
+    </div>
+    <div align="left">
+        <a th:href="@{/user/user}">
+            <button>Return to main page</button>
+        </a>
+    </div>
+</div>
 <div class="report">
+    <div style="text-align: center">
+        <label>Report form</label>
+    </div>
     <form th:object="${report}" th:action="@{/user/add-report}" method="post">
 
         <label>Income:
@@ -59,9 +70,9 @@
         <label>Year:
             <input type="text" th:field="*{year}" required/>
         </label>
-
-        <input class="center-block" type="submit" value="Apply">
-
+        <div style="text-align: center">
+            <input class="center-block" type="submit" value="Apply">
+        </div>
         <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
             <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
         </div>

@@ -18,10 +18,10 @@ public class UserPageService {
     public UserPageService(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
     }
-    public List<Report> getReportsByUserId(Long userId) {
-        System.out.println("Count " + reportRepository.count());
-        System.out.println("findAll");
-        System.out.println(reportRepository.findAll().isEmpty());
+    public List<Report> getReportsByUserId(Long userId) throws NoResultException {
+//        System.out.println("Count " + reportRepository.count());
+//        System.out.println("findAll");
+//        System.out.println(reportRepository.findAll().isEmpty());
         return reportRepository.findAll();
     }
 
