@@ -15,10 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -27,6 +24,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -52,25 +50,43 @@ public class ReportController {
             return "user/report-form";
         }
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        reportService.saveNewReport(convertReportDtoToEntity(reportDTO, user));
+        reportService.saveNewReport(convertReportDTOToEntity(reportDTO, user));
         return "redirect:/user/user";
     }
 
-    public Report convertReportDtoToEntity(ReportDTO reportDTO, User user) {
+    @GetMapping("/report-view/{id}")
+    public String viewReport(@PathVariable(value = "id") Long id, Model model) {
+        Report report = reportService.findReportById(id);
+        ReportDTO reportDTO = convertReportEntityToDTO(report);
+        System.out.println(reportDTO);
+        model.addAttribute("report", reportDTO);
+        return "user/report-view";
+    }
 
-        Report report = Report.builder()
+    public ReportDTO convertReportEntityToDTO(Report report) {
+
+        return ReportDTO.builder()
+                .id(report.getId())
+                .income(report.getIncome())
+                .taxRate(report.getTaxRate())
+                .taxPeriod(report.getTaxPeriod())
+                .year(report.getYear())
+                .status(report.getStatus())
+                .reportDate(report.getReportDate())
+                .comment(report.getComment())
+                .build();
+    }
+
+    public Report convertReportDTOToEntity(ReportDTO reportDTO, User user) {
+
+        return Report.builder()
                 .income(reportDTO.getIncome())
                 .taxRate(reportDTO.getTaxRate())
                 .taxPeriod(reportDTO.getTaxPeriod())
                 .year(reportDTO.getYear())
                 .status(Status.PROCESSING)
                 .reportDate(Date.valueOf(LocalDate.now()))
-                .taxPeriod(reportDTO.getTaxPeriod())
                 .user(user)
                 .build();
-
-        return report;
     }
-
-
 }

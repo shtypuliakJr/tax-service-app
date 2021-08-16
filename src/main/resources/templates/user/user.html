@@ -94,6 +94,7 @@
                     <td><span th:text="${report.reportDate}">reportDate</span></td>
                     <td><span th:text="${report.comment}">comment</span></td>
                     <td><span th:text="${report.status}">status</span></td>
+                    <td><a th:href="@{report-view/{id}(id=${report.id})}">View</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -104,7 +105,6 @@
 </body>
 </html>
 
-<!--ToDo: user-page: -->
 <!--ToDo: 1) show all reports + sort choice and find-->
 <!--ToDo: 2) every report has link to page with info and functions (delete, edit, push)-->
 <!--ToDo: add localization-->

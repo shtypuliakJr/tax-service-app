@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Report view</title>
+</head>
+<body>
+
+<div>
+    <div align="right">
+        <span sec:authentication="name">Email</span>
+    </div>
+    <div align="left">
+        <a th:href="@{/user/user}">
+            <button>Return to main page</button>
+        </a>
+    </div>
+</div>
+<div>
+    <p th:text="${report.income}">Income</p>
+    <p th:text="${report.taxRate}">Tax rate</p>
+    <p th:text="${report.taxPeriod}">Tax period</p>
+    <p th:text="${report.year}">Year</p>
+    <p th:text="${report.reportDate}">Report date</p>
+    <p th:text="${report.status}">Status</p>
+    <p th:text="${report.comment}">comment</p>
+</div>
+
+</body>
+</html>

@@ -9,8 +9,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 
-// ToDo: add constructor with ReportDTO parameter
-
 
 @Entity
 @NoArgsConstructor

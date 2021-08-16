@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-
-//ToDo: type convert problem
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
