@@ -37,15 +37,8 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-    @Autowired
-    private UserService userService;
-
     @GetMapping("/report-form")
     public String addReport(Model model, Authentication authentication) {
-        if (authentication.isAuthenticated()) {
-            System.out.println("authenticated");
-        }
-//        model.addAttribute("periods", Arrays.asList(TaxPeriod.values()));
         model.addAttribute("report", new Report());
         return "user/report-form";
     }
@@ -53,7 +46,7 @@ public class ReportController {
     @PostMapping("/add-report")
     public String recieveReport(@Valid @ModelAttribute("report") ReportDTO reportDTO,
                                 BindingResult result,
-                                Model model, Principal principal) {
+                                Model model) {
         if (result.hasErrors()) {
             model.addAttribute("report", reportDTO);
             return "user/report-form";
@@ -64,8 +57,7 @@ public class ReportController {
     }
 
     public Report convertReportDtoToEntity(ReportDTO reportDTO, User user) {
-//        User user = new User();
-//        user.setId(userId);
+
         Report report = Report.builder()
                 .income(reportDTO.getIncome())
                 .taxRate(reportDTO.getTaxRate())

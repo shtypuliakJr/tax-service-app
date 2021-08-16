@@ -30,6 +30,10 @@
             margin-right: auto;
             margin-left: auto;
         }
+
+        div {
+            margin-bottom: 5%;
+        }
     </style>
 </head>
 <body>
@@ -40,37 +44,43 @@
             <label>Registration</label>
         </div>
         <br/>
+        <div>
+            <label>First name:
+                <input type="text" th:field="*{firstName}" required/>
+            </label>
 
-        <label>First name:
-            <input type="text" th:field="*{firstName}" required/>
-        </label>
-        <br/>
+            <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
+                   class="validation-message"></label>
+        </div>
+        <div>
 
-        <label>Last name:
-            <input type="text" th:field="*{lastName}" required/>
-        </label>
-        <br/>
+            <label>Last name
+                <input type="text" th:field="*{lastName}" required/>
+            </label>
+        </div>
+        <div>
 
-        <label>Email:
-            <input type="email" th:field="*{email}" required/>
-        </label>
-        <br/>
+            <label>Email
+                <input type="email" th:field="*{email}" required/>
+            </label>
+        </div>
+        <div>
 
-        <label>Password:
-            <input type="password" th:field="*{password}" required/>
-        </label>
-        <br/>
+            <label>Password
+                <input type="password" th:field="*{password}" required/>
+            </label>
+        </div>
+        <div>
 
-        <label>Age:
-            <input style="align-content: center" type="text" th:field="*{age}" required/>
-        </label>
-        <br/>
-
-        <label>IPN:
-            <input type="text" th:field="*{ipn}" required/>
-        </label>
-        <br/>
-
+            <label>Age
+                <input style="align-content: center" type="text" th:field="*{age}" required/>
+            </label>
+        </div>
+        <div>
+            <label>IPN
+                <input type="text" th:field="*{ipn}" required/>
+            </label>
+        </div>
         <input class="center-block" type="submit" value="Register">
         <br/>
 
@@ -81,9 +91,9 @@
         <br/>
         <a th:href="@{/login}">Already have an account?</a>
 
-        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
-            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
-        </div>
+        <!--        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">-->
+        <!--            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>-->
+        <!--        </div>-->
 
     </form>
 </div>

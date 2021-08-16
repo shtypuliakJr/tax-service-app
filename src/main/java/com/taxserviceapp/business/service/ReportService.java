@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReportService {
 
+    public final ReportRepository reportRepository;
+
     @Autowired
-    public ReportRepository reportRepository;
+    public ReportService(ReportRepository reportRepository) {
+        this.reportRepository = reportRepository;
+    }
 
     public void saveNewReport(Report report) {
         reportRepository.save(report);

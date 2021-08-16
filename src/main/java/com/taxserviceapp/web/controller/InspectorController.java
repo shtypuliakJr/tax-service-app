@@ -27,14 +27,9 @@ public class InspectorController {
 
     @GetMapping("/inspector")
     public String getInspectorPage(Model model, Authentication authentication) {
-        System.out.println(authentication.getPrincipal());
-        List<User> userList = inspectorService.getAllUsers();
-        userList.forEach(System.out::println);
-        System.out.println("here");
-//        Set<Report> reports = userList.get(0).getReports();
-//        System.out.println(reports.isEmpty());
-        model.addAttribute("users", userList);
 
+        List<User> userList = inspectorService.getAllUsers();
+        model.addAttribute("users", userList);
 
         return "inspector/inspector";
     }
