@@ -73,9 +73,11 @@
         <div style="text-align: center">
             <input class="center-block" type="submit" value="Apply">
         </div>
+
         <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
             <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
         </div>
+
     </form>
 </div>
 </body>

@@ -13,29 +13,29 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 public class UserDTO {
 
-    @NonNull
-    @Size(min = 3, max = 20, message = "Not valid first name")
+    @NotNull
+    @Size(min = 2, max = 20, message = "Not valid first name")
     @NotBlank(message = "Require name")
     private String firstName;
 
-    @NonNull
+    @NotNull
     @Size(min = 3, max = 30, message = "Not valid last name")
     @NotBlank(message = "Require surname")
     private String lastName;
 
-    @NonNull
+    @NotNull
     @Length(min = 6, message = "Your password should have more than 6 symbols")
     private String password;
 
-    @NotEmpty
+    @NotNull
     @Email(message = "Provide valid email")
     private String email;
 
-    @NonNull
+    @NotNull
     @Min(value = 12, message = "Age should be valid")
     private int age;
 
-    @NonNull
-    @Pattern(regexp = "[0-9]{12}", message = "IPN must contain 12 digits")
+    @NotNull
+    @Digits(integer = 12, fraction = 0, message = "Invalid ipn")
     private String ipn;
 }
