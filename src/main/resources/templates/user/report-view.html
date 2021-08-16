@@ -5,7 +5,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Report view</title>
+
+    <style>
+        .main-background {
+            width: 400px;
+            height: 450px;
+            background: lightskyblue;
+            padding: 10px 20px 10px 10px;
+            border-radius: 25px;
+            float: outside;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .main-functional {
+            width: 100%;
+            height: 10%;
+        }
+
+        table {
+            width: 100%;
+            height: 70%;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        input {
+            width: 100px;
+            height: 40px;
+            text-align: center;
+            color: black;
+        }
+
+    </style>
 </head>
+
 <body>
 
 <div>
@@ -18,14 +60,54 @@
         </a>
     </div>
 </div>
-<div>
-    <p th:text="${report.income}">Income</p>
-    <p th:text="${report.taxRate}">Tax rate</p>
-    <p th:text="${report.taxPeriod}">Tax period</p>
-    <p th:text="${report.year}">Year</p>
-    <p th:text="${report.reportDate}">Report date</p>
-    <p th:text="${report.status}">Status</p>
-    <p th:text="${report.comment}">comment</p>
+<div class="main-background">
+    <div class="main-functional">
+
+        <a th:href="@{report-edit/{id}(id=${report.id})}">
+            <input type="button" value="Edit"/>
+        </a>
+        <form th:action="@{report-delete/{id}(id=${report.id})}"
+              th:method="post">
+<!--            <input type="hidden" name="id" th:value="${report.id}" />-->
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        </form>
+<!--        <a th:href= "@{report-delete/{id}(id=${report.id})}">-->
+<!--            <input type="button" value="Delete">-->
+<!--        </a>-->
+    </div>
+    <table>
+        <tbody>
+        <tr>
+            <td><p>Income</p></td>
+            <td><span th:text="${report.income}">Income</span></td>
+        </tr>
+        <tr>
+            <td><p>Tax rate</p></td>
+            <td><span th:text="${report.taxRate}">Tax rate</span></td>
+        </tr>
+        <tr>
+            <td><p>Period</p></td>
+            <td><span th:text="${report.taxPeriod}">Tax period</span></td>
+        </tr>
+        <tr>
+            <td><p>Year</p></td>
+            <td><span th:text="${report.year}">Year</span></td>
+        </tr>
+        <tr>
+            <td><p>Report date</p></td>
+            <td><span th:text="${report.reportDate}">Report date</span></td>
+        </tr>
+        <tr>
+            <td><p>Status</p></td>
+            <td><span th:text="${report.status}">Status</span></td>
+        </tr>
+        <tr>
+            <td><p>Comment</p></td>
+            <td><span th:text="${report.comment}">Comment</span></td>
+        </tr>
+
+        </tbody>
+    </table>
 </div>
 
 </body>

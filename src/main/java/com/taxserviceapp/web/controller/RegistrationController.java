@@ -2,7 +2,7 @@ package com.taxserviceapp.web.controller;
 
 import com.taxserviceapp.business.service.RegistrationService;
 import com.taxserviceapp.exceptions.UserAlreadyExistsException;
-import com.taxserviceapp.web.model.UserDTO;
+import com.taxserviceapp.web.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

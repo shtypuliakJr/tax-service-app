@@ -1,8 +1,7 @@
-package com.taxserviceapp.web.model;
+package com.taxserviceapp.web.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.*;

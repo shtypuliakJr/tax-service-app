@@ -55,8 +55,10 @@ public class User implements UserDetails, Serializable {
     @Column(name = "active", nullable = false)
     private boolean enabled;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Fetch(value= FetchMode.SELECT)
+    @OneToMany(mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SELECT)
     private List<Report> reports;
 
     @Builder

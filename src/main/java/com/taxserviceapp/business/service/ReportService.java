@@ -6,6 +6,7 @@ import com.taxserviceapp.exceptions.ReportNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -29,4 +30,12 @@ public class ReportService {
 
         throw new ReportNotFoundException("No report found");
     }
+
+    @Transactional
+    public void deleteReport(Long id) {
+        System.out.println(id);
+        reportRepository.deleteById(id);
+    }
+
+
 }

@@ -23,17 +23,15 @@
         }
 
         button {
-            width: 150px;
-            height: 50px;
-            text-align: left;
-            background-color: lightskyblue;
-            border: white solid 2px;
-            color: black;
-
-            float: outside;
-            border-radius: 25px;
-            padding: 16px 20px;
+            border: white solid 1px;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            /*display: inline-block;*/
+            font-size: 16px;
+            margin: 4px 2px;
             cursor: pointer;
+            background-color: #008CBA;
 
         }
 
@@ -49,8 +47,16 @@
             border-collapse: collapse;
         }
 
+        .div-button-apply {
+            /*border: 2px solid black;*/
+            float: left;
+        }
+        .div-button-sort {
+            float: right;
+        }
     </style>
 </head>
+
 <body>
 <span sec:authentication="name">Username</span>
 
@@ -59,14 +65,21 @@
 </form>
 <div>
     <div class="main-background">
-        <div class="main-functional">
-            <h3 align="center">Report list</h3>
-            <a th:href="@{/user/report-form}">
-                <button>Apply new report</button>
-            </a>
-            <button >Sort by</button>
+        <h3 align="center">Report list</h3>
 
+        <div>
+            <div class="div-button-apply">
+                <a th:href="@{/user/report-form}">
+                    <button>Apply new report</button>
+                </a>
+            </div>
+<!--            <div class="div-button-sort">-->
+<!--                <a th:href="@{/user/report-form}">-->
+<!--                    <button>Sort by</button>-->
+<!--                </a>-->
+<!--            </div>-->
         </div>
+
         <br/>
 
         <div>
@@ -105,6 +118,6 @@
 </body>
 </html>
 
-<!--ToDo: 1) show all reports + sort choice and find-->
-<!--ToDo: 2) every report has link to page with info and functions (delete, edit, push)-->
-<!--ToDo: add localization-->
+<!--ToDo: 1) sort choice and find-->
+<!--ToDo: 2) every report has link to page with info and functions (edit, push)-->
+<!--ToDo: 3) add localization-->

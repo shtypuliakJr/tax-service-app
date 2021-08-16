@@ -1,4 +1,4 @@
-package com.taxserviceapp.web.model;
+package com.taxserviceapp.web.dto;
 
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
@@ -7,7 +7,6 @@ import lombok.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
 // ToDo: add normal income validation

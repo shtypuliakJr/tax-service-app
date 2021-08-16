@@ -38,7 +38,7 @@ public class Report implements Serializable {
     @Column(name = "report_date")
     private Date reportDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

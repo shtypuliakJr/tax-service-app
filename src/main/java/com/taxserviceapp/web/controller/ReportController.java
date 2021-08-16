@@ -1,35 +1,26 @@
 package com.taxserviceapp.web.controller;
 
 import com.taxserviceapp.business.service.ReportService;
-import com.taxserviceapp.business.service.UserService;
 import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
-import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.data.entity.User;
-import com.taxserviceapp.web.model.ReportDTO;
+import com.taxserviceapp.web.dto.ReportDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.security.Principal;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.Period;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
-
-@Validated
 public class ReportController {
 
     @Autowired
@@ -54,14 +45,33 @@ public class ReportController {
         return "redirect:/user/user";
     }
 
-    @GetMapping("/report-view/{id}")
+    @GetMapping(value = "/report-view/{id}")
     public String viewReport(@PathVariable(value = "id") Long id, Model model) {
+
         Report report = reportService.findReportById(id);
         ReportDTO reportDTO = convertReportEntityToDTO(report);
-        System.out.println(reportDTO);
+
         model.addAttribute("report", reportDTO);
+
         return "user/report-view";
     }
+
+    @PostMapping(value = "report-view/report-delete/{id}")
+    public String deleteDelete(@PathVariable("id") Long id) {
+        System.out.println("here");
+        reportService.deleteReport(id);
+        return "redirect:/user/user";
+    }
+//
+//    @PostMapping("/report-edit/{id}")
+//    public String deleteDelete(@PathVariable(value = "id") Long id, Model model) {
+//
+//        ReportDTO reportDTO = convertReportEntityToDTO(reportService.findReportById(id));
+//        model.addAttribute("report", reportDTO);
+//
+//        return "redirect:/user/user";
+//    }
+
 
     public ReportDTO convertReportEntityToDTO(Report report) {
 
