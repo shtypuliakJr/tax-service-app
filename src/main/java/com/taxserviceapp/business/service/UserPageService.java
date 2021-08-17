@@ -3,6 +3,7 @@ package com.taxserviceapp.business.service;
 import com.taxserviceapp.data.dao.ReportRepository;
 import com.taxserviceapp.data.entity.Report;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
@@ -19,7 +20,6 @@ public class UserPageService {
         this.reportRepository = reportRepository;
     }
     public List<Report> getReportsByUserId(Long userId) throws NoResultException {
-
         return reportRepository.findReportsByUser_Id(userId).orElseThrow(() -> new NoResultException("No result"));
     }
 
@@ -27,7 +27,8 @@ public class UserPageService {
         return reportRepository.findById(id);
     }
 
-    public void deleteReportById(Long id) {
-        reportRepository.deleteById(id);
+    public List<Report> getReportsSortedByIncome(Long userId) throws NoResultException {
+        return reportRepository.findReportsByUser_IdOrderByIncome(userId).orElseThrow(() -> new NoResultException("No result"));
+
     }
 }

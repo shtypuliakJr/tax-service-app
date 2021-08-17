@@ -73,11 +73,10 @@
                     <button>Apply new report</button>
                 </a>
             </div>
-<!--            <div class="div-button-sort">-->
-<!--                <a th:href="@{/user/report-form}">-->
-<!--                    <button>Sort by</button>-->
-<!--                </a>-->
-<!--            </div>-->
+            <form th:action="@{report-sort}" method="post">
+                <input type="button" value="sort"/>
+            </form>
+
         </div>
 
         <br/>

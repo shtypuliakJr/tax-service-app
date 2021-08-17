@@ -31,4 +31,13 @@ public class UserPageController {
         model.addAttribute("reportList", reportsByUserId);
         return "user/user";
     }
+
+    @PostMapping("/report-sort")
+    public String getUserPageSorted(Authentication authentication, Model model) {
+        Long id = ((User) authentication.getPrincipal()).getId();
+
+        List<Report> reportsByUserId = userPageService.getReportsSortedByIncome(id);
+        model.addAttribute("reportList", reportsByUserId);
+        return "user/user";
+    }
 }

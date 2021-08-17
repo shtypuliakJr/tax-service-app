@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <div>
-    <a th:href="@{login}">Login page</a>
-    <a th:href="@{registration}">Sign up page</a>
+    <a th:href="@{login}" data-th-text="#{main.login}"></a>
+    <a th:href="@{registration}" data-th-text="#{main.registration}"></a>
+
+    <p th:text="#{main.greeting}"></p>
+
+    <div>
+
+        <a th:href="@{?lang=en}" th:text="#{lang.en}"></a>
+        <a th:href="@{?lang=ua}" th:text="#{lang.ua}"></a>
+    </div>
 </div>
 </body>
 </html>
