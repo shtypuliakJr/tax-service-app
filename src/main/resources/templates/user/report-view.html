@@ -24,6 +24,8 @@
         .main-functional {
             width: 100%;
             height: 10%;
+            display: inline;
+            float: top;
         }
 
         table {
@@ -38,6 +40,7 @@
             border-collapse: collapse;
             text-align: center;
         }
+
         input {
             width: 100px;
             height: 40px;
@@ -63,17 +66,18 @@
 <div class="main-background">
     <div class="main-functional">
 
-        <a th:href="@{report-edit/{id}(id=${report.id})}">
-            <input type="button" value="Edit"/>
-        </a>
-        <form th:action="@{report-delete/{id}(id=${report.id})}"
-              th:method="post">
-<!--            <input type="hidden" name="id" th:value="${report.id}" />-->
-            <input type="submit" value="Delete" class="btn btn-danger" />
-        </form>
-<!--        <a th:href= "@{report-delete/{id}(id=${report.id})}">-->
-<!--            <input type="button" value="Delete">-->
-<!--        </a>-->
+        <div>
+            <form th:action="@{report-edit/{id}(id=${report.id})}" th:method="get">
+                <input type="submit" value="Edit" class="btn btn-danger"/>
+            </form>
+        </div>
+
+        <div>
+            <form th:action="@{report-delete/{id}(id=${report.id})}" th:method="post">
+                <input type="submit" value="Delete" class="btn btn-danger"/>
+            </form>
+        </div>
+
     </div>
     <table>
         <tbody>

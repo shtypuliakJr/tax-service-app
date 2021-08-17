@@ -19,6 +19,10 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     Optional<List<Report>> findReportsByUser_IdOrderByReportDate(Long userId);
 
 //    @Modifying
+//    @Query("UPDATE Report r SET r.income = :report. where r.id = :id")
+//    void updateReport(@Param(value = "id") Long id,
+//                      @Param(value = "report") Report report);
+//    @Modifying
 //    @Query("DELETE FROM Report r WHERE r.id = :id")
 //    void deleteById(@Param("id") Long id);
 }

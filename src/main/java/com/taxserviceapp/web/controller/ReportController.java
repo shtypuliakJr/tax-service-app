@@ -57,20 +57,34 @@ public class ReportController {
     }
 
     @PostMapping(value = "report-view/report-delete/{id}")
-    public String deleteDelete(@PathVariable("id") Long id) {
+    public String deleteReport(@PathVariable("id") Long id) {
         System.out.println("here");
         reportService.deleteReport(id);
         return "redirect:/user/user";
     }
-//
-//    @PostMapping("/report-edit/{id}")
-//    public String deleteDelete(@PathVariable(value = "id") Long id, Model model) {
-//
-//        ReportDTO reportDTO = convertReportEntityToDTO(reportService.findReportById(id));
-//        model.addAttribute("report", reportDTO);
-//
-//        return "redirect:/user/user";
-//    }
+
+    @GetMapping("report-view/report-edit/{id}")
+    public String deleteDelete(@PathVariable(value = "id") Long id, Model model) {
+        System.out.println("here");
+
+        ReportDTO reportDTO = convertReportEntityToDTO(reportService.findReportById(id));
+        reportDTO.setId(id);
+        model.addAttribute("report", reportDTO);
+
+        return "/user/report-edit";
+    }
+
+    @PostMapping("/report-edit")
+    public String editReport(@Valid @ModelAttribute("report") ReportDTO reportDTO,
+                             BindingResult result,
+                             Model model, Authentication authentication) {
+        if (result.hasErrors()) {
+            model.addAttribute("report", reportDTO);
+            return "user/report-edit";
+        }
+        reportService.updateReport(convertReportDTOToEntity(reportDTO, (User) authentication.getPrincipal()));
+        return "redirect:/user/user";
+    }
 
 
     public ReportDTO convertReportEntityToDTO(Report report) {
@@ -90,6 +104,7 @@ public class ReportController {
     public Report convertReportDTOToEntity(ReportDTO reportDTO, User user) {
 
         return Report.builder()
+                .id(reportDTO.getId())
                 .income(reportDTO.getIncome())
                 .taxRate(reportDTO.getTaxRate())
                 .taxPeriod(reportDTO.getTaxPeriod())

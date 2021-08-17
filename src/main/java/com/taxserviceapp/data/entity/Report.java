@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -138,4 +139,5 @@ public class Report implements Serializable {
                 ", comment='" + comment + '\'' +
                 '}';
     }
+
 }

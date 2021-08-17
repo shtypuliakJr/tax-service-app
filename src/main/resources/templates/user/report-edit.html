@@ -2,10 +2,9 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-
 <head>
     <meta charset="UTF-8">
-    <title>Report Form</title>
+    <title>Title</title>
     <style>
         .report {
             width: 290px;
@@ -31,24 +30,18 @@
 
     </style>
 </head>
-
 <body>
-<div>
-    <div align="right">
-        <span sec:authentication="name">Email</span>
-    </div>
-    <div align="left">
-        <a th:href="@{/user/user}">
-            <button>Return to main page</button>
-        </a>
-    </div>
-</div>
 <div class="report">
     <div style="text-align: center">
         <label>Report form</label>
     </div>
 
-    <form action="#" th:object="${report}" th:action="@{/user/add-report}" method="post">
+    <form action="#" th:object="${report}" th:action="@{/user/report-edit}" method="post">
+
+        <input type="hidden" id="id" th:field="*{id}"/>
+        <input type="hidden" id="userId" th:field="*{userId}"/>
+        <input type="hidden" id="status" th:field="*{status}"/>
+        <input type="hidden" id="comment" th:field="*{comment}"/>
 
         <label>Income:
             <input type="text" placeholder="Income" th:field="*{income}" required/>
