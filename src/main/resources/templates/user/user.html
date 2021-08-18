@@ -22,7 +22,7 @@
             transform: translate(-50%, -50%);
         }
 
-        button {
+        button, input {
             border: white solid 1px;
             color: white;
             padding: 15px 32px;
@@ -51,6 +51,7 @@
             /*border: 2px solid black;*/
             float: left;
         }
+
         .div-button-sort {
             float: right;
         }
@@ -58,11 +59,13 @@
 </head>
 
 <body>
-<span sec:authentication="name">Username</span>
+<div align="right">
+    <span sec:authentication="name">Username</span>
 
-<form method="POST" th:action="@{/logout}">
-    <input type="submit" value="Logout"/>
-</form>
+    <form method="POST" th:action="@{/logout}">
+        <input type="submit" value="Logout"/>
+    </form>
+</div>
 <div>
     <div class="main-background">
         <h3 align="center">Report list</h3>
@@ -73,10 +76,16 @@
                     <button>Apply new report</button>
                 </a>
             </div>
-            <form th:action="@{report-sort}" method="post">
-                <input type="button" value="sort"/>
-            </form>
+<!--            <form action="#" th:action="@{/user/report-sort}" method="POST">-->
+<!--                <input type="submit" value="Sort"/>-->
+<!--            </form>-->
 
+<!--            <form action="#" th:action="@{/user/report-find}" method="POST">-->
+<!--                <label for="income">Find</label>-->
+<!--                <input type="text" placeholder="Income" name="income" id="income"/>-->
+
+<!--                <input type="submit" value="find"/>-->
+<!--            </form>-->
         </div>
 
         <br/>

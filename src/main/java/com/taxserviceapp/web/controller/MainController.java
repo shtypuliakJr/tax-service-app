@@ -12,9 +12,6 @@ public class MainController {
 
     @GetMapping("/")
     public String mainPage(Model model, HttpServletRequest request) {
-        Locale locale = request.getLocale();
-        String code = locale.getCountry();
         return "/main";
     }
-
 }

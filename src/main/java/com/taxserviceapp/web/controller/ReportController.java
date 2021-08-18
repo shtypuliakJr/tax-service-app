@@ -48,22 +48,22 @@ public class ReportController {
     @GetMapping(value = "/report-view/{id}")
     public String viewReport(@PathVariable(value = "id") Long id, Model model) {
 
-        Report report = reportService.findReportById(id);
-        ReportDTO reportDTO = convertReportEntityToDTO(report);
+        ReportDTO reportDTO = convertReportEntityToDTO(reportService.findReportById(id));
 
         model.addAttribute("report", reportDTO);
 
         return "user/report-view";
     }
 
-    @PostMapping(value = "report-view/report-delete/{id}")
+    @PostMapping(value = "/report-view/report-delete/{id}")
     public String deleteReport(@PathVariable("id") Long id) {
-        System.out.println("here");
+
         reportService.deleteReport(id);
+
         return "redirect:/user/user";
     }
 
-    @GetMapping("report-view/report-edit/{id}")
+    @GetMapping("/report-view/report-edit/{id}")
     public String deleteDelete(@PathVariable(value = "id") Long id, Model model) {
         System.out.println("here");
 
@@ -86,7 +86,7 @@ public class ReportController {
         return "redirect:/user/user";
     }
 
-
+    //Todo: add util class converter
     public ReportDTO convertReportEntityToDTO(Report report) {
 
         return ReportDTO.builder()

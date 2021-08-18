@@ -25,7 +25,7 @@ public class RegistrationService {
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("Email is reserved");
         }
-        // ToDo: add BeanUtils for copy
+        // ToDo: add util class converter
         User user = User.builder()
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())

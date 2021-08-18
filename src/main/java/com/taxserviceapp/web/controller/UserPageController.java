@@ -35,7 +35,16 @@ public class UserPageController {
     @PostMapping("/report-sort")
     public String getUserPageSorted(Authentication authentication, Model model) {
         Long id = ((User) authentication.getPrincipal()).getId();
+        System.out.println("sort");
+        List<Report> reportsByUserId = userPageService.getReportsSortedByIncome(id);
+        model.addAttribute("reportList", reportsByUserId);
+        return "user/user";
+    }
 
+    @PostMapping("/report-find")
+    public String getReportBy(Authentication authentication, Model model) {
+        Long id = ((User) authentication.getPrincipal()).getId();
+        System.out.println("find");
         List<Report> reportsByUserId = userPageService.getReportsSortedByIncome(id);
         model.addAttribute("reportList", reportsByUserId);
         return "user/user";

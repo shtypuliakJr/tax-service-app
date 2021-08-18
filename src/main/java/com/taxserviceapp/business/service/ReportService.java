@@ -2,17 +2,11 @@ package com.taxserviceapp.business.service;
 
 import com.taxserviceapp.data.dao.ReportRepository;
 import com.taxserviceapp.data.entity.Report;
-import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.exceptions.ReportNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class ReportService {
@@ -28,12 +22,11 @@ public class ReportService {
         reportRepository.save(report);
     }
 
-    public Report findReportById(Long id) throws ReportNotFoundException{
-        Optional<Report> report = reportRepository.findById(id);
-        if (report.isPresent())
-            return report.get();
+    public Report findReportById(Long id) throws ReportNotFoundException {
 
-        throw new ReportNotFoundException("No report found");
+        return reportRepository
+                .findById(id)
+                .orElseThrow(() -> new ReportNotFoundException("No report found"));
     }
 
     @Transactional
@@ -42,12 +35,11 @@ public class ReportService {
     }
 
     @Transactional
-    public void updateReport(Report report) throws ReportNotFoundException{
-        if (reportRepository.existsById(report.getId()))
-            reportRepository.save(report);
-
-        throw new ReportNotFoundException("No report");
+    public Report updateReport(Report report) throws ReportNotFoundException {
+        if (reportRepository.existsById(report.getId())) {
+            return reportRepository.save(report);
+        } else {
+            throw new ReportNotFoundException("No report found");
+        }
     }
-
-
 }

@@ -19,21 +19,24 @@ import java.io.IOException;
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private final GrantedAuthority inspectorAuthority = new SimpleGrantedAuthority(UserRole.INSPECTOR.getAuthority());
-    private RequestCache requestCache = new HttpSessionRequestCache();
+    private final GrantedAuthority userAuthotity = new SimpleGrantedAuthority(UserRole.USER.getAuthority());
+
+//    private RequestCache requestCache = new HttpSessionRequestCache();
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
 
-        String inspectorUrl = "/inspector/inspector";
+        String successfulURL = null;
 
-        String finalUrl = "/user/user";
         if (authentication.getAuthorities().contains(inspectorAuthority)) {
-            finalUrl = inspectorUrl;
+            successfulURL = "/inspector/inspector";;
+        } else if (authentication.getAuthorities().contains(userAuthotity)) {
+            successfulURL = "/user/user";
         }
 
         //clearAuthenticationAttributes(request);
-        getRedirectStrategy().sendRedirect(request, response, finalUrl);
+        getRedirectStrategy().sendRedirect(request, response, successfulURL);
 
     }
 }

@@ -3,12 +3,10 @@ package com.taxserviceapp.business.service;
 import com.taxserviceapp.data.dao.ReportRepository;
 import com.taxserviceapp.data.entity.Report;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserPageService {
@@ -19,16 +17,16 @@ public class UserPageService {
     public UserPageService(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
     }
-    public List<Report> getReportsByUserId(Long userId) throws NoResultException {
-        return reportRepository.findReportsByUser_Id(userId).orElseThrow(() -> new NoResultException("No result"));
-    }
 
-    public Optional<Report> getReportById(Long id) {
-        return reportRepository.findById(id);
+    public List<Report> getReportsByUserId(Long userId) throws NoResultException {
+        return reportRepository
+                .findReportsByUser_Id(userId)
+                .orElseThrow(() -> new NoResultException("No result"));
     }
 
     public List<Report> getReportsSortedByIncome(Long userId) throws NoResultException {
-        return reportRepository.findReportsByUser_IdOrderByIncome(userId).orElseThrow(() -> new NoResultException("No result"));
-
+        return reportRepository
+                .findReportsByUser_IdOrderByIncome(userId)
+                .orElseThrow(() -> new NoResultException("No result"));
     }
 }
