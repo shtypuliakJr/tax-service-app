@@ -67,9 +67,9 @@
     <div class="main-functional">
 
         <div>
-            <form th:action="@{report-edit/{id}(id=${report.id})}" th:method="get">
+            <a th:href="@{report-edit/{id}(id=${report.id})}">
                 <input type="submit" value="Edit" class="btn btn-danger"/>
-            </form>
+            </a>
         </div>
 
         <div>

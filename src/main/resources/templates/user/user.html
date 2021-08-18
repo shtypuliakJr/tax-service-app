@@ -22,7 +22,7 @@
             transform: translate(-50%, -50%);
         }
 
-        button, input {
+        .main-input {
             border: white solid 1px;
             color: white;
             padding: 15px 32px;
@@ -63,7 +63,7 @@
     <span sec:authentication="name">Username</span>
 
     <form method="POST" th:action="@{/logout}">
-        <input type="submit" value="Logout"/>
+        <input class="main-input" type="submit" value="Logout"/>
     </form>
 </div>
 <div>
@@ -73,19 +73,19 @@
         <div>
             <div class="div-button-apply">
                 <a th:href="@{/user/report-form}">
-                    <button>Apply new report</button>
+                    <button class="main-input">Apply new report</button>
                 </a>
             </div>
-<!--            <form action="#" th:action="@{/user/report-sort}" method="POST">-->
-<!--                <input type="submit" value="Sort"/>-->
-<!--            </form>-->
+            <!--            <form action="#" th:action="@{/user/report-sort}" method="POST">-->
+            <!--                <input type="submit" value="Sort"/>-->
+            <!--            </form>-->
 
-<!--            <form action="#" th:action="@{/user/report-find}" method="POST">-->
-<!--                <label for="income">Find</label>-->
-<!--                <input type="text" placeholder="Income" name="income" id="income"/>-->
+            <!--            <form action="#" th:action="@{/user/report-find}" method="POST">-->
+            <!--                <label for="income">Find</label>-->
+            <!--                <input type="text" placeholder="Income" name="income" id="income"/>-->
 
-<!--                <input type="submit" value="find"/>-->
-<!--            </form>-->
+            <!--                <input type="submit" value="find"/>-->
+            <!--            </form>-->
         </div>
 
         <br/>
@@ -101,6 +101,7 @@
                     <th>Report Date</th>
                     <th>Comment</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -115,7 +116,19 @@
                     <td><span th:text="${report.reportDate}">reportDate</span></td>
                     <td><span th:text="${report.comment}">comment</span></td>
                     <td><span th:text="${report.status}">status</span></td>
-                    <td><a th:href="@{report-view/{id}(id=${report.id})}">View</a></td>
+                    <td>
+                        <div>
+                            <a style="text-decoration: none" th:href="@{report-view/{id}(id=${report.id})}">
+                                <input type="button" value="View"/>
+                            </a>
+                            <a style="text-decoration: none" th:href="@{report-edit/{id}(id=${report.id})}">
+                                <input type="button" value="Edit"/>
+                            </a>
+                            <a style="text-decoration: none" th:href="@{report-delete/{id}(id=${report.id})}">
+                                <input type="button" value="Delete"/>
+                            </a>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>

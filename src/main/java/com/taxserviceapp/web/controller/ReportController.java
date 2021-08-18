@@ -26,13 +26,13 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-    @GetMapping("/report-form")
+    @GetMapping(value = "/report-form")
     public String addReport(Model model, Authentication authentication) {
         model.addAttribute("report", new Report());
         return "user/report-form";
     }
 
-    @PostMapping("/add-report")
+    @PostMapping(value = "/add-report")
     public String recieveReport(@Valid @ModelAttribute("report") ReportDTO reportDTO,
                                 BindingResult result,
                                 Model model) {
@@ -44,6 +44,38 @@ public class ReportController {
         reportService.saveNewReport(convertReportDTOToEntity(reportDTO, user));
         return "redirect:/user/user";
     }
+
+    @GetMapping(value = "/report-edit/{id}")
+    public String getEditFormFromUserPage(@PathVariable(value = "id") Long id, Model model) {
+
+        ReportDTO reportDTO = convertReportEntityToDTO(reportService.findReportById(id));
+        reportDTO.setId(id);
+        model.addAttribute("report", reportDTO);
+
+        return "/user/report-edit";
+    }
+
+    @PostMapping(value = "/report-edit")
+    public String editReport(@Valid @ModelAttribute("report") ReportDTO reportDTO,
+                             BindingResult result,
+                             Model model, Authentication authentication) {
+        if (result.hasErrors()) {
+            model.addAttribute("report", reportDTO);
+            return "user/report-edit";
+        }
+        reportService.updateReport(convertReportDTOToEntity(reportDTO, (User) authentication.getPrincipal()));
+        return "redirect:/user/user";
+    }
+
+    @GetMapping(value = "/report-delete/{id}")
+    public String deleteReportFromUserPage(@PathVariable("id") Long id) {
+
+        reportService.deleteReport(id);
+
+        return "redirect:/user/user";
+    }
+
+
 
     @GetMapping(value = "/report-view/{id}")
     public String viewReport(@PathVariable(value = "id") Long id, Model model) {
@@ -63,27 +95,14 @@ public class ReportController {
         return "redirect:/user/user";
     }
 
-    @GetMapping("/report-view/report-edit/{id}")
-    public String deleteDelete(@PathVariable(value = "id") Long id, Model model) {
-        System.out.println("here");
-
+    @GetMapping(value = "/report-view/report-edit/{id}")
+    public String getEditForm(@PathVariable(value = "id") Long id, Model model) {
         ReportDTO reportDTO = convertReportEntityToDTO(reportService.findReportById(id));
         reportDTO.setId(id);
+
         model.addAttribute("report", reportDTO);
 
         return "/user/report-edit";
-    }
-
-    @PostMapping("/report-edit")
-    public String editReport(@Valid @ModelAttribute("report") ReportDTO reportDTO,
-                             BindingResult result,
-                             Model model, Authentication authentication) {
-        if (result.hasErrors()) {
-            model.addAttribute("report", reportDTO);
-            return "user/report-edit";
-        }
-        reportService.updateReport(convertReportDTOToEntity(reportDTO, (User) authentication.getPrincipal()));
-        return "redirect:/user/user";
     }
 
     //Todo: add util class converter
