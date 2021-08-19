@@ -76,16 +76,37 @@
                     <button class="main-input">Apply new report</button>
                 </a>
             </div>
-            <!--            <form action="#" th:action="@{/user/report-sort}" method="POST">-->
-            <!--                <input type="submit" value="Sort"/>-->
-            <!--            </form>-->
 
-            <!--            <form action="#" th:action="@{/user/report-find}" method="POST">-->
-            <!--                <label for="income">Find</label>-->
-            <!--                <input type="text" placeholder="Income" name="income" id="income"/>-->
+            <div>
+                <form action="#" th:action="@{/user/report-sort}" method="POST">
+                </form>
+            </div>
 
-            <!--                <input type="submit" value="find"/>-->
-            <!--            </form>-->
+            <div>
+                <form action="#" th:action="@{/user/report-find}" th:method="post"> <!--  th:object="${filter}">-->
+                    <input type="date" id="date" name="date"/>
+
+                    <select id="period" name="period">
+                        <option></option>
+                        <option th:each="period : ${T(com.taxserviceapp.data.entity.TaxPeriod).values()}"
+                                th:text="${period.getPeriod()}"
+                                th:value="${period.name()}">
+                            ..
+                        </option>
+                    </select>
+
+                    <select id="status" name="status">
+                        <option></option>
+                        <option th:each="status : ${T(com.taxserviceapp.data.entity.Status).values()}"
+                                th:text="${status.getStatusName()}"
+                                th:value="${status.name()}">
+                            ..
+                        </option>
+                    </select>
+
+                    <input type="submit"/>
+                </form>
+            </div>
         </div>
 
         <br/>
@@ -106,7 +127,7 @@
                 </thead>
                 <tbody>
                 <tr th:if="${reportList.isEmpty()}">
-                    <td colspan="7">No result</td>
+                    <td colspan="6">No result</td>
                 </tr>
                 <tr th:each="report: ${reportList}">
                     <td><span th:text="${report.income}">income</span></td>
