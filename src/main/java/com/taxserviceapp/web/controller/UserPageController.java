@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,7 +27,7 @@ public class UserPageController {
 
     @GetMapping("/user")
     public String getUserPage(@RequestParam(name = "date", required = false)
-                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                               @RequestParam(name = "period", required = false) TaxPeriod period,
                               @RequestParam(name = "status", required = false) Status status,
                               @RequestParam(name = "sortField", required = false) SortField sortField,
@@ -50,15 +49,5 @@ public class UserPageController {
         model.addAttribute("user", user);
 
         return "user/user-info";
-    }
-
-    @PostMapping("/report-sort")
-    public String getUserPageSorted(Authentication authentication, Model model) {
-
-        Long id = ((User) authentication.getPrincipal()).getId();
-        System.out.println("sort");
-        List<Report> reportsByUserId = userPageService.getReportsSortedByIncome(id);
-        model.addAttribute("reportList", reportsByUserId);
-        return "user/user";
     }
 }

@@ -25,6 +25,7 @@ public class LocaleConfig implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
+
         slr.setDefaultLocale(Locale.ENGLISH);
         return slr;
     }
@@ -32,14 +33,14 @@ public class LocaleConfig implements WebMvcConfigurer {
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+
         lci.setParamName("lang");
         return lci;
     }
 
     @Bean
     public ReloadableResourceBundleMessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource
-                = new ReloadableResourceBundleMessageSource();
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 
         messageSource.setBasename("classpath:message");
         messageSource.setDefaultEncoding("UTF-8");
@@ -49,6 +50,7 @@ public class LocaleConfig implements WebMvcConfigurer {
     @Bean
     public LocalValidatorFactoryBean getValidator() {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+
         bean.setValidationMessageSource(messageSource());
         return bean;
     }

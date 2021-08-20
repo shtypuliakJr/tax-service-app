@@ -33,12 +33,6 @@ public class UserPageService {
                 .orElseThrow(() -> new NoResultException("No result"));
     }
 
-    public List<Report> getReportsSortedByIncome(Long userId) throws NoResultException {
-        return reportRepository
-                .findReportsByUser_IdOrderByIncome(userId)
-                .orElseThrow(() -> new NoResultException("No result"));
-    }
-
     public List<Report> getReportsByRequestParam(Long id, LocalDate date, TaxPeriod period, Status status, SortField sortField) throws NoResultException {
         Specification<Report> specification = Specification
                 .where(hasId(id)
