@@ -68,13 +68,13 @@
 <div class="main-background">
     <div class="display: inline-block">
 
-        <a th:href="@{report-edit/{id}(id=${report.id})}">
+        <a th:href="@{/user/report-edit/{id}(id=${report.id})}">
             <input type="submit" value="Edit" class="main-input"/>
         </a>
 
-        <form th:action="@{report-delete/{id}(id=${report.id})}" th:method="post">
-            <input type="submit" value="Delete" class="main-input"/>
-        </form>
+        <a style="text-decoration: none" th:href="@{/user/report-delete/{id}(id=${report.id})}">
+            <input type="button" value="Delete" class="main-input"/>
+        </a>
 
     </div>
     <table>

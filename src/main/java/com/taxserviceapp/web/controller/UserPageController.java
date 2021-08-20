@@ -1,6 +1,6 @@
 package com.taxserviceapp.web.controller;
 
-import com.taxserviceapp.business.service.UserPageService;
+import com.taxserviceapp.business.service.ReportService;
 import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
@@ -23,7 +23,7 @@ import java.util.List;
 public class UserPageController {
 
     @Autowired
-    UserPageService userPageService;
+    ReportService reportService;
 
     @GetMapping("/user")
     public String getUserPage(@RequestParam(name = "date", required = false)
@@ -34,7 +34,7 @@ public class UserPageController {
                               Authentication authentication, Model model) {
 
         Long id = ((User) authentication.getPrincipal()).getId();
-        List<Report> reportsByUserId = userPageService.getReportsByRequestParam(id, date, period, status, sortField);
+        List<Report> reportsByUserId = reportService.getReportsByRequestParam(id, date, period, status, sortField);
 
         model.addAttribute("reportList", reportsByUserId);
 

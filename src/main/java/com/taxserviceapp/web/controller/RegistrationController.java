@@ -2,6 +2,7 @@ package com.taxserviceapp.web.controller;
 
 import com.taxserviceapp.business.service.RegistrationService;
 import com.taxserviceapp.exceptions.UserAlreadyExistsException;
+import com.taxserviceapp.utility.PojoConverter;
 import com.taxserviceapp.web.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,7 @@ public class RegistrationController {
         }
 
         try {
-            registrationService.registerNewUser(user);
+            registrationService.registerNewUser(PojoConverter.convertUserDtoToEntity(user));
         } catch (UserAlreadyExistsException e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("user", user);

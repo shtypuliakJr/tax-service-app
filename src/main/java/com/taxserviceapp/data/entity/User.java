@@ -2,6 +2,7 @@ package com.taxserviceapp.data.entity;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -22,6 +23,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Table(name = "user")
+@EqualsAndHashCode
 public class User implements UserDetails, Serializable {
 
     @Id

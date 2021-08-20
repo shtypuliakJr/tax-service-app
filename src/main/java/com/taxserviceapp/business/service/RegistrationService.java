@@ -20,26 +20,11 @@ public class RegistrationService {
         this.userRepository = userRepository;
     }
 
-    public void registerNewUser(UserDTO userDto) throws UserAlreadyExistsException {
+    public void registerNewUser(User user) throws UserAlreadyExistsException {
 
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("Email is reserved");
         }
-        // ToDo: add util class converter
-        User user = User.builder()
-                .firstName(userDto.getFirstName())
-                .lastName(userDto.getLastName())
-                .email(userDto.getEmail())
-                .password(userDto.getPassword())
-                .age(userDto.getAge())
-                .ipn(userDto.getIpn())
-                .userRole(UserRole.USER)
-                .dateOfRegistration(LocalDateTime.now())
-                .address(userDto.getAddress())
-                .personality(userDto.getPersonality())
-                .enabled(true)
-                .build();
-
         userRepository.save(user);
     }
 }

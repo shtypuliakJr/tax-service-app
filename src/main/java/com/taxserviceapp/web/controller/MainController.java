@@ -5,13 +5,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Locale;
 
 @Controller
 public class MainController {
 
     @GetMapping("/")
-    public String mainPage(Model model, HttpServletRequest request) {
+    public String mainPage() {
         return "/main";
     }
 }
