@@ -5,13 +5,13 @@ import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.exceptions.ReportNotFoundException;
+import com.taxserviceapp.web.dto.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
-import javax.persistence.criteria.*;
-import java.security.SecurityPermission;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -39,15 +39,24 @@ public class UserPageService {
                 .orElseThrow(() -> new NoResultException("No result"));
     }
 
-    public List<Report> getReportsByRequestParam(Long id, LocalDate date, TaxPeriod period, Status status) throws NoResultException {
+    public List<Report> getReportsByRequestParam(Long id, LocalDate date, TaxPeriod period, Status status, SortField sortField) throws NoResultException {
         Specification<Report> specification = Specification
                 .where(hasId(id)
                         .and(hasStatus(status))
                         .and(hasDate(date))
                         .and(hasPeriod(period)));
 
-        Optional<List<Report>> reportsByUser_id = Optional.of(reportRepository.findAll(specification));
-        return reportsByUser_id.orElseThrow(() -> new ReportNotFoundException("No result"));
+        Optional<List<Report>> reports;
+
+        if (sortField != null)
+            if (sortField.direction.equals("asc"))
+                reports = Optional.of(reportRepository.findAll(specification, Sort.by(sortField.getFieldInTable()).ascending()));
+            else
+                reports = Optional.of(reportRepository.findAll(specification, Sort.by(sortField.getFieldInTable()).descending()));
+        else
+            reports = Optional.of(reportRepository.findAll(specification));
+
+        return reports.orElseThrow(() -> new ReportNotFoundException("No result"));
     }
 
     static Specification<Report> hasId(Long id) {

@@ -52,7 +52,7 @@
             float: left;
         }
 
-        .div-button-sort {
+        .div-button-sortField {
             float: right;
         }
     </style>
@@ -78,12 +78,12 @@
             </div>
 
             <div>
-                <form action="#" th:action="@{/user/report-sort}" method="post">
+                <form action="#" th:action="@{/user/report-sortField}" method="post">
                 </form>
             </div>
 
             <div>
-                <form action="#" th:action="@{/user/user}" th:method="get"> <!--  th:object="${filter}">-->
+                <form action="#" th:action="@{/user/user}" th:method="get">
                     <input type="date" id="date" name="date"/>
 
                     <select id="period" name="period">
@@ -91,8 +91,7 @@
                         <option th:each="period : ${T(com.taxserviceapp.data.entity.TaxPeriod).values()}"
                                 th:text="${period.getPeriod()}"
                                 th:value="${period.name()}">
-                            ..
-                        </option>
+                            ..</option>
                     </select>
 
                     <select id="status" name="status">
@@ -100,10 +99,16 @@
                         <option th:each="status : ${T(com.taxserviceapp.data.entity.Status).values()}"
                                 th:text="${status.getStatusName()}"
                                 th:value="${status.name()}">
-                            ..
-                        </option>
+                            ..</option>
                     </select>
 
+                    <select id="sortField" name="sortField">
+                        <option></option>
+                        <option th:each="sortField : ${T(com.taxserviceapp.web.dto.SortField).values()}"
+                                th:text="${sortField.getSortName()}"
+                                th:value="${sortField.name()}">
+                            ..</option>
+                    </select>
                     <input type="submit"/>
                 </form>
             </div>
@@ -160,6 +165,6 @@
 </body>
 </html>
 
-<!--ToDo: 1) sort choice and find-->
+<!--ToDo: 1) sortField choice and find-->
 <!--ToDo: 2) every report has link to page with info and functions (edit, push)-->
 <!--ToDo: 3) add localization-->

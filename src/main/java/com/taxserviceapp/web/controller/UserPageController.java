@@ -5,7 +5,7 @@ import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.data.entity.User;
-import com.taxserviceapp.web.dto.ReportFilterDTO;
+import com.taxserviceapp.web.dto.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
@@ -31,10 +31,11 @@ public class UserPageController {
                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                               @RequestParam(name = "period", required = false) TaxPeriod period,
                               @RequestParam(name = "status", required = false) Status status,
+                              @RequestParam(name = "sortField", required = false) SortField sortField,
                               Authentication authentication, Model model) {
 
         Long id = ((User) authentication.getPrincipal()).getId();
-        List<Report> reportsByUserId = userPageService.getReportsByRequestParam(id, date, period, status);
+        List<Report> reportsByUserId = userPageService.getReportsByRequestParam(id, date, period, status, sortField);
 
         model.addAttribute("reportList", reportsByUserId);
 
@@ -50,23 +51,4 @@ public class UserPageController {
         model.addAttribute("reportList", reportsByUserId);
         return "user/user";
     }
-
-//    @PostMapping("/user/report-find")
-//    public String getReportBy(@RequestParam(name = "date", required = false)
-//                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-//                              @RequestParam(name = "period", required = false) TaxPeriod period,
-//                              @RequestParam(name = "status", required = false) Status status,
-//                              Authentication authentication, Model model) {
-////
-////        System.out.println("Date " + date);
-////        System.out.println("Status " + status);
-////        System.out.println("Period " + period);
-////
-//        Long id = ((User) authentication.getPrincipal()).getId();
-//        List<Report> reportsByUserId = userPageService.getReportsByRequestParam(id, date, period, status);
-//
-//        model.addAttribute("reportList", reportsByUserId);
-//
-//        return "user/user";
-//    }
 }
