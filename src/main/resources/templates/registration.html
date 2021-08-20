@@ -6,8 +6,8 @@
     <title>Registration</title>
     <style>
         .reg {
-            width: 300px;
-            height: 600px;
+            width: 330px;
+            height: 700px;
             background: lightskyblue;
             padding: 10px;
             padding-right: 20px;
@@ -34,6 +34,7 @@
         div {
             margin-bottom: 5%;
         }
+
     </style>
 </head>
 <body>
@@ -81,6 +82,27 @@
                 <input type="text" th:field="*{ipn}" required/>
             </label>
         </div>
+
+        <div>
+
+            <label>Address
+                <input type="text" th:field="*{address}" required/>
+            </label>
+        </div>
+
+        <div>
+
+            <label>Personality
+                <select th:field="*{personality}">
+                    <option th:each="personality : ${T(com.taxserviceapp.data.entity.Personality).values()}"
+                            th:text="${personality.getPersonalityName()}"
+                            th:value="${personality.name()}">
+                        ..
+                    </option>
+                </select>
+            </label>
+        </div>
+
         <input class="center-block" type="submit" value="Register">
         <br/>
 

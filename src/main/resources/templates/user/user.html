@@ -79,7 +79,7 @@
 
                     <label for="date">
                         Select date:
-                        <input type="date" id="date" name="date"/>
+                        <input type="date" id="date" name="date" min="2010-01-01" max="2021-12-31" />
                     </label>
 
                     <select id="period" name="period">
@@ -121,8 +121,8 @@
             <table>
                 <thead>
                 <tr>
-                    <th>Income</th>
-                    <th>Tax rate</th>
+                    <th>Income, $</th>
+                    <th>Tax rate, %</th>
                     <th>Period</th>
                     <th>Year</th>
                     <th>Report Date</th>
@@ -138,11 +138,11 @@
                 <tr th:each="report: ${reportList}">
                     <td><span th:text="${report.income}">income</span></td>
                     <td><span th:text="${report.taxRate}">taxRate</span></td>
-                    <td><span th:text="${report.taxPeriod}">taxPeriod</span></td>
+                    <td><span th:text="${report.taxPeriod.getPeriod()}">taxPeriod</span></td>
                     <td><span th:text="${report.year}">year</span></td>
                     <td><span th:text="${report.reportDate}">reportDate</span></td>
                     <td><span th:text="${report.comment}">comment</span></td>
-                    <td><span th:text="${report.status}">status</span></td>
+                    <td><span th:text="${report.status.getStatusName()}">status</span></td>
                     <td>
                         <div>
                             <a style="text-decoration: none" th:href="@{report-view/{id}(id=${report.id})}">

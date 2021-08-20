@@ -8,7 +8,7 @@
     <style>
         .report {
             width: 290px;
-            height: 330px;
+            height: 500px;
             background: lightskyblue;
             padding: 10px;
             padding-right: 10px;
@@ -43,11 +43,11 @@
         <input type="hidden" id="status" th:field="*{status}"/>
         <input type="hidden" id="comment" th:field="*{comment}"/>
 
-        <label>Income:
+        <label>Income, $:
             <input type="text" placeholder="Income" th:field="*{income}" required/>
         </label>
 
-        <label>Tax rate:
+        <label>Tax rate, %:
             <input type="text" th:field="*{taxRate}" required/>
         </label>
 
@@ -67,12 +67,18 @@
         <div style="text-align: center">
             <input class="center-block" type="submit" value="Apply">
         </div>
-
+        <div>
+            <fieldset>
+                <legend>Comment:</legend>
+                <span th:text="${report.comment}">..</span>
+            </fieldset>
+        </div>
         <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
             <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
         </div>
 
     </form>
 </div>
+
 </body>
 </html>

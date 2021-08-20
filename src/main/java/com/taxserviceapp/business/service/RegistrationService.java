@@ -36,6 +36,8 @@ public class RegistrationService {
                 .ipn(userDto.getIpn())
                 .userRole(UserRole.USER)
                 .dateOfRegistration(LocalDateTime.now())
+                .address(userDto.getAddress())
+                .personality(userDto.getPersonality())
                 .enabled(true)
                 .build();
 

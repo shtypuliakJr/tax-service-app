@@ -1,5 +1,7 @@
 package com.taxserviceapp.web.dto;
 
+import com.taxserviceapp.data.entity.Form;
+import com.taxserviceapp.data.entity.Personality;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import lombok.*;
@@ -32,7 +34,7 @@ public class ReportDTO {
     private TaxPeriod taxPeriod;
 
     @NotNull(message = "Require year")
-    @Min(value = 2010)
+    @Min(value = 2010, message = "Set year after 2010")
     @Max(value = 2021, message = "Year is not valid")
     private Integer year;
 
@@ -44,19 +46,8 @@ public class ReportDTO {
 
     private String comment;
 
+//    @NotNull(message = "Require form type")
+//    private Form form;
 
-    @Override
-    public String toString() {
-        return "ReportDTO{" +
-                "id=" + id +
-                ", income=" + income +
-                ", taxRate=" + taxRate +
-                ", taxPeriod=" + taxPeriod +
-                ", year=" + year +
-                ", userId=" + userId +
-                ", reportDate=" + reportDate +
-                ", status=" + status +
-                ", comment='" + comment + '\'' +
-                '}';
-    }
+
 }

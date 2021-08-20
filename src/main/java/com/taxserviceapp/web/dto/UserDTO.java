@@ -1,5 +1,6 @@
 package com.taxserviceapp.web.dto;
 
+import com.taxserviceapp.data.entity.Personality;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,5 +38,11 @@ public class UserDTO {
     @NotNull
     @Digits(integer = 12, fraction = 0, message = "Invalid ipn")
     private String ipn;
+
+    @NotNull(message = "Require personality type")
+    private Personality personality;
+
+    @NotNull(message = "Require address")
+    private String address;
 
 }

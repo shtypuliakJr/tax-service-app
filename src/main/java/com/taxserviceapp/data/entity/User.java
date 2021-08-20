@@ -58,6 +58,13 @@ public class User implements UserDetails, Serializable {
     @Column(name = "active", nullable = false)
     private boolean enabled;
 
+    @Column(name = "personality", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Personality personality;
+
+    @Column(name = "address", nullable = false)
+    private String address;
+
     @OneToMany(mappedBy = "user",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
@@ -65,16 +72,18 @@ public class User implements UserDetails, Serializable {
     private List<Report> reports;
 
     @Builder
-    public User(String firstName, String lastName, String email, String password, int age, String ipn, UserRole userRole, LocalDateTime dateOfRegistration, boolean enabled) {
+    public User(String firstName, String lastName, String email, String password, Integer age, String ipn, LocalDateTime dateOfRegistration, UserRole userRole, boolean enabled, Personality personality, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.age = age;
         this.ipn = ipn;
-        this.userRole = userRole;
         this.dateOfRegistration = dateOfRegistration;
+        this.userRole = userRole;
         this.enabled = enabled;
+        this.personality = personality;
+        this.address = address;
     }
 
     @Override
@@ -88,6 +97,22 @@ public class User implements UserDetails, Serializable {
         SimpleGrantedAuthority authority =
                 new SimpleGrantedAuthority(userRole.getAuthority());
         return Collections.singletonList(authority);
+    }
+
+    public Personality getPersonality() {
+        return personality;
+    }
+
+    public void setPersonality(Personality personality) {
+        this.personality = personality;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override

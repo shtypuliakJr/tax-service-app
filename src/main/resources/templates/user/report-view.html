@@ -21,13 +21,6 @@
             transform: translate(-50%, -50%);
         }
 
-        .main-functional {
-            width: 100%;
-            height: 10%;
-            display: inline;
-            float: top;
-        }
-
         table {
             width: 100%;
             height: 70%;
@@ -41,15 +34,12 @@
             text-align: center;
         }
 
-        input {
-            width: 100px;
-            height: 40px;
-            text-align: center;
-            color: black;
-        }
+
         .main-input {
+            width: 200px;
             border: white solid 1px;
             color: white;
+            position: relative;
             padding: 10px 20px;
             text-align: center;
             font-size: 16px;
@@ -65,7 +55,9 @@
 
 <div>
     <div align="right">
-        <span sec:authentication="name">Email</span>
+        <a th:href="@{/user/user-info}">
+            <span sec:authentication="name">Username</span>
+        </a>
     </div>
     <div align="left">
         <a th:href="@{/user/user}">
@@ -74,19 +66,15 @@
     </div>
 </div>
 <div class="main-background">
-    <div class="main-functional">
+    <div class="display: inline-block">
 
-        <div>
-            <a th:href="@{report-edit/{id}(id=${report.id})}">
-                <input type="submit" value="Edit" class="btn btn-danger"/>
-            </a>
-        </div>
+        <a th:href="@{report-edit/{id}(id=${report.id})}">
+            <input type="submit" value="Edit" class="main-input"/>
+        </a>
 
-        <div>
-            <form th:action="@{report-delete/{id}(id=${report.id})}" th:method="post">
-                <input type="submit" value="Delete" class="btn btn-danger"/>
-            </form>
-        </div>
+        <form th:action="@{report-delete/{id}(id=${report.id})}" th:method="post">
+            <input type="submit" value="Delete" class="main-input"/>
+        </form>
 
     </div>
     <table>
@@ -113,7 +101,7 @@
         </tr>
         <tr>
             <td><p>Status</p></td>
-            <td><span th:text="${report.status}">Status</span></td>
+            <td><span th:text="${report.status.getStatusName()}">Status</span></td>
         </tr>
         <tr>
             <td><p>Comment</p></td>
