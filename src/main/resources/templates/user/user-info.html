@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>User info</title>
+    <style>
+        .user-main {
+            width: 400px;
+            height: 250px;
+            background: lightskyblue;
+            padding: 10px;
+            padding-right: 10px;
+            border: #ffffff;
+            float: outside;
+            border-radius: 25px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .main-input {
+            border: white solid 1px;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            background-color: #008CBA;
+        }
+    </style>
+
+</head>
+<body>
+<div align="left">
+    <a th:href="@{/user/user}">
+        <input type="submit" class="main-input" value="Return to main page"/>
+    </a>
+</div>
+<div class="user-main">
+    <div th:object="${user}" class="box">
+        <p>
+            <b>Full name: </b>
+            <span th:utext="${user.firstName}"></span>
+            <span> </span>
+            <span th:utext="${user.lastName}"></span>
+        </p>
+        <p>
+            <b>Email: </b>
+            <span th:utext="${user.email}"></span>
+        </p>
+        <p>
+            <b>Age: </b>
+            <span th:utext="${user.age}"></span>
+        </p>
+        <p>
+            <b>Registration date: </b>
+            <span th:utext="${user.dateOfRegistration}"></span>
+        </p>
+        <p>
+            <b>IPN: </b>
+            <span th:text="${user.ipn}"></span>
+        </p>
+
+        <div class="div-button-apply">
+            <a th:href="@{/logout}">
+                <input type="submit" class="main-input" value="Logout"/>
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

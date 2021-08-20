@@ -5,11 +5,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Reports</title>
     <style>
 
         .main-background {
-            width: 800px;
+            width: 900px;
             height: 750px;
             background: lightskyblue;
             padding: 10px 20px 10px 10px;
@@ -25,14 +25,12 @@
         .main-input {
             border: white solid 1px;
             color: white;
-            padding: 15px 32px;
+            padding: 10px 20px;
             text-align: center;
-            /*display: inline-block;*/
             font-size: 16px;
             margin: 4px 2px;
             cursor: pointer;
             background-color: #008CBA;
-
         }
 
         table {
@@ -48,23 +46,22 @@
         }
 
         .div-button-apply {
-            /*border: 2px solid black;*/
             float: left;
         }
 
-        .div-button-sortField {
-            float: right;
-        }
     </style>
 </head>
 
 <body>
 <div align="right">
-    <span sec:authentication="name">Username</span>
 
-    <form method="POST" th:action="@{/logout}">
+    <a th:href="@{/user/user-info}">
+        <span sec:authentication="name">Username</span>
+    </a>
+    <form th:action="@{/logout}" th:method="post">
         <input class="main-input" type="submit" value="Logout"/>
     </form>
+
 </div>
 <div>
     <div class="main-background">
@@ -77,39 +74,43 @@
                 </a>
             </div>
 
-            <div>
-                <form action="#" th:action="@{/user/report-sortField}" method="post">
-                </form>
-            </div>
-
-            <div>
+            <div align="right">
                 <form action="#" th:action="@{/user/user}" th:method="get">
-                    <input type="date" id="date" name="date"/>
+
+                    <label for="date">
+                        Select date:
+                        <input type="date" id="date" name="date"/>
+                    </label>
 
                     <select id="period" name="period">
-                        <option></option>
+                        <option value="">Select period</option>
                         <option th:each="period : ${T(com.taxserviceapp.data.entity.TaxPeriod).values()}"
                                 th:text="${period.getPeriod()}"
                                 th:value="${period.name()}">
-                            ..</option>
+                            ..
+                        </option>
                     </select>
 
                     <select id="status" name="status">
-                        <option></option>
+                        <option value="">Select status</option>
                         <option th:each="status : ${T(com.taxserviceapp.data.entity.Status).values()}"
                                 th:text="${status.getStatusName()}"
                                 th:value="${status.name()}">
-                            ..</option>
+                            ..
+                        </option>
                     </select>
 
                     <select id="sortField" name="sortField">
-                        <option></option>
+                        <option value="">Select sorting field</option>
                         <option th:each="sortField : ${T(com.taxserviceapp.web.dto.SortField).values()}"
                                 th:text="${sortField.getSortName()}"
                                 th:value="${sortField.name()}">
-                            ..</option>
+                            ..
+                        </option>
                     </select>
-                    <input type="submit"/>
+
+                    <input class="main-input" type="submit" value="Submit"/>
+
                 </form>
             </div>
         </div>

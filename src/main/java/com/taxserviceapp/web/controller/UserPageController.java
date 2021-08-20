@@ -42,6 +42,16 @@ public class UserPageController {
         return "user/user";
     }
 
+    @GetMapping("/user-info")
+    public String getUserInfoPage(Authentication authentication, Model model) {
+
+        User user = ((User) authentication.getPrincipal());
+
+        model.addAttribute("user", user);
+
+        return "user/user-info";
+    }
+
     @PostMapping("/report-sort")
     public String getUserPageSorted(Authentication authentication, Model model) {
 

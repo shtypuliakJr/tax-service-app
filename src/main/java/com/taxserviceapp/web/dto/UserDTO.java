@@ -37,4 +37,5 @@ public class UserDTO {
     @NotNull
     @Digits(integer = 12, fraction = 0, message = "Invalid ipn")
     private String ipn;
+
 }
