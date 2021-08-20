@@ -113,9 +113,9 @@
         <br/>
         <a th:href="@{/login}">Already have an account?</a>
 
-        <!--        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">-->
-        <!--            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>-->
-        <!--        </div>-->
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+        </div>
 
     </form>
 </div>

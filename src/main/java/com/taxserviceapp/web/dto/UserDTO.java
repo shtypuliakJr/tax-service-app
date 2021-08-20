@@ -1,16 +1,14 @@
 package com.taxserviceapp.web.dto;
 
 import com.taxserviceapp.data.entity.Personality;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.*;
 
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
 
     @NotNull
@@ -32,11 +30,11 @@ public class UserDTO {
     private String email;
 
     @NotNull
-    @Min(value = 12, message = "Age should be valid")
-    private int age;
+    @Min(value = 18, message = "Age should be valid")
+    private Integer age;
 
     @NotNull
-    @Digits(integer = 12, fraction = 0, message = "Invalid ipn")
+    @Pattern(regexp = "^[0-9]{12}", message = "Invalid IPN")
     private String ipn;
 
     @NotNull(message = "Require personality type")

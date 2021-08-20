@@ -2,7 +2,6 @@ package com.taxserviceapp.web.controller;
 
 import com.taxserviceapp.business.service.ReportService;
 import com.taxserviceapp.data.entity.Report;
-import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.User;
 import com.taxserviceapp.utility.PojoConverter;
 import com.taxserviceapp.web.dto.ReportDTO;
@@ -12,13 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.sql.Date;
-import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/user")
@@ -29,11 +24,16 @@ public class ReportController {
 
     @GetMapping(value = "/report-form")
     public String addReport(Model model, Authentication authentication) {
-        model.addAttribute("report", new Report());
+
+        ReportDTO reportDTO = new ReportDTO();
+        Long userId = ((User)(authentication.getPrincipal())).getId();
+        reportDTO.setUserId(userId);
+
+        model.addAttribute("report", reportDTO);
         return "user/report-form";
     }
 
-    @PostMapping(value = "/add-report")
+    @PostMapping(value = "/report-add")
     public String recieveReport(@Valid @ModelAttribute("report") ReportDTO reportDTO,
                                 BindingResult result,
                                 Model model) {
@@ -41,8 +41,10 @@ public class ReportController {
             model.addAttribute("report", reportDTO);
             return "user/report-form";
         }
+
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         reportService.saveNewReport(PojoConverter.convertReportDTOToEntity(reportDTO, user));
+
         return "redirect:/user/user";
     }
 
@@ -50,7 +52,6 @@ public class ReportController {
     public String getEditFormFromUserPage(@PathVariable(value = "id") Long id, Model model) {
 
         ReportDTO reportDTO = PojoConverter.convertReportEntityToDTO(reportService.findReportById(id));
-//        reportDTO.setId(id);
         model.addAttribute("report", reportDTO);
 
         return "/user/report-edit";
@@ -89,3 +90,5 @@ public class ReportController {
         return "user/report-view";
     }
 }
+// ToDo: add checking user's reports
+// ToDo: exceptions

@@ -48,7 +48,7 @@
         <label>Report form</label>
     </div>
 
-    <form action="#" th:object="${report}" th:action="@{/user/add-report}" method="post">
+    <form action="#" th:object="${report}" th:action="@{/user/report-add}" method="post">
 
         <label>Income:
             <input type="text" placeholder="Income" th:field="*{income}" required/>
