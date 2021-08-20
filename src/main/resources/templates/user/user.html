@@ -78,12 +78,12 @@
             </div>
 
             <div>
-                <form action="#" th:action="@{/user/report-sort}" method="POST">
+                <form action="#" th:action="@{/user/report-sort}" method="post">
                 </form>
             </div>
 
             <div>
-                <form action="#" th:action="@{/user/report-find}" th:method="post"> <!--  th:object="${filter}">-->
+                <form action="#" th:action="@{/user/user}" th:method="get"> <!--  th:object="${filter}">-->
                     <input type="date" id="date" name="date"/>
 
                     <select id="period" name="period">

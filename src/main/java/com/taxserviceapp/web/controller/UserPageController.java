@@ -7,21 +7,17 @@ import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.data.entity.User;
 import com.taxserviceapp.web.dto.ReportFilterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.security.Principal;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -31,12 +27,17 @@ public class UserPageController {
     UserPageService userPageService;
 
     @GetMapping("/user")
-    public String getUserPage(Authentication authentication, Model model) {
-        Long id = ((User) authentication.getPrincipal()).getId();
+    public String getUserPage(@RequestParam(name = "date", required = false)
+                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                              @RequestParam(name = "period", required = false) TaxPeriod period,
+                              @RequestParam(name = "status", required = false) Status status,
+                              Authentication authentication, Model model) {
 
-        List<Report> reportsByUserId = userPageService.getReportsByUserId(id);
+        Long id = ((User) authentication.getPrincipal()).getId();
+        List<Report> reportsByUserId = userPageService.getReportsByRequestParam(id, date, period, status);
+
         model.addAttribute("reportList", reportsByUserId);
-        model.addAttribute("filter", new ReportFilterDTO());
+
         return "user/user";
     }
 
@@ -50,22 +51,22 @@ public class UserPageController {
         return "user/user";
     }
 
-    @PostMapping("/report-find")
-    public String getReportBy(@RequestParam(name = "date", required = false)
-                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-                              @RequestParam(name = "period", required = false) TaxPeriod period,
-                              @RequestParam(name = "status", required = false) Status status,
-                              Authentication authentication, Model model) {
+//    @PostMapping("/user/report-find")
+//    public String getReportBy(@RequestParam(name = "date", required = false)
+//                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+//                              @RequestParam(name = "period", required = false) TaxPeriod period,
+//                              @RequestParam(name = "status", required = false) Status status,
+//                              Authentication authentication, Model model) {
+////
+////        System.out.println("Date " + date);
+////        System.out.println("Status " + status);
+////        System.out.println("Period " + period);
+////
+//        Long id = ((User) authentication.getPrincipal()).getId();
+//        List<Report> reportsByUserId = userPageService.getReportsByRequestParam(id, date, period, status);
 //
-//        System.out.println("Date " + date);
-//        System.out.println("Status " + status);
-//        System.out.println("Period " + period);
+//        model.addAttribute("reportList", reportsByUserId);
 //
-        Long id = ((User) authentication.getPrincipal()).getId();
-        List<Report> reportsByUserId = userPageService.getReportsByRequestParam(id, date, period, status);
-
-        model.addAttribute("reportList", reportsByUserId);
-
-        return "redirect:user/user";
-    }
+//        return "user/user";
+//    }
 }
