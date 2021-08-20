@@ -43,14 +43,17 @@ public class UserPageService {
         Optional<List<Report>> reports;
 
         if (sortField != null)
-            if (sortField.direction.equals("asc"))
-                reports = Optional.of(reportRepository.findAll(specification, Sort.by(sortField.getFieldInTable()).ascending()));
-            else
-                reports = Optional.of(reportRepository.findAll(specification, Sort.by(sortField.getFieldInTable()).descending()));
+            reports = Optional.of(reportRepository
+                    .findAll(specification, Sort.by(getDirection(sortField.direction), sortField.getFieldInTable())));
         else
-            reports = Optional.of(reportRepository.findAll(specification));
+            reports = Optional.of(reportRepository
+                    .findAll(specification));
 
         return reports.orElseThrow(() -> new ReportNotFoundException("No result"));
+    }
+
+    Sort.Direction getDirection(String direction) {
+        return direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
     }
 
     static Specification<Report> hasId(Long id) {
@@ -84,7 +87,5 @@ public class UserPageService {
             }
             return criteriaBuilder.equal(reportRoot.get("status"), status);
         };
-
     }
-
 }
