@@ -22,7 +22,7 @@ public class PojoConverter {
                 .age(userDTO.getAge())
                 .ipn(userDTO.getIpn())
                 .userRole(UserRole.USER)
-                .dateOfRegistration(LocalDateTime.now())
+                .dateOfRegistration(Date.valueOf(LocalDate.now()))
                 .address(userDTO.getAddress())
                 .personality(userDTO.getPersonality())
                 .enabled(true)

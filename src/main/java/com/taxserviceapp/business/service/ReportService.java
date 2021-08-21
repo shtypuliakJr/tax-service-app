@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -59,60 +59,37 @@ public class ReportService {
                 .orElseThrow(() -> new NoResultException("No result"));
     }
 
-    public List<Report> getReportsByRequestParam(Long id, LocalDate date, TaxPeriod period,
+    public List<Report> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,
                                                  Status status, SortField sortField) throws NoResultException {
+
         Specification<Report> specification = Specification
-                .where(hasId(id)
-                        .and(hasStatus(status))
-                        .and(hasDate(date))
-                        .and(hasPeriod(period)));
+                .where(filterField(id, "user")
+                        .and(filterField(status, "status"))
+                        .and(filterField(reportDate, "reportDate"))
+                        .and(filterField(period, "taxPeriod")));
 
         Optional<List<Report>> reports;
 
-        if (sortField != null)
-            reports = Optional.of(reportRepository
-                    .findAll(specification, Sort.by(getDirection(sortField.direction), sortField.getFieldInTable())));
-        else
-            reports = Optional.of(reportRepository
-                    .findAll(specification));
+        if (sortField != null) {
+            reports = Optional.of(reportRepository.findAll(specification,
+                    Sort.by(getDirection(sortField.direction), sortField.getFieldInTable())));
+        } else {
+            reports = Optional.of(reportRepository.findAll(specification));
+        }
 
         return reports.orElseThrow(() -> new ReportNotFoundException("No result"));
     }
 
     Sort.Direction getDirection(String direction) {
-        return direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+            return direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
     }
 
-    static Specification<Report> hasId(Long id) {
-
-        return (reportRoot, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(reportRoot.get("user"), id);
-    }
-
-    static Specification<Report> hasDate(LocalDate date) {
-
+    private <T> Specification<Report> filterField(T param, String fieldName) {
         return (reportRoot, criteriaQuery, criteriaBuilder) -> {
-            if (date == null) {
+            if (param == null) {
                 return criteriaBuilder.conjunction();
             }
-            return criteriaBuilder.equal(reportRoot.get("reportDate"), Date.valueOf(date));
-        };
-    }
-
-    static Specification<Report> hasPeriod(TaxPeriod taxPeriod) {
-        return (reportRoot, criteriaQuery, criteriaBuilder) -> {
-            if (taxPeriod == null) {
-                return criteriaBuilder.conjunction();
-            }
-            return criteriaBuilder.equal(reportRoot.get("taxPeriod"), taxPeriod);
-        };
-    }
-
-    static Specification<Report> hasStatus(Status status) {
-        return (reportRoot, criteriaQuery, criteriaBuilder) -> {
-            if (status == null) {
-                return criteriaBuilder.conjunction();
-            }
-            return criteriaBuilder.equal(reportRoot.get("status"), status);
+            return criteriaBuilder.equal(reportRoot.get(fieldName), param);
         };
     }
 }

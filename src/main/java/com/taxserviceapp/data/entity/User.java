@@ -1,9 +1,6 @@
 package com.taxserviceapp.data.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -21,8 +19,10 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@NoArgsConstructor
 @Table(name = "user")
+@Getter
+@Setter
+@NoArgsConstructor
 @EqualsAndHashCode
 public class User implements UserDetails, Serializable {
 
@@ -51,7 +51,7 @@ public class User implements UserDetails, Serializable {
 
     @Column(name = "date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
-    private LocalDateTime dateOfRegistration;
+    private Date dateOfRegistration;
 
     @Column(name = "user_role", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -74,7 +74,7 @@ public class User implements UserDetails, Serializable {
     private List<Report> reports;
 
     @Builder
-    public User(String firstName, String lastName, String email, String password, Integer age, String ipn, LocalDateTime dateOfRegistration, UserRole userRole, boolean enabled, Personality personality, String address) {
+    public User(String firstName, String lastName, String email, String password, Integer age, String ipn, Date dateOfRegistration, UserRole userRole, boolean enabled, Personality personality, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -94,27 +94,21 @@ public class User implements UserDetails, Serializable {
     }
 
     @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         SimpleGrantedAuthority authority =
                 new SimpleGrantedAuthority(userRole.getAuthority());
         return Collections.singletonList(authority);
-    }
-
-    public Personality getPersonality() {
-        return personality;
-    }
-
-    public void setPersonality(Personality personality) {
-        this.personality = personality;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     @Override
@@ -132,93 +126,4 @@ public class User implements UserDetails, Serializable {
         return enabled;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public String getIpn() {
-        return ipn;
-    }
-
-    public void setIpn(String ipn) {
-        this.ipn = ipn;
-    }
-
-    public LocalDateTime getDateOfRegistration() {
-        return dateOfRegistration;
-    }
-
-    public void setDateOfRegistration(LocalDateTime dateOfRegistration) {
-        this.dateOfRegistration = dateOfRegistration;
-    }
-
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public List<Report> getReports() {
-        return reports;
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
 }
