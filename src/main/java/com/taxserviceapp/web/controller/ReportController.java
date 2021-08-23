@@ -26,7 +26,7 @@ public class ReportController {
     public String addReport(Model model, Authentication authentication) {
 
         ReportDTO reportDTO = new ReportDTO();
-        Long userId = ((User)(authentication.getPrincipal())).getId();
+        Long userId = ((User) (authentication.getPrincipal())).getId();
         reportDTO.setUserId(userId);
 
         model.addAttribute("report", reportDTO);
@@ -66,8 +66,8 @@ public class ReportController {
             model.addAttribute("report", reportDTO);
             return "user/report-edit";
         }
-        reportService.updateReport(PojoConverter
-                .convertReportDTOToEntity(reportDTO, (User) authentication.getPrincipal()));
+        reportService.updateReport(PojoConverter.convertReportDTOToEntity(reportDTO,
+                (User) authentication.getPrincipal()));
 
         return "redirect:/user/user";
     }
@@ -90,5 +90,6 @@ public class ReportController {
         return "user/report-view";
     }
 }
-// ToDo: add checking user's reports
+// ToDo: Add getting hidden variable (id)
 // ToDo: exceptions
+// ToDo:

@@ -53,10 +53,8 @@ public class ReportService {
         }
     }
 
-    public List<Report> getReportsByUserId(Long userId) throws NoResultException {
-        return reportRepository
-                .findReportsByUser_Id(userId)
-                .orElseThrow(() -> new NoResultException("No result"));
+    public List<Report> getAllReports() {
+        return reportRepository.findAll();
     }
 
     public List<Report> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,
@@ -80,6 +78,8 @@ public class ReportService {
         return reports.orElseThrow(() -> new ReportNotFoundException("No result"));
     }
 
+
+
     Sort.Direction getDirection(String direction) {
             return direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
     }
@@ -93,3 +93,5 @@ public class ReportService {
         };
     }
 }
+
+// ToDo: add paging

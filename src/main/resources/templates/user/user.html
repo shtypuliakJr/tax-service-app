@@ -133,7 +133,7 @@
                 </thead>
                 <tbody>
                 <tr th:if="${reportList.isEmpty()}">
-                    <td colspan="6">No result</td>
+                    <td colspan="8">No result</td>
                 </tr>
                 <tr th:each="report: ${reportList}">
                     <td><span th:text="${report.income}">income</span></td>
@@ -151,7 +151,7 @@
                             <a style="text-decoration: none" th:href="@{report-edit/{id}(id=${report.id})}">
                                 <input type="button" value="Edit"/>
                             </a>
-                            <a style="text-decoration: none" th:href="@{report-delete/{id}(id=${report.id})}">
+                            <a style="text-decoration: none" th:href="@{report-delet/{id}(id=${report.id})}">
                                 <input type="button" value="Delete"/>
                             </a>
                         </div>

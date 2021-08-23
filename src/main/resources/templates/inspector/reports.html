@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reports</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+</head>
+
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <div>
+        <form style="display: inline;" action="#" th:action="@{/inspector/statisic}" th:method="GET">
+            <button type="submit" class="btn btn-primary">Statistic</button>
+        </form>
+    </div>
+
+    <div class="navbar-nav ml-auto">
+
+        <form style="display: inline;" action="#" th:action="@{/inspector/inspector-info}" th:method="POST">
+            <input class="btn btn-success" type="submit" th:value="${#authentication.name}"/>
+        </form>
+        <form style="display: inline;" action="#" th:action="@{/logout}" th:method="POST">
+            <input class="btn btn-danger" type="submit" value="Logout"/>
+        </form>
+
+    </div>
+
+</nav>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Report id</th>
+            <th scope="col">User</th>
+            <th scope="col">IPN</th>
+            <th scope="col">Report date</th>
+            <th scope="col">Period</th>
+            <th scope="col">Comment</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:if="${reports.isEmpty()}">
+            <td colspan="7">No result</td>
+        </tr>
+        <tr th:each="report: ${reports}">
+<!--            <th scope="row"></th>-->
+            <td><span th:text="${report.id}">Report id</span></td>
+            <td><a th:href="@{/inspector/user-info}"
+                   th:text="${report.getUser().firstName} + ' ' + ${report.getUser().lastName}">Name Surname</a></td>
+            <td><span th:text="${report.getUser().ipn}">IPN</span></td>
+            <td><span th:text="${report.reportDate}">Report Date</span></td>
+            <td><span th:text="${report.taxPeriod.getPeriod()}">Report Period</span></td>
+<!--            ToDo: add yes or no for comment exists-->
+            <td><span th:text="${report.comment}">Comment</span></td>
+            <td><span th:text="${report.status.getStatusName()}">status</span></td>
+            <td>
+                <div>
+                    <a style="text-decoration: none" th:href="@{report-view/{id}(id=${report.id})}">
+                        <input type="button" value="View"/>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

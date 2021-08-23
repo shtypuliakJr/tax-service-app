@@ -30,7 +30,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         String successfulURL = null;
 
         if (authentication.getAuthorities().contains(inspectorAuthority)) {
-            successfulURL = "/inspector/inspector";;
+            successfulURL = "/inspector";
         } else if (authentication.getAuthorities().contains(userAuthotity)) {
             successfulURL = "/user/user";
         }

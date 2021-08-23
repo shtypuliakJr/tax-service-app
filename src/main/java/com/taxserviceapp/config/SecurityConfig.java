@@ -71,3 +71,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
+
+// ToDo: add password encoder

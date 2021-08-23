@@ -1,6 +1,7 @@
 package com.taxserviceapp.web.controller;
 
 import com.taxserviceapp.business.service.InspectorService;
+import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -22,18 +25,18 @@ public class InspectorController {
         this.inspectorService = inspectorService;
     }
 
-    @GetMapping("/inspector")
-    public String getInspectorPage(Model model, Authentication authentication) {
-
-        List<User> userList = inspectorService.getAllUsers();
-        model.addAttribute("users", userList);
-
-        return "inspector/inspector";
+    @GetMapping
+    public String getInspectorMainPage(Model model) {
+        List<Report> reports = inspectorService.getReports();
+        model.addAttribute("reports", reports);
+        return "inspector/reports";
     }
 
-    @GetMapping("/user-list")
-    public String getInspectorPageUserList() {
+    @GetMapping("/reports")
+    public String getReportsPage(Model model, Authentication authentication) {
 
-        return "redirect:/inspector/user-list";
+        List<Report> reports = inspectorService.getReports();
+        model.addAttribute("reports", reports);
+        return "inspector/reports";
     }
 }
