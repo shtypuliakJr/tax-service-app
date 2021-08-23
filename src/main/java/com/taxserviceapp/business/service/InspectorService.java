@@ -6,15 +6,15 @@ import com.taxserviceapp.data.entity.*;
 import com.taxserviceapp.exceptions.NoUserFoundException;
 import com.taxserviceapp.exceptions.ReportNotFoundException;
 import com.taxserviceapp.web.dto.SortField;
+import com.taxserviceapp.web.dto.StatisticDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class InspectorService {
@@ -72,4 +72,37 @@ public class InspectorService {
             return criteriaBuilder.equal(reportRoot.get(fieldName), param);
         };
     }
+
+    public Report getReportById(Long reportId) {
+        return reportRepository.getById(reportId);
+    }
+
+    public StatisticDTO getStatisticData() {
+
+        List<Report> reports = reportRepository.findAll();
+
+        Long countOfUsers = Long.valueOf(userRepository.countAllByUserRole(UserRole.USER));
+        Long countOrReports = reportRepository.count();
+        Long countOfInspectors = Long.valueOf(userRepository.countAllByUserRole(UserRole.INSPECTOR));
+
+        Integer reportsProcessing = reportRepository.countAllByStatus(Status.PROCESSING);
+        Integer reportsDisapproved = reportRepository.countAllByStatus(Status.DISAPPROVED);
+        Integer reportsApproved = reportRepository.countAllByStatus(Status.APPROVED);
+
+        return StatisticDTO.builder()
+                .countOfReports(countOrReports)
+                .countOfUsers(countOfUsers)
+                .countOfInspectors(countOfInspectors)
+                .processingReports(reportsProcessing)
+                .approvedReports(reportsApproved)
+                .disapprovedReports(reportsDisapproved)
+                .countReportsPerYear(getCountByYear(reports))
+                .build();
+    }
+    private Map<Integer, Integer> getCountByYear(List<Report> mealList) {
+        return mealList.stream()
+                .collect(Collectors.groupingBy(Report::getYear,
+                        Collectors.reducing(0, report -> 1, Integer::sum)));
+    }
+
 }

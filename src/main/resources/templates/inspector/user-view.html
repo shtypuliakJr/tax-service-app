@@ -61,27 +61,27 @@
             <td><span th:utext="${userInfo.firstName} + ' '+ ${userInfo.lastName}"></span></td>
         </tr>
         <tr>
-            <td><<b>Email: </b></td>
+            <td><b>Email: </b></td>
             <td><span th:utext="${userInfo.email}"></span></td>
         </tr>
         <tr>
-            <td><<b>Age: </b></td>
+            <td><b>Age: </b></td>
             <td><span th:utext="${userInfo.age}"></span></td>
         </tr>
         <tr>
-            <td><<b>Registration date: </b></td>
+            <td><b>Registration date: </b></td>
             <td><span th:utext="${userInfo.dateOfRegistration}"></span></td>
         </tr>
         <tr>
-            <td><<b>IPN: </b></td>
+            <td><b>IPN: </b></td>
             <td><span th:utext="${userInfo.ipn}"></span></td>
         </tr>
         <tr>
-            <td><<b>Personality: </b></td>
-            <td><span th:utext="${userInfo.personality}"></span></td>
+            <td><b>Personality: </b></td>
+            <td><span th:utext="${userInfo.personality.getPersonalityName()}"></span></td>
         </tr>
         <tr>
-            <td><<b>Address: </b></td>
+            <td><b>Address: </b></td>
             <td><span th:utext="${userInfo.address}"></span></td>
         </tr>
         </tbody>

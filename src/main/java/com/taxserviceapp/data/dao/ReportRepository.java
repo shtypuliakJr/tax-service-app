@@ -1,15 +1,11 @@
 package com.taxserviceapp.data.dao;
 
 import com.taxserviceapp.data.entity.Report;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
+import com.taxserviceapp.data.entity.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,4 +19,8 @@ public interface ReportRepository extends JpaRepository<Report, Long>, JpaSpecif
     Optional<List<Report>> findReportsByUser_IdOrderByReportDate(Long userId);
 
     Optional<List<Report>> findAllByIncome(Integer income);
+
+    Integer countAllByStatus(Status status);
+
 }
+

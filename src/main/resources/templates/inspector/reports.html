@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 
 <head>
@@ -60,7 +62,8 @@
                     <option selected value="">Select period</option>
                     <option th:each="period : ${T(com.taxserviceapp.data.entity.TaxPeriod).values()}"
                             th:text="${period.getPeriod()}"
-                            th:value="${period.name()}">
+                            th:value="${period.name()}"
+                            th:selected="${period} == ${lastSelectedPeriod}">
                         ..
                     </option>
                 </select>
@@ -69,7 +72,8 @@
                     <option selected value="">Select period</option>
                     <option th:each="status : ${T(com.taxserviceapp.data.entity.Status).values()}"
                             th:text="${status.getStatusName()}"
-                            th:value="${status.name()}">
+                            th:value="${status.name()}"
+                            th:selected="${status} == ${lastSelectedStatus}">
                         ..
                     </option>
                 </select>
@@ -78,7 +82,8 @@
                     <option value="">Select sorting field</option>
                     <option th:each="sortField : ${T(com.taxserviceapp.web.dto.SortField).values()}"
                             th:text="${sortField.getSortName()}"
-                            th:value="${sortField.name()}">
+                            th:value="${sortField.name()}"
+                            th:selected="${sortField} == ${lastSelectedSort}">
                         ..
                     </option>
                 </select>
@@ -121,9 +126,11 @@
             <td><span th:text="${report.status.getStatusName()}">status</span></td>
             <td>
                 <div>
-                    <a style="text-decoration: none" th:href="@{report-view/{id}(id=${report.id})}">
-                        <input type="button" value="View"/>
-                    </a>
+
+                    <form action="#" th:action="@{/inspector/report-view}" method="POST">
+                        <input type="hidden" id="report" name="report" th:value="${report.id}">
+                        <input type="submit" value="View"/>
+                    </form>
                 </div>
             </td>
         </tr>

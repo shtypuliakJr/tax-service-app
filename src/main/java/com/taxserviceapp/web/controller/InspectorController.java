@@ -7,18 +7,25 @@ import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.data.entity.User;
 import com.taxserviceapp.web.dto.SortField;
+import com.taxserviceapp.web.dto.StatisticDTO;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.jws.WebParam;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -53,15 +60,39 @@ public class InspectorController {
 
         List<Report> reports = inspectorService.getReportsByRequestParam(id, date, period, status, sortField);
         model.addAttribute("reports", reports);
+
+        model.addAttribute("lastSelectedPeriod", period);
+        model.addAttribute("lastSelectedStatus", status);
+        model.addAttribute("lastSelectedSort", sortField);
+
         return "inspector/reports";
     }
 
     @GetMapping("/user-view")
-    public String getUserInfo(@RequestParam(name = "userId", required = true) Long userId, Model model) {
+    public String getUserInfo(@RequestParam(name = "userId") Long userId, Model model) {
 
         model.addAttribute("userInfo", userService.getUserInfoById(userId));
 
         return "inspector/user-view";
+    }
+
+    @PostMapping("/report-view")
+    public String getReport(@RequestParam(name = "report") Long reportId, Model model) {
+
+        Report report = inspectorService.getReportById(reportId);
+        model.addAttribute("report", report);
+
+        return "inspector/report-view";
+    }
+
+    @GetMapping("/statistic")
+    public String getStatistic(Model model) {
+
+        StatisticDTO statisticDTO = inspectorService.getStatisticData();
+
+        model.addAttribute("statistic", statisticDTO);
+
+        return "inspector/statistic";
     }
 
 }
