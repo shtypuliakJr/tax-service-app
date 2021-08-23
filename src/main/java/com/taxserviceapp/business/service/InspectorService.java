@@ -38,11 +38,12 @@ public class InspectorService {
         return reportRepository.findAll();
     }
 
-    public List<Report> getReportsByRequestParam(Date reportDate, TaxPeriod period,
+    public List<Report> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,
                                                  Status status, SortField sortField) throws NoResultException {
 
         Specification<Report> specification = Specification
-                .where((filterField(status, "status"))
+                .where(filterField(id, "user")
+                        .and(filterField(status, "status"))
                         .and(filterField(reportDate, "reportDate"))
                         .and(filterField(period, "taxPeriod")));
 
@@ -54,7 +55,7 @@ public class InspectorService {
         } else {
             reports = Optional.of(reportRepository.findAll(specification));
         }
-
+        System.out.println(reports);
         return reports.orElseThrow(() -> new ReportNotFoundException("No result"));
     }
 

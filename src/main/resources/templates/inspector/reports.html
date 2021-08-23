@@ -22,13 +22,19 @@
     </div>
 
     <div class="navbar-nav ml-auto">
+        <div class="form-group row">
 
-        <form style="display: inline;" action="#" th:action="@{/inspector/inspector-info}" th:method="POST">
-            <input class="btn btn-success" type="submit" th:value="${#authentication.name}"/>
-        </form>
-        <form style="display: inline;" action="#" th:action="@{/logout}" th:method="POST">
-            <input class="btn btn-danger" type="submit" value="Logout"/>
-        </form>
+            <div class="col-md-7">
+                <form style="display: inline;" action="#" th:action="@{/inspector/inspector-info}" th:method="POST">
+                    <input class="btn btn-success" type="submit" th:value="${#authentication.name}"/>
+                </form>
+            </div>
+            <div class="col-md-3">
+                <form style="display: inline;" action="#" th:action="@{/logout}" th:method="POST">
+                    <input class="btn btn-danger" type="submit" value="Logout"/>
+                </form>
+            </div>
+        </div>
 
     </div>
 
@@ -69,7 +75,7 @@
                 </select>
 
                 <select id="sortField" name="sortField" class="form-select" aria-label="Default select example">
-                    <option selected value="">Select sorting field</option>
+                    <option value="">Select sorting field</option>
                     <option th:each="sortField : ${T(com.taxserviceapp.web.dto.SortField).values()}"
                             th:text="${sortField.getSortName()}"
                             th:value="${sortField.name()}">
@@ -89,6 +95,7 @@
             <th scope="col">User</th>
             <th scope="col">IPN</th>
             <th scope="col">Report date</th>
+            <th scope="col">Year</th>
             <th scope="col">Period</th>
             <th scope="col">Comment</th>
             <th scope="col">Status</th>
@@ -98,15 +105,16 @@
 
         <tbody>
         <tr th:if="${reports.isEmpty()}">
-            <td colspan="7">No result</td>
+            <td style="text-align: center" colspan="9">No result</td>
         </tr>
         <tr th:each="report: ${reports}">
             <!--            <th scope="row"></th>-->
             <td><span th:text="${report.id}">Report id</span></td>
-            <td><a th:href="@{/inspector/user-info}"
+            <td><a th:href="@{/inspector/user-view(userId=${report.user.id})}"
                    th:text="${report.getUser().firstName} + ' ' + ${report.getUser().lastName}">Name Surname</a></td>
             <td><span th:text="${report.getUser().ipn}">IPN</span></td>
             <td><span th:text="${report.reportDate}">Report Date</span></td>
+            <td><span th:text="${report.year}">Year</span></td>
             <td><span th:text="${report.taxPeriod.getPeriod()}">Report Period</span></td>
             <!--            ToDo: add yes or no for comment exists-->
             <td><span th:text="${report.comment}">Comment</span></td>
