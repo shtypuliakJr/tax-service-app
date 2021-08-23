@@ -89,6 +89,8 @@ public class InspectorService {
         Integer reportsDisapproved = reportRepository.countAllByStatus(Status.DISAPPROVED);
         Integer reportsApproved = reportRepository.countAllByStatus(Status.APPROVED);
 
+        Map<Integer, Integer> countsByYearSortedMap = new TreeMap<>(getCountByYear(reports));
+
         return StatisticDTO.builder()
                 .countOfReports(countOrReports)
                 .countOfUsers(countOfUsers)
@@ -96,7 +98,7 @@ public class InspectorService {
                 .processingReports(reportsProcessing)
                 .approvedReports(reportsApproved)
                 .disapprovedReports(reportsDisapproved)
-                .countReportsPerYear(getCountByYear(reports))
+                .countReportsPerYear(countsByYearSortedMap)
                 .build();
     }
     private Map<Integer, Integer> getCountByYear(List<Report> mealList) {
