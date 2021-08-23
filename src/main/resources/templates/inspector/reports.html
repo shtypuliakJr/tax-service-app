@@ -16,7 +16,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
     <div>
-        <form style="display: inline;" action="#" th:action="@{/inspector/statisic}" th:method="GET">
+        <form style="display: inline;" action="#" th:action="@{/inspector/statistic}" th:method="GET">
             <button type="submit" class="btn btn-primary">Statistic</button>
         </form>
     </div>
@@ -35,6 +35,53 @@
 </nav>
 
 <div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="input-group">
+                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                       aria-describedby="search-addon"/>
+                <button type="button" class="btn btn-outline-primary">Find</button>
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <form action="#" th:action="@{/inspector/reports}" th:method="get">
+                <label for="date">
+                    Select date:
+                    <input type="date" id="date" name="date" min="2010-01-01" max="2021-12-31"/>
+                </label>
+                <select id="period" name="period" class="form-select" aria-label="Default select example">
+                    <option selected value="">Select period</option>
+                    <option th:each="period : ${T(com.taxserviceapp.data.entity.TaxPeriod).values()}"
+                            th:text="${period.getPeriod()}"
+                            th:value="${period.name()}">
+                        ..
+                    </option>
+                </select>
+
+                <select id="status" name="status" class="form-select" aria-label="Default select example">
+                    <option selected value="">Select period</option>
+                    <option th:each="status : ${T(com.taxserviceapp.data.entity.Status).values()}"
+                            th:text="${status.getStatusName()}"
+                            th:value="${status.name()}">
+                        ..
+                    </option>
+                </select>
+
+                <select id="sortField" name="sortField" class="form-select" aria-label="Default select example">
+                    <option selected value="">Select sorting field</option>
+                    <option th:each="sortField : ${T(com.taxserviceapp.web.dto.SortField).values()}"
+                            th:text="${sortField.getSortName()}"
+                            th:value="${sortField.name()}">
+                        ..
+                    </option>
+                </select>
+
+                <button type="submit" class="btn btn-outline-primary">Filter</button>
+            </form>
+        </div>
+
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -54,14 +101,14 @@
             <td colspan="7">No result</td>
         </tr>
         <tr th:each="report: ${reports}">
-<!--            <th scope="row"></th>-->
+            <!--            <th scope="row"></th>-->
             <td><span th:text="${report.id}">Report id</span></td>
             <td><a th:href="@{/inspector/user-info}"
                    th:text="${report.getUser().firstName} + ' ' + ${report.getUser().lastName}">Name Surname</a></td>
             <td><span th:text="${report.getUser().ipn}">IPN</span></td>
             <td><span th:text="${report.reportDate}">Report Date</span></td>
             <td><span th:text="${report.taxPeriod.getPeriod()}">Report Period</span></td>
-<!--            ToDo: add yes or no for comment exists-->
+            <!--            ToDo: add yes or no for comment exists-->
             <td><span th:text="${report.comment}">Comment</span></td>
             <td><span th:text="${report.status.getStatusName()}">status</span></td>
             <td>
