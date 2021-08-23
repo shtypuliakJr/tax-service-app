@@ -55,10 +55,13 @@ public class InspectorService {
         } else {
             reports = Optional.of(reportRepository.findAll(specification));
         }
-        System.out.println(reports);
         return reports.orElseThrow(() -> new ReportNotFoundException("No result"));
     }
-
+//
+//    public Report updateCommentAndStatusById(Long id) {
+//        reportRepository.()
+//        return
+//    }
 
     Sort.Direction getDirection(String direction) {
         return direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -101,6 +104,7 @@ public class InspectorService {
                 .countReportsPerYear(countsByYearSortedMap)
                 .build();
     }
+
     private Map<Integer, Integer> getCountByYear(List<Report> mealList) {
         return mealList.stream()
                 .collect(Collectors.groupingBy(Report::getYear,

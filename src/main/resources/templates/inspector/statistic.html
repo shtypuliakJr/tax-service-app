@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Statistic</title>
@@ -25,7 +25,11 @@
             </form>
         </div>
     </div>
-
+    <div class="col-md">
+        <div style="text-align: center;">
+            <h1>Statistic</h1>
+        </div>
+    </div>
     <div class="navbar-nav ml-auto">
         <div class="form-group row">
 
@@ -45,9 +49,7 @@
 </nav>
 
 <div class="container">
-    <div style="text-align: center">
-        <h1>Statistic</h1>
-    </div>
+
     <div>
         <table class="table table-striped">
             <thead>
@@ -86,23 +88,27 @@
         </table>
 
         <br/>
+        <div>
+            <div style="text-align: center">
+                <h1>Reports per each year</h1>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <div th:each="reportsCount: ${statistic.countReportsPerYear}">
+                        <th><span th:utext="${reportsCount.key}"></span></th>
+                    </div>
+                </tr>
+                </thead>
 
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <div th:each="reportsCount: ${statistic.countReportsPerYear}">
-                    <th><span th:utext="${reportsCount.key}"></span></th>
-                </div>
-            </tr>
-            </thead>
+                <tbody>
+                <td th:each="reportsCount: ${statistic.countReportsPerYear}">
+                    <span th:utext="${reportsCount.value}"></span>
+                </td>
+                </tbody>
 
-            <tbody>
-            <td th:each="reportsCount: ${statistic.countReportsPerYear}">
-                <span th:utext="${reportsCount.value}"></span>
-            </td>
-            </tbody>
-
-        </table>
+            </table>
+        </div>
     </div>
 </div>
 </body>

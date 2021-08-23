@@ -120,11 +120,11 @@
             <td style="text-align: center" colspan="9">No result</td>
         </tr>
         <tr th:each="report: ${reports}">
-            <!--            <th scope="row"></th>-->
             <td><span th:text="${report.id}">Report id</span></td>
             <td><a th:href="@{/inspector/user-view(userId=${report.user.id})}"
-                   th:text="${report.getUser().firstName} + ' ' + ${report.getUser().lastName}">Name Surname</a></td>
-            <td><span th:text="${report.getUser().ipn}">IPN</span></td>
+                   th:text="${report.user.firstName} + ' ' + ${report.user.lastName}">Name Surname</a>
+            </td>
+            <td><span th:text="${report.user.ipn}">IPN</span></td>
             <td><span th:text="${report.reportDate}">Report Date</span></td>
             <td><span th:text="${report.year}">Year</span></td>
             <td><span th:text="${report.taxPeriod.getPeriod()}">Report Period</span></td>
@@ -134,8 +134,8 @@
             <td>
                 <div>
 
-                    <form action="#" th:action="@{/inspector/report-view}" method="POST">
-                        <input type="hidden" id="report" name="report" th:value="${report.id}">
+                    <form action="#" th:action="@{/inspector/report-view}" th:method="GET">
+                        <input type="hidden" id="report" name="reportId" th:value="${report.id}">
                         <input type="submit" value="View"/>
                     </form>
                 </div>

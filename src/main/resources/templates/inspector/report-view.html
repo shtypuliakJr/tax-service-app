@@ -4,10 +4,122 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Report View</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 </head>
-<body>
-<p th:text="${report}"></p>
 
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="form-group row">
+        <div class="col-md-5">
+            <form style="display: inline;" action="#" th:action="@{/inspector/statistic}" th:method="GET">
+                <button type="submit" class="btn btn-primary">Statistic</button>
+            </form>
+        </div>
+        <div class="col-md-5">
+            <form style="display: inline;" action="#" th:action="@{/inspector/reports}" th:method="GET">
+                <button type="submit" class="btn btn-primary">Reports</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md">
+        <div style="text-align: center;">
+            <h1>Report</h1>
+        </div>
+    </div>
+    <div class="navbar-nav ml-auto">
+        <div class="form-group row">
+
+            <div class="col-md-7">
+                <form style="display: inline;" action="#" th:action="@{/inspector/inspector-info}" th:method="POST">
+                    <input class="btn btn-success" type="submit" th:value="${#authentication.name}"/>
+                </form>
+            </div>
+            <div class="col-md-3">
+                <form style="display: inline;" action="#" th:action="@{/logout}" th:method="POST">
+                    <input class="btn btn-danger" type="submit" value="Logout"/>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</nav>
+
+<div class="container">
+    <div>
+        <table class="table table-striped">
+            <thead>
+
+            <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><b>User: </b></td>
+                <td><span th:utext="${report.user.firstName} + ' ' + ${report.user.lastName}"></span></td>
+            </tr>
+            <tr>
+                <td><b>IPN: </b></td>
+                <td><span th:utext="${report.user.ipn}"></span></td>
+            </tr>
+            <tr>
+                <td><b>Personality: </b></td>
+                <td><span th:utext="${report.user.personality.getPersonalityName()}"></span></td>
+            </tr>
+            <tr>
+                <td><b>Income: </b></td>
+                <td><span th:utext="${report.income} + '$'"></span></td>
+            </tr>
+            <tr>
+                <td><b>Tax rate: </b></td>
+                <td><span th:utext="${report.taxRate} + '%'"></span></td>
+            </tr>
+            <tr>
+                <td><b>Report date: </b></td>
+                <td><span th:utext="${report.reportDate}"></span></td>
+            </tr>
+            <tr>
+                <td><b>Year: </b></td>
+                <td><span th:utext="${report.year}"></span></td>
+            </tr>
+            <tr>
+                <td><b>Period: </b></td>
+                <td><span th:utext="${report.taxPeriod.period}"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <form action="#" th:action="@{/inspector/report-view}" th:method="POST">
+            <div class="form-group">
+                <label for="comment">Comment</label>
+                <textarea id="comment" th:name="comment" class="form-control rounded-0" rows="3"></textarea>
+            </div>
+            <div>
+                <select id="status" th:name="status">
+                    <option value="">Select status</option>
+                    <option th:text="${T(com.taxserviceapp.data.entity.Status).APPROVED.getStatusName()}"
+                            th:value="${T(com.taxserviceapp.data.entity.Status).APPROVED.name()}">
+                        ..
+                    </option>
+
+                    <option th:text="${T(com.taxserviceapp.data.entity.Status).DISAPPROVED.getStatusName()}"
+                            th:value="${T(com.taxserviceapp.data.entity.Status).DISAPPROVED.name()}">
+                        ..
+                    </option>
+                </select>
+            </div>
+            <div>
+                <input type="hidden" th:id="reportId" th:name="reportId" th:value="${report.id}"/>
+                <input type="submit" value="Add comment" class="btn btn-outline-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>
