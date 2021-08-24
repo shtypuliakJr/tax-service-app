@@ -1,124 +1,141 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
-    <style>
-        .reg {
-            width: 330px;
-            height: 700px;
-            background: lightskyblue;
-            padding: 10px;
-            padding-right: 20px;
-            border: #ffffff;
-            float: outside;
-            border-radius: 25px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        input {
-            width: 300px;
-            height: 25px;
-        }
-
-        .center-block {
-            display: block;
-            margin-right: auto;
-            margin-left: auto;
-        }
-
-        div {
-            margin-bottom: 5%;
-        }
-
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 </head>
 <body>
-<div class="reg">
-    <form th:action="@{/registration}" th:object="${user}" method="post">
-
-        <div style="text-align: center">
-            <label>Registration</label>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="form-group row">
+        <div class="col-md-5">
+            <form style="display: inline;" action="#" th:action="@{/}" th:method="GET">
+                <button type="submit" class="btn btn-primary" data-th-text="#{main.main}">Return to main</button>
+            </form>
         </div>
-        <br/>
-        <div>
-            <label>First name:
-                <input type="text" th:field="*{firstName}" required/>
-            </label>
+    </div>
 
-            <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
-                   class="validation-message"></label>
+    <div class="navbar-nav ml-auto">
+        <div class="form-group row">
+            <div class="col-md-5">
+                <a th:href="@{?lang=en}" th:text="#{lang.en}"></a>
+            </div>
+            <div class="col-md-5">
+                <a th:href="@{?lang=ua}" th:text="#{lang.ua}"></a>
+            </div>
         </div>
-        <div>
+    </div>
+</nav>
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-10 col-md-8 col-lg-6">
+            <div class="container alert alert-primary">
+                <form th:action="@{/registration}" th:object="${user}" method="post">
 
-            <label>Last name
-                <input type="text" th:field="*{lastName}" required/>
-            </label>
+                    <div style="text-align: center">
+                        <h1 th:text="#{registration.registration}">Registration</h1>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="firstName" data-th-text="#{registration.data.firstName}">First name:</label>
+                        <input id="firstName" type="text" class="form-control" th:field="*{firstName}"
+                               th:placeholder="#{registration.data.input.firstName}">
+
+                        <div th:if="${#fields.hasErrors('firstName')}" class="alert alert-danger">
+                            <label th:errors="*{firstName}" class="validation-message"></label>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName" data-th-text="#{registration.data.lastName}">Last name:</label>
+                        <input id="lastName" type="text" class="form-control" th:field="*{lastName}"
+                               th:placeholder="#{registration.data.input.lastName}">
+                        <div th:if="${#fields.hasErrors('lastName')}" class="alert alert-danger">
+                            <label th:errors="*{lastName}" class="validation-message"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" data-th-text="#{registration.data.email}">Email:</label>
+                        <input id="email" type="text" class="form-control" th:field="*{email}"
+                               th:placeholder="#{registration.data.input.email}">
+                        <div th:if="${#fields.hasErrors('email')}" class="alert alert-danger">
+                            <label th:errors="*{email}" class="validation-message"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" data-th-text="#{registration.data.password}">Password:</label>
+                        <input id="password" type="text" class="form-control" th:field="*{password}"
+                               th:placeholder="#{registration.data.input.password}">
+                        <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger">
+                            <label th:errors="*{password}" class="validation-message"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age" data-th-text="#{registration.data.age}">Age:</label>
+                        <input id="age" type="text" class="form-control" th:field="*{age}"
+                               th:placeholder="#{registration.data.input.age}">
+                        <div th:if="${#fields.hasErrors('age')}" class="alert alert-danger">
+                            <label th:errors="*{age}" class="validation-message"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ipn" data-th-text="#{registration.data.ipn}">IPN:</label>
+                        <input id="ipn" type="text" class="form-control" th:field="*{ipn}"
+                               th:placeholder="#{registration.data.input.ipn}">
+                        <div th:if="${#fields.hasErrors('ipn')}" class="alert alert-danger">
+                            <label th:errors="*{ipn}" class="validation-message"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address" data-th-text="#{registration.data.address}">Address:</label>
+                        <input id="address" type="text" class="form-control" th:field="*{address}"
+                               th:placeholder="#{registration.data.input.address}">
+                        <div th:if="${#fields.hasErrors('address')}" class="alert alert-danger">
+                            <label th:errors="*{address}" class="validation-message"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="personality" data-th-text="#{registration.data.personality}">Personality:</label>
+                        <select id="personality" th:field="*{personality}">
+                            <option th:each="personality : ${T(com.taxserviceapp.data.entity.Personality).values()}"
+                                    th:text="#{${'user.data.personality.' + personality}}"
+                                    th:value="${personality.name()}">
+                                ..
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col text-center">
+                        <button type="submit" style="width: 200px"
+                                class="btn btn-primary btn-lg" data-th-text="#{registration.data.register}">
+                            Register
+                        </button>
+                    </div>
+                    <div th:if="${error}" class="alert alert-error">
+                        <div class="alert alert-danger" role="alert">
+                            <div style="text-align: center" class="error-invalid" data-th-text="#{registration.data.user.exists}">
+                                User already exists
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div>
+                        <a th:href="@{/login}" data-th-text="#{registration.data.link.haveAccount}">
+                            Already have an account?</a>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div>
-
-            <label>Email
-                <input type="email" th:field="*{email}" required/>
-            </label>
-        </div>
-        <div>
-
-            <label>Password
-                <input type="password" th:field="*{password}" required/>
-            </label>
-        </div>
-        <div>
-
-            <label>Age
-                <input style="align-content: center" type="text" th:field="*{age}" required/>
-            </label>
-        </div>
-        <div>
-            <label>IPN
-                <input type="text" th:field="*{ipn}" required/>
-            </label>
-        </div>
-
-        <div>
-
-            <label>Address
-                <input type="text" th:field="*{address}" required/>
-            </label>
-        </div>
-
-        <div>
-
-            <label>Personality
-                <select th:field="*{personality}">
-                    <option th:each="personality : ${T(com.taxserviceapp.data.entity.Personality).values()}"
-                            th:text="${personality.getPersonalityName()}"
-                            th:value="${personality.name()}">
-                        ..
-                    </option>
-                </select>
-            </label>
-        </div>
-
-        <input class="center-block" type="submit" value="Register">
-        <br/>
-
-        <div th:if="${error}" class="alert alert-error">
-            User already exists
-        </div>
-
-        <br/>
-        <a th:href="@{/login}">Already have an account?</a>
-
-        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
-            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
-        </div>
-
-    </form>
+    </div>
 </div>
 </body>
 </html>
-<!--ToDo: add localization-->
