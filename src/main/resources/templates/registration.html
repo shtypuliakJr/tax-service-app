@@ -112,6 +112,9 @@
                                 ..
                             </option>
                         </select>
+                        <div th:if="${#fields.hasErrors('personality')}" class="alert alert-danger">
+                            <label th:errors="*{personality}" class="validation-message"></label>
+                        </div>
                     </div>
 
                     <div class="col text-center">
@@ -122,7 +125,8 @@
                     </div>
                     <div th:if="${error}" class="alert alert-error">
                         <div class="alert alert-danger" role="alert">
-                            <div style="text-align: center" class="error-invalid" data-th-text="#{registration.data.user.exists}">
+                            <div style="text-align: center" class="error-invalid"
+                                 data-th-text="#{registration.data.user.exists}">
                                 User already exists
                             </div>
                         </div>

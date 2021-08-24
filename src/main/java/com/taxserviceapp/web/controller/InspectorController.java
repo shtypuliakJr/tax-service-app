@@ -5,15 +5,11 @@ import com.taxserviceapp.business.service.UserService;
 import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
-import com.taxserviceapp.data.entity.User;
-import com.taxserviceapp.utility.PojoConverter;
-import com.taxserviceapp.web.dto.ReportDTO;
+import com.taxserviceapp.exceptions.NoReportsFoundException;
 import com.taxserviceapp.web.dto.SortField;
 import com.taxserviceapp.web.dto.StatisticDTO;
-import javafx.util.converter.LocalDateTimeStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,14 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.jws.WebParam;
 import javax.persistence.NoResultException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -71,6 +60,24 @@ public class InspectorController {
         return "inspector/reports";
     }
 
+    @GetMapping("/search")
+    public String getReportsBySearch(@RequestParam(value = "search", required = false) String searchParam,
+                                     Model model) {
+
+        try {
+            System.out.println("pre");
+            List<Report> reports = inspectorService.getReportsBySearchParameter(searchParam.trim());
+            System.out.println("Reports size" + reports.size());
+            System.out.println("after");
+            model.addAttribute("reports", reports);
+        } catch (NoReportsFoundException exception) {
+            System.out.println("error" + exception.getMessage());
+            model.addAttribute("errorNoResult", exception.getMessage());
+        }
+
+        return "inspector/reports";
+    }
+
     @GetMapping("/user-view")
     public String getUserInfo(@RequestParam(name = "userId") Long userId, Model model) {
 
@@ -93,7 +100,7 @@ public class InspectorController {
 
         try {
             Report report = inspectorService.getReportById(reportId);
-            model.addAttribute("report", report);
+            model.addAttribute("reports", report);
         } catch (NoResultException e) {
             model.addAttribute("errorNoResult", e.getMessage());
         }
@@ -107,19 +114,19 @@ public class InspectorController {
             @RequestParam(value = "reportId", required = false) Long reportId,
             Model model) {
 
-        if (status == null) {
-            model.addAttribute("previousComment", comment);
-            model.addAttribute("errorStatusNull", "error");
-        }
-        if (status.equals(Status.APPROVED) || (status.equals(Status.DISAPPROVED) && comment != null)) {
-//            inspectorService.updateCommentAndStatusById(Long reportId);
-            System.out.println("save");
-            return "redirect:/inspector/reports";
-        }
-        if (comment == null && status != null) {
-            model.addAttribute("previousStatus", status);
-            model.addAttribute("errorCommentNull", "error comment");
-        }
+//        if (status == null) {
+//            model.addAttribute("previousComment", comment);
+//            model.addAttribute("errorStatusNull", "error");
+//        }
+//        if (status.equals(Status.APPROVED) || (status.equals(Status.DISAPPROVED) && comment != null)) {
+////            inspectorService.updateCommentAndStatusById(Long reportId);
+//            System.out.println("save");
+//            return "redirect:/inspector/reports";
+//        }
+//        if (comment == null && status != null) {
+//            model.addAttribute("previousStatus", status);
+//            model.addAttribute("errorCommentNull", "error comment");
+//        }
 
 
         return "redirect:/inspector/report-view";

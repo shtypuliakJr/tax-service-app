@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/html"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -53,14 +51,16 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="input-group">
-                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                       aria-describedby="search-addon"/>
-                <button type="button" class="btn btn-outline-primary">Find</button>
+                <form action="#" th:action="@{/inspector/search}" th:method="GET">
+                    <input id="search" name="search" class="form-control rounded"
+                           placeholder="Search" aria-label="Search" aria-describedby="search-addon"/>
+                    <button type="submit" class="btn btn-outline-primary">Find</button>
+                </form>
             </div>
         </div>
 
         <div class="col-sm-8">
-            <form action="#" th:action="@{/inspector/reports}" th:method="get">
+            <form action="#" th:action="@{/inspector/reports}" th:method="GET">
                 <label for="date">
                     Select date:
                     <input type="date" id="date" name="date" min="2010-01-01" max="2021-12-31"/>
@@ -116,9 +116,10 @@
         </thead>
 
         <tbody>
-        <tr th:if="${reports.isEmpty()}">
-            <td style="text-align: center" colspan="9">No result</td>
-        </tr>
+<!--        <tr th:if="${e}">-->
+<!--            <td><p>dsdasd</p></td>-->
+<!--            <td style="text-align: center" colspan="9" th:text="${errorNoResult}">No result</td>-->
+<!--        </tr>-->
         <tr th:each="report: ${reports}">
             <td><span th:text="${report.id}">Report id</span></td>
             <td><a th:href="@{/inspector/user-view(userId=${report.user.id})}"
@@ -143,6 +144,12 @@
         </tr>
         </tbody>
     </table>
+
+    <div th:if="${true}">
+        <div>
+            <p th:text="${errorNoResult}"></p>
+        </div>
+    </div>
 </div>
 
 </body>
