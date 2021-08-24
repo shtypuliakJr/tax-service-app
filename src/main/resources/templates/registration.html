@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registration</title>
+    <title data-th-text="#{registration.registration}">Registration</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -32,7 +32,7 @@
     <div class="row h-100 justify-content-center align-items-center">
         <div class="col-10 col-md-8 col-lg-6">
             <div class="container alert alert-primary">
-                <form th:action="@{/registration}" th:object="${user}" method="post">
+                <form action="#" th:action="@{/registration}" th:object="${user}" th:method="POST">
 
                     <div style="text-align: center">
                         <h1 th:text="#{registration.registration}">Registration</h1>
@@ -107,7 +107,7 @@
                         <label for="personality" data-th-text="#{registration.data.personality}">Personality:</label>
                         <select id="personality" th:field="*{personality}">
                             <option th:each="personality : ${T(com.taxserviceapp.data.entity.Personality).values()}"
-                                    th:text="#{${'user.data.personality.' + personality}}"
+                                    th:text="#{${'user.data.dto.personality.name.' + personality}}"
                                     th:value="${personality.name()}">
                                 ..
                             </option>
@@ -129,7 +129,7 @@
                     </div>
                     <br/>
                     <div>
-                        <a th:href="@{/login}" data-th-text="#{registration.data.link.haveAccount}">
+                        <a th:href="@{/login}" data-th-text="#{registration.data.link.login}">
                             Already have an account?</a>
                     </div>
                 </form>

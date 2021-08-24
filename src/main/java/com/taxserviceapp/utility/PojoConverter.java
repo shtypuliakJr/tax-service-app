@@ -19,7 +19,7 @@ public class PojoConverter {
                 .lastName(userDTO.getLastName())
                 .email(userDTO.getEmail())
                 .password(userDTO.getPassword())
-                .age(userDTO.getAge())
+                .age(Integer.parseInt(userDTO.getAge()))
                 .ipn(userDTO.getIpn())
                 .userRole(UserRole.USER)
                 .dateOfRegistration(Date.valueOf(LocalDate.now()))

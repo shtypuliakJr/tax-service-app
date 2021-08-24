@@ -11,36 +11,34 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 public class UserDTO {
 
-    @NotNull
-    @Size(min = 2, max = 20, message = "Not valid first name")
-    @NotBlank(message = "Require name")
+    @NotBlank(message = "{user.data.dto.firstName.error.null}")
+    @Size(min = 2, max = 20, message = "{user.data.dto.firstName.error.length}")
     private String firstName;
 
-    @NotNull
-    @Size(min = 3, max = 30, message = "Not valid last name")
-    @NotBlank(message = "Require surname")
+    @NotBlank(message = "{user.data.dto.lastName.error.null}")
+    @Size(min = 3, max = 30, message = "{user.data.dto.lastName.error.length}")
     private String lastName;
 
-    @NotNull
-    @Length(min = 6, message = "Your password should have more than 6 symbols")
+    @NotBlank(message = "{user.data.dto.password.error.null}")
+    @Length(min = 6, message = "{user.data.dto.password.error.length}")
     private String password;
 
-    @NotNull
-    @Email(message = "Provide valid email")
+    @NotBlank(message = "{user.data.dto.email.error.null}")
+    @Email(message = "{user.data.dto.email.error.valid}")
     private String email;
 
-    @NotNull
-    @Min(value = 18, message = "Age should be valid")
-    private Integer age;
+    @NotBlank(message = "{user.data.dto.age.error.null}")
+    @Pattern(regexp = "[1-9][0-9]{2}",message = "{user.data.dto.age.error.valid}")
+    private String age;
 
-    @NotNull
-    @Pattern(regexp = "^[0-9]{12}", message = "Invalid IPN")
+    @NotEmpty(message = "{user.data.dto.ipn.error.null}")
+    @Pattern(regexp = "^[0-9]{12}", message = "{user.data.dto.ipn.error.valid}")
     private String ipn;
 
-    @NotNull(message = "Require personality type")
+    @NotNull(message = "{user.data.personality.error}")
     private Personality personality;
 
-    @NotNull(message = "Require address")
+    @NotBlank(message = "{user.data.dto.address.error}")
     private String address;
 
 }
