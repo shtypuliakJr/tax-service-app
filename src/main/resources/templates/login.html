@@ -1,90 +1,65 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="en" class="h-100"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-        .login {
-            width: 270px;
-            height: 300px;
-            background: lightskyblue;
-            padding: 10px;
-            padding-right: 20px;
-            border: #ffffff;
-            float: outside;
-            border-radius: 25px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        input, label {
-            width: 270px;
-            height: 25px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .center-block {
-            display: block;
-            margin-right: auto;
-            margin-left: auto;
-        }
-
-        .error-invalid {
-            width: 265px;
-            height: 20px;
-            background: #ff484a;
-            padding: 10px;
-            text-align: center;
-            padding-right: 20px;
-            float: outside;
-            border-radius: 25px;
-            position: absolute;
-            top: 80%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-    </style>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 </head>
-<body>
-<div class="login">
-    <form name="f" th:action="@{/login}" method="post">
+<body class="h-100">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-        <div style="text-align: center">
-            <label>Login</label>
-        </div>
-
-        <label for="email">Email
-            <input id="email" type="text" placeholder="Email" name="email" required>
-        </label>
-
-        <br/>
-
-        <label for="password">Password
-            <input id="password" type="password" placeholder="Password" name="password" required/>
-        </label>
-
-        <br/>
-        <div style="text-align: center">
-            <input class="center-block" type="submit" value="Log in">
-        </div>
-        <br/>
-        <div th:if="${param.error}" class="alert alert-error">
-            <div class="error-invalid">
-                Invalid username and password.
+    <div class="navbar-nav ml-auto">
+        <div class="form-group row">
+            <div class="col-md-5">
+                <a th:href="@{?lang=en}" th:text="#{lang.en}"></a>
+            </div>
+            <div class="col-md-5">
+                <a th:href="@{?lang=ua}" th:text="#{lang.ua}"></a>
             </div>
         </div>
-    </form>
+    </div>
+</nav>
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-10 col-md-8 col-lg-6">
+            <div class="container alert alert-primary">
+                <form class="form-example" name="f" th:action="@{/login}" th:method="POST">
+                    <div style="text-align: center">
+                        <h1 th:text="#{main.login}">Login</h1>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" data-th-text="#{data.input.email}">Email:</label>
+                        <input type="text" class="form-control username" id="email"
+                               th:placeholder="#{data.input.email}" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" data-th-text="#{data.input.password}">Password:</label>
+                        <input type="password" class="form-control password" id="password"
+                               th:placeholder="#{data.input.password}" name="password">
+                    </div>
+                    <div class="col text-center">
+                        <button type="submit" style="width: 140px"
+                                class="btn btn-primary btn-lg" data-th-text="#{login.login}">Login</button>
+                    </div>
 
-    <a th:href="@{/registration}">Does not registered?</a>
-
+                </form>
+                <a th:href="@{/registration}" data-th-text="#{login.notRegistered}">Does not registered?</a>
+                <div th:if="${param.error}" class="alert alert-error">
+                    <div class="alert alert-danger" role="alert">
+                        <div style="text-align: center" class="error-invalid" data-th-text="#{login.wrong.input}">
+                            Invalid email or password!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
 
 
 <!--ToDo: add error handler for saving input data-->
-<!--ToDo: add localization-->

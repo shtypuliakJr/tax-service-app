@@ -9,6 +9,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
@@ -17,17 +18,21 @@ import java.util.Locale;
 @Configuration
 public class LocaleConfig implements WebMvcConfigurer {
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
+    @Bean(name = "messageSource")
+    public MessageSource getMessageResource() {
+        ReloadableResourceBundleMessageSource messageResource = new ReloadableResourceBundleMessageSource();
+
+        // Read i18n/messages_xxx.properties file.
+        // For example: i18n/messages_en.properties
+        messageResource.setBasename("classpath:message");
+        messageResource.setDefaultEncoding("UTF-8");
+        return messageResource;
     }
 
-    @Bean
-    public LocaleResolver localeResolver() {
-        SessionLocaleResolver slr = new SessionLocaleResolver();
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
 
-        slr.setDefaultLocale(Locale.ENGLISH);
-        return slr;
+        registry.addInterceptor(localeChangeInterceptor());
     }
 
     @Bean
@@ -47,6 +52,11 @@ public class LocaleConfig implements WebMvcConfigurer {
         return messageSource;
     }
 
+    @Bean // <--- 1
+    public LocaleResolver localeResolver() {
+
+        return new CookieLocaleResolver();
+    }
     @Bean
     public LocalValidatorFactoryBean getValidator() {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
