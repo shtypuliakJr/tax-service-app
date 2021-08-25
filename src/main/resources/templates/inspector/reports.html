@@ -30,19 +30,15 @@
 
     <div class="navbar-nav ml-auto">
         <div class="form-group row">
-
-            <div class="col-md-7">
-                <form style="display: inline;" action="#" th:action="@{/inspector/inspector-info}" th:method="GET">
-                    <input class="btn btn-success" type="submit" th:value="${#authentication.name}"/>
-                </form>
+            <div class="col-sm-8">
+                <span data-th-text="'Inpector: ' + ${#authentication.name}"></span>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-4">
                 <form style="display: inline;" action="#" th:action="@{/logout}" th:method="POST">
                     <input class="btn btn-danger" type="submit" value="Logout"/>
                 </form>
             </div>
         </div>
-
     </div>
 
 </nav>

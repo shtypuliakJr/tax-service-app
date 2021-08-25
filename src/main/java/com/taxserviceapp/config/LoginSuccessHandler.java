@@ -27,7 +27,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         if (authentication.getAuthorities().contains(inspectorAuthority)) {
             successfulURL = "/inspector";
         } else if (authentication.getAuthorities().contains(userAuthority)) {
-            successfulURL = "/user/user";
+            successfulURL = "/user/reports";
         }
 
         getRedirectStrategy().sendRedirect(request, response, successfulURL);

@@ -69,6 +69,7 @@ public class PojoConverter {
                 .dateOfRegistration(Date.valueOf(LocalDate.now()))
                 .address(user.getAddress())
                 .personality(user.getPersonality())
+                .userId(user.getId())
                 .build();
     }
 }

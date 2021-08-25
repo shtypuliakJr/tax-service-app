@@ -45,5 +45,7 @@ public class UserDTO {
 
     private Date dateOfRegistration;
 
+    private Long userId;
+
 
 }

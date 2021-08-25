@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Statistic</title>
@@ -30,22 +30,20 @@
             <h1>Statistic</h1>
         </div>
     </div>
+
     <div class="navbar-nav ml-auto">
         <div class="form-group row">
-
-            <div class="col-md-7">
-                <form style="display: inline;" action="#" th:action="@{/inspector/inspector-info}" th:method="POST">
-                    <input class="btn btn-success" type="submit" th:value="${#authentication.name}"/>
-                </form>
+            <div class="col-sm-8">
+                <span data-th-text="'Inpector: ' + ${#authentication.name}"></span>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-4">
                 <form style="display: inline;" action="#" th:action="@{/logout}" th:method="POST">
                     <input class="btn btn-danger" type="submit" value="Logout"/>
                 </form>
             </div>
         </div>
-
     </div>
+
 </nav>
 
 <div class="container">
@@ -95,16 +93,18 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <div th:each="reportsCount: ${statistic.countReportsPerYear}">
-                        <th><span th:utext="${reportsCount.key}"></span></th>
-                    </div>
+                    <td th:each="reportsCount: ${statistic.countReportsPerYear}">
+                        <span th:utext="${reportsCount.key}">Year</span>
+                    </td>
                 </tr>
                 </thead>
 
                 <tbody>
-                <td th:each="reportsCount: ${statistic.countReportsPerYear}">
-                    <span th:utext="${reportsCount.value}"></span>
-                </td>
+                <tr>
+                    <td th:each="reportsCount: ${statistic.countReportsPerYear}">
+                        <span th:utext="${reportsCount.value}">Count of reports</span>
+                    </td>
+                </tr>
                 </tbody>
 
             </table>

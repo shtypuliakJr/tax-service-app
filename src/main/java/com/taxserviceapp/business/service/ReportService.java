@@ -58,7 +58,7 @@ public class ReportService {
     public List<Report> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,
                                                  Status status, SortField sortField) throws NoReportsFoundException {
 
-        Specification<Report>  specification = Specification
+        Specification<Report> specification = Specification
                 .where(filterField(id, "user")
                         .and(filterField(status, "status"))
                         .and(filterField(reportDate, "reportDate"))
@@ -77,7 +77,7 @@ public class ReportService {
     }
 
     Sort.Direction getDirection(String direction) {
-            return direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
     }
 
     private <T> Specification<Report> filterField(T param, String fieldName) {

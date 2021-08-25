@@ -46,7 +46,7 @@ public class ReportController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         reportService.saveNewReport(PojoConverter.convertReportDTOToEntity(reportDTO, user));
 
-        return "redirect:/user/user";
+        return "redirect:/user/reports";
     }
 
     @GetMapping(value = "/report-edit/{id}")
@@ -70,7 +70,7 @@ public class ReportController {
         reportService.updateReport(PojoConverter.convertReportDTOToEntity(reportDTO,
                 (User) authentication.getPrincipal()));
 
-        return "redirect:/user/user";
+        return "redirect:/user/reports";
     }
 
     @GetMapping(value = "/report-delete/{id}")
@@ -78,7 +78,7 @@ public class ReportController {
 
         reportService.deleteReport(id);
 
-        return "redirect:/user/user";
+        return "redirect:/user/reports";
     }
 
     @GetMapping(value = "/report-view/{id}")
