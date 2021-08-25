@@ -7,8 +7,7 @@ import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.data.entity.User;
-import com.taxserviceapp.exceptions.NoReportsFoundException;
-import com.taxserviceapp.exceptions.NoUserFoundException;
+import com.taxserviceapp.exceptions.*;
 import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
 import com.taxserviceapp.web.dto.StatisticDTO;
@@ -17,12 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.NoResultException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class InspectorController {
     public String getInspectorMainPage(Model model) {
 
         try {
-            List<ReportDTO>  reports = inspectorService.getReports();
+            List<ReportDTO> reports = inspectorService.getReports();
             model.addAttribute("reports", reports);
         } catch (NoReportsFoundException exception) {
             model.addAttribute("errorNoResult", exception.getMessage());
@@ -101,7 +100,7 @@ public class InspectorController {
             UserDTO userInfoById = userService.getUserInfoById(userId);
             model.addAttribute("userInfo", userInfoById);
 
-         } catch (NoUserFoundException exception) {
+        } catch (NoUserFoundException exception) {
             model.addAttribute("errorNoResult", exception.getMessage());
         }
 
@@ -119,38 +118,28 @@ public class InspectorController {
 
     @GetMapping("/report-view")
     public String getReport(@RequestParam(name = "reportId") Long reportId, Model model) {
-
         try {
             ReportDTO report = inspectorService.getReportById(reportId);
             model.addAttribute("report", report);
-        } catch (NoReportsFoundException e) {
+        } catch (ReportNotFoundException e) {
             model.addAttribute("errorNoReport", e.getMessage());
         }
         return "inspector/report-view";
     }
 
     @PostMapping("/report-view")
-    public String getReportProcess(
-            @RequestParam(value = "comment", required = false) String comment,
-            @RequestParam(value = "status", required = false) Status status,
-            @RequestParam(value = "reportId", required = false) Long reportId,
-            Model model) {
+    public String getReportProcess(@ModelAttribute(name = "report") ReportDTO reportDTO, Model model) {
 
-//        if (status == null) {
-//            model.addAttribute("previousComment", comment);
-//            model.addAttribute("errorStatusNull", "error");
-//        }
-//        if (status.equals(Status.APPROVED) || (status.equals(Status.DISAPPROVED) && comment != null)) {
-////            inspectorService.updateCommentAndStatusById(Long reportId);
-//            System.out.println("save");
-//            return "redirect:/inspector/reports";
-//        }
-//        if (comment == null && status != null) {
-//            model.addAttribute("previousStatus", status);
-//            model.addAttribute("errorCommentNull", "error comment");
-//        }
-
-
-        return "redirect:/inspector/report-view";
+        try {
+            inspectorService.setReportStatus(reportDTO);
+            return "redirect:/inspector/reports";
+        } catch (ReportStatusException reportStatusException) {
+            ReportDTO report = inspectorService.getReportById(reportDTO.getId());
+            report.setComment(reportDTO.getComment());
+            report.setStatus(reportDTO.getStatus());
+            model.addAttribute("report", report);
+            model.addAttribute("error", reportStatusException.getMessage());
+            return "/inspector/report-view";
+        }
     }
 }

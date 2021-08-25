@@ -36,16 +36,13 @@ public class ReportDTO {
     private Integer year;
 
     private User user;
+
     private Long userId;
 
-    Date reportDate;
+    private Date reportDate;
 
     private Status status;
 
     private String comment;
-
-//    @NotNull(message = "Require form type")
-//    private Form form;
-
 
 }

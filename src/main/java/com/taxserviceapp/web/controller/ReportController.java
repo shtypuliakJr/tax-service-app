@@ -1,9 +1,7 @@
 package com.taxserviceapp.web.controller;
 
 import com.taxserviceapp.business.service.ReportService;
-import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.User;
-import com.taxserviceapp.exceptions.NoReportFoundById;
 import com.taxserviceapp.exceptions.ReportNotFoundException;
 import com.taxserviceapp.utility.PojoConverter;
 import com.taxserviceapp.web.dto.ReportDTO;

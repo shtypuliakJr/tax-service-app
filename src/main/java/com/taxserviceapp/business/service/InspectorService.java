@@ -6,8 +6,7 @@ import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.data.entity.UserRole;
-import com.taxserviceapp.exceptions.NoReportFoundById;
-import com.taxserviceapp.exceptions.NoReportsFoundException;
+import com.taxserviceapp.exceptions.*;
 import com.taxserviceapp.utility.PojoConverter;
 import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
@@ -59,7 +58,7 @@ public class InspectorService {
         throw new NoReportsFoundException("No reports found by filter");
     }
 
-    public ReportDTO getReportById(Long reportId) throws NoReportsFoundException {
+    public ReportDTO getReportById(Long reportId) throws ReportNotFoundException {
         return reportService.findReportById(reportId);
 //        return reportRepository.findById(reportId)
 //                .map(PojoConverter::convertReportEntityToDTO)
@@ -77,6 +76,7 @@ public class InspectorService {
 
         return reportDTOS;
     }
+
     //ToDo: refactoring
     public StatisticDTO getStatisticData() {
 
@@ -133,5 +133,43 @@ public class InspectorService {
             }
         }
         throw new NoReportsFoundException("No reports found by search");
+    }
+
+    public ReportDTO setReportStatus(Long reportId, String comment, Status status) {
+
+        if (status == null)
+            throw new ReportStatusException("Require status");
+
+        if (status == Status.DISAPPROVED && comment == null)
+            throw new ReportStatusException("Require comment if status will be disapproved");
+
+        Optional<Report> report = reportRepository.findById(reportId);
+
+        return report.map(rep -> {
+                    rep.setComment(comment);
+                    rep.setStatus(status);
+                    reportRepository.save(rep);
+                    return rep;
+                }).map(PojoConverter::convertReportEntityToDTO)
+                .orElseThrow(() -> new ReportNotFoundException("No report found"));
+    }
+
+    public ReportDTO setReportStatus(ReportDTO reportDTO) {
+        if (reportDTO.getStatus() == null)
+            throw new ReportStatusException("Require status");
+
+        if (reportDTO.getStatus() == Status.DISAPPROVED &&
+                (reportDTO.getComment() == null || reportDTO.getComment().equals("")))
+            throw new ReportStatusException("Require comment if status will be disapproved");
+
+        Optional<Report> report = reportRepository.findById(reportDTO.getId());
+
+        return report.map(rep -> {
+                    rep.setComment(reportDTO.getComment());
+                    rep.setStatus(reportDTO.getStatus());
+                    reportRepository.save(rep);
+                    return rep;
+                }).map(PojoConverter::convertReportEntityToDTO)
+                .orElseThrow(() -> new ReportNotFoundException("No report found"));
     }
 }

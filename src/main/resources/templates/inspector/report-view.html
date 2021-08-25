@@ -45,8 +45,8 @@
 
 </nav>
 
-<div class="container">
-    <div th:object="${report}">
+<div class="container" th:object="${report}">
+    <div>
         <table class="table table-striped">
             <thead>
 
@@ -93,13 +93,15 @@
     </div>
 
     <div>
-        <form action="#" th:action="@{/inspector/report-view}" th:method="POST">
+        <form action="#" th:action="@{/inspector/report-view}" th:object="${report}" th:method="POST">
+            <input type="hidden" th:field="*{id}">
             <div class="form-group">
                 <label for="comment">Comment</label>
-                <textarea id="comment" th:name="comment" class="form-control rounded-0" rows="3"></textarea>
+                <textarea id="comment" th:name="comment" th:field="*{comment}"
+                          class="form-control rounded-0" rows="3">Comment</textarea>
             </div>
             <div>
-                <select id="status" th:name="status">
+                <select id="status" th:name="status" th:field="*{status}">
                     <option value="">Select status</option>
                     <option th:text="${T(com.taxserviceapp.data.entity.Status).APPROVED.getStatusName()}"
                             th:value="${T(com.taxserviceapp.data.entity.Status).APPROVED.name()}">
@@ -112,6 +114,9 @@
                     </option>
                 </select>
             </div>
+                        <div th:if="${error != null}" class="alert alert-danger">
+                            <label data-th-text="${error}" class="validation-message"></label>
+                        </div>
             <div>
                 <input type="hidden" th:id="reportId" th:name="reportId" th:value="${report.id}"/>
                 <input type="submit" value="Add comment" class="btn btn-outline-primary"/>
