@@ -6,6 +6,7 @@ import com.taxserviceapp.business.service.UserService;
 import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
+import com.taxserviceapp.data.entity.User;
 import com.taxserviceapp.exceptions.NoReportsFoundException;
 import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
@@ -40,8 +41,14 @@ public class InspectorController {
 
     @GetMapping
     public String getInspectorMainPage(Model model) {
-        List<Report> reports = inspectorService.getReports();
-        model.addAttribute("reports", reports);
+
+        try {
+            List<ReportDTO>  reports = inspectorService.getReports();
+            model.addAttribute("reports", reports);
+        } catch (NoReportsFoundException exception) {
+            model.addAttribute("errorNoResult", exception.getMessage());
+        }
+
         return "inspector/reports";
     }
 
@@ -54,8 +61,12 @@ public class InspectorController {
                                  @RequestParam(name = "sortField", required = false) SortField sortField,
                                  Model model) {
 
-        List<Report> reports = inspectorService.getReportsByRequestParam(id, date, period, status, sortField);
-        model.addAttribute("reports", reports);
+        try {
+            List<ReportDTO> reports = inspectorService.getReportsByRequestParam(id, date, period, status, sortField);
+            model.addAttribute("reports", reports);
+        } catch (NoReportsFoundException exception) {
+            model.addAttribute("errorNoResult", exception.getMessage());
+        }
 
         model.addAttribute("lastSelectedDate", date);
         model.addAttribute("lastSelectedPeriod", period);
@@ -84,7 +95,14 @@ public class InspectorController {
     @GetMapping("/user-view")
     public String getUserInfo(@RequestParam(name = "userId") Long userId, Model model) {
 
-        model.addAttribute("userInfo", userService.getUserInfoById(userId));
+        try {
+            User userInfoById = userService.getUserInfoById(userId);
+            model.addAttribute("userInfo", userInfoById);
+
+         } catch (NoReportsFoundException exception) {
+            model.addAttribute("errorNoResult", exception.getMessage());
+        }
+
 
         return "inspector/user-view";
     }
@@ -102,10 +120,10 @@ public class InspectorController {
     public String getReport(@RequestParam(name = "reportId") Long reportId, Model model) {
 
         try {
-            Report report = inspectorService.getReportById(reportId);
-            model.addAttribute("reports", report);
-        } catch (NoResultException e) {
-            model.addAttribute("errorNoResult", e.getMessage());
+            ReportDTO report = inspectorService.getReportById(reportId);
+            model.addAttribute("report", report);
+        } catch (NoReportsFoundException e) {
+            model.addAttribute("errorNoReport", e.getMessage());
         }
         return "inspector/report-view";
     }

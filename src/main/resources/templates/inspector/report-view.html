@@ -48,7 +48,7 @@
 </nav>
 
 <div class="container">
-    <div>
+    <div th:object="${report}">
         <table class="table table-striped">
             <thead>
 
@@ -68,7 +68,7 @@
             </tr>
             <tr>
                 <td><b>Personality: </b></td>
-                <td><span th:utext="${report.user.personality.getPersonalityName()}"></span></td>
+                <td><span th:utext="#{${'user.data.dto.personality.name.' + report.user.personality}}"></span></td>
             </tr>
             <tr>
                 <td><b>Income: </b></td>

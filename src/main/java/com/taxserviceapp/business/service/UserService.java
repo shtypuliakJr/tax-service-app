@@ -2,6 +2,7 @@ package com.taxserviceapp.business.service;
 
 import com.taxserviceapp.data.dao.UserRepository;
 import com.taxserviceapp.data.entity.User;
+import com.taxserviceapp.exceptions.NoReportsFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,7 +26,7 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("No such user"));
     }
 
-    public User getUserInfoById(Long id) {
+    public User getUserInfoById(Long id) throws NoReportsFoundException {
         return userRepository.getById(id);
     }
 }

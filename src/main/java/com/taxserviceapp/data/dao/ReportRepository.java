@@ -29,7 +29,5 @@ public interface ReportRepository extends JpaRepository<Report, Long>, JpaSpecif
     List<Report> findAllById(Long parseInt);
 
     List<Report> findAllByUser_Ipn(String parseInt);
-
-
 }
 

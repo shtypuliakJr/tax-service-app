@@ -3,23 +3,19 @@ package com.taxserviceapp.business.service;
 import com.taxserviceapp.data.dao.ReportRepository;
 import com.taxserviceapp.data.dao.UserRepository;
 import com.taxserviceapp.data.entity.*;
+import com.taxserviceapp.exceptions.NoReportFoundById;
 import com.taxserviceapp.exceptions.NoReportsFoundException;
-import com.taxserviceapp.exceptions.NoUserFoundException;
 import com.taxserviceapp.exceptions.ReportNotFoundException;
 import com.taxserviceapp.utility.PojoConverter;
 import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
 import com.taxserviceapp.web.dto.StatisticDTO;
-import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.NoResultException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,18 +30,19 @@ public class InspectorService {
         this.reportRepository = reportRepository;
     }
 
-    public List<User> getUsers() throws NoUserFoundException {
-        Optional<List<User>> users = userRepository.findAllByUserRoleEquals(UserRole.USER);
+    public List<ReportDTO> getReports() throws NoReportsFoundException {
 
-        return users.orElseThrow(() -> new NoUserFoundException("No users found"));
+        List<Report> reports = reportRepository.findAll();
+        if (reports.isEmpty()) {
+            throw new NoReportsFoundException("No reports Found");
+        }
+        return reports.stream()
+                .map(PojoConverter::convertReportEntityToDTO)
+                .collect(Collectors.toList());
     }
 
-    public List<Report> getReports() {
-        return reportRepository.findAll();
-    }
-
-    public List<Report> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,
-                                                 Status status, SortField sortField) throws NoResultException {
+    public List<ReportDTO> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,
+                                                    Status status, SortField sortField) throws NoReportsFoundException {
 
         Specification<Report> specification = Specification
                 .where(filterField(id, "user")
@@ -61,7 +58,16 @@ public class InspectorService {
         } else {
             reports = Optional.of(reportRepository.findAll(specification));
         }
-        return reports.orElseThrow(() -> new ReportNotFoundException("No result"));
+
+        List<Report> reportList = reports.get();
+
+        if (!reportList.isEmpty())
+            return reportList.stream()
+                    .map(PojoConverter::convertReportEntityToDTO)
+                    .collect(Collectors.toList());
+
+        throw new ReportNotFoundException("No reports found by filter");
+
     }
 //
 //    public Report updateCommentAndStatusById(Long id) {
@@ -73,17 +79,23 @@ public class InspectorService {
         return direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
     }
 
-    private <T> Specification<Report> filterField(T param, String fieldName) {
-        return (reportRoot, criteriaQuery, criteriaBuilder) -> {
-            if (param == null) {
-                return criteriaBuilder.conjunction();
-            }
-            return criteriaBuilder.equal(reportRoot.get(fieldName), param);
-        };
+
+    public ReportDTO getReportById(Long reportId) throws NoReportsFoundException {
+        return reportRepository.findById(reportId)
+                .map(PojoConverter::convertReportEntityToDTO)
+                .orElseThrow(() -> new NoReportFoundById("No report found by id"));
     }
 
-    public Report getReportById(Long reportId) {
-        return reportRepository.getById(reportId);
+    public List<ReportDTO> getReportsBySearchParameter(String searchParam) throws NoReportsFoundException {
+
+        List<ReportDTO> reportDTOS = findReportsBySearchParam(searchParam).stream()
+                .map(PojoConverter::convertReportEntityToDTO)
+                .collect(Collectors.toList());
+
+        if (reportDTOS.isEmpty())
+            throw new NoReportsFoundException("No reports found by search");
+
+        return reportDTOS;
     }
 
     public StatisticDTO getStatisticData() {
@@ -117,18 +129,6 @@ public class InspectorService {
                         Collectors.reducing(0, report -> 1, Integer::sum)));
     }
 
-    public List<ReportDTO> getReportsBySearchParameter(String searchParam) throws NoReportsFoundException {
-
-        List<ReportDTO> reportDTOS = findReportsBySearchParam(searchParam).stream()
-                .map(PojoConverter::convertReportEntityToDTO)
-                .collect(Collectors.toList());
-
-        if (reportDTOS.isEmpty())
-            throw new NoReportsFoundException("No reports found by search");
-
-        return reportDTOS;
-    }
-
     private List<Report> findReportsBySearchParam(String searchParam) throws NoReportsFoundException {
 
         if (searchParam.isEmpty())
@@ -154,5 +154,14 @@ public class InspectorService {
             }
         }
         throw new NoReportsFoundException("No reports found by search");
+    }
+
+    private <T> Specification<Report> filterField(T param, String fieldName) {
+        return (reportRoot, criteriaQuery, criteriaBuilder) -> {
+            if (param == null) {
+                return criteriaBuilder.conjunction();
+            }
+            return criteriaBuilder.equal(reportRoot.get(fieldName), param);
+        };
     }
 }
