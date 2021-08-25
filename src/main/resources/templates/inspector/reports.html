@@ -32,7 +32,7 @@
         <div class="form-group row">
 
             <div class="col-md-7">
-                <form style="display: inline;" action="#" th:action="@{/inspector/inspector-info}" th:method="POST">
+                <form style="display: inline;" action="#" th:action="@{/inspector/inspector-info}" th:method="GET">
                     <input class="btn btn-success" type="submit" th:value="${#authentication.name}"/>
                 </form>
             </div>
@@ -49,17 +49,20 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-4">
             <div class="input-group">
                 <form action="#" th:action="@{/inspector/search}" th:method="GET">
-                    <input id="search" name="search" class="form-control rounded"
-                           placeholder="Search" aria-label="Search" aria-describedby="search-addon"/>
-                    <button type="submit" class="btn btn-outline-primary">Find</button>
+                    <div class="d-flex flex-row">
+                        <input th:id="search" th:name="search" th:value="${search}"
+                               class="form-control rounded" placeholder="Enter id, ipn, name, surname"
+                               aria-label="Search" aria-describedby="search-addon"/>
+                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                    </div>
                 </form>
             </div>
         </div>
 
-        <div class="col-sm-8">
+        <div class="col-8">
             <form action="#" th:action="@{/inspector/reports}" th:method="GET">
                 <label for="date">
                     Select date:
@@ -100,55 +103,54 @@
         </div>
 
     </div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Report id</th>
-            <th scope="col">User</th>
-            <th scope="col">IPN</th>
-            <th scope="col">Report date</th>
-            <th scope="col">Year</th>
-            <th scope="col">Period</th>
-            <th scope="col">Comment</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
-        </tr>
-        </thead>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Report id</th>
+                <th scope="col">User full name</th>
+                <th scope="col">IPN</th>
+                <th scope="col">Report date</th>
+                <th scope="col">Year</th>
+                <th scope="col">Period</th>
+                <th scope="col">Comment</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
 
-        <tbody>
-<!--        <tr th:if="${e}">-->
-<!--            <td><p>dsdasd</p></td>-->
-<!--            <td style="text-align: center" colspan="9" th:text="${errorNoResult}">No result</td>-->
-<!--        </tr>-->
-        <tr th:each="report: ${reports}">
-            <td><span th:text="${report.id}">Report id</span></td>
-            <td><a th:href="@{/inspector/user-view(userId=${report.user.id})}"
-                   th:text="${report.user.firstName} + ' ' + ${report.user.lastName}">Name Surname</a>
-            </td>
-            <td><span th:text="${report.user.ipn}">IPN</span></td>
-            <td><span th:text="${report.reportDate}">Report Date</span></td>
-            <td><span th:text="${report.year}">Year</span></td>
-            <td><span th:text="${report.taxPeriod.getPeriod()}">Report Period</span></td>
-            <!--            ToDo: add yes or no for comment exists-->
-            <td><span th:text="${report.comment}">Comment</span></td>
-            <td><span th:text="${report.status.getStatusName()}">status</span></td>
-            <td>
-                <div>
+            <tbody>
+            <tr>
+                <td class="text-center" colspan="9">
+                    <div th:if="${errorNoResult != null}" th:text="${errorNoResult}">
+                        Error no result
+                    </div>
+                </td>
+            </tr>
+            <tr th:each="report: ${reports}">
+                <td><span th:text="${report.id}">Report id</span></td>
+                <td><a th:href="@{/inspector/user-view(userId=${report.user.id})}"
+                       th:text="${report.user.firstName} + ' ' + ${report.user.lastName}">Name Surname</a>
+                </td>
+                <td><span th:text="${report.user.ipn}">IPN</span></td>
+                <td><span th:text="${report.reportDate}">Report Date</span></td>
+                <td><span th:text="${report.year}">Year</span></td>
+                <td><span th:text="${report.taxPeriod.getPeriod()}">Report Period</span></td>
+                <!--            ToDo: add yes or no for comment exists-->
+                <td><span th:text="${report.comment}">Comment</span></td>
+                <td><span th:text="${report.status.getStatusName()}">status</span></td>
+                <td>
+                    <div>
 
-                    <form action="#" th:action="@{/inspector/report-view}" th:method="GET">
-                        <input type="hidden" id="report" name="reportId" th:value="${report.id}">
-                        <input type="submit" value="View"/>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <div th:if="${true}">
-        <div>
-            <p th:text="${errorNoResult}"></p>
-        </div>
+                        <form action="#" th:action="@{/inspector/report-view}" th:method="GET">
+                            <input type="hidden" id="report" name="reportId" th:value="${report.id}">
+                            <input type="submit" value="View"/>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 

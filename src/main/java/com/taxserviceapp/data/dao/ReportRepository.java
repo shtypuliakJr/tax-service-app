@@ -22,13 +22,13 @@ public interface ReportRepository extends JpaRepository<Report, Long>, JpaSpecif
 
     Integer countAllByStatus(Status status);
 
-    Optional<List<Report>> findAllByUser_FirstNameAndUser_LastName(String user_firstName, String user_lastName);
+    List<Report> findAllByUser_FirstNameAndUser_LastName(String user_firstName, String user_lastName);
 
-    Optional<List<Report>> findAllByUser_FirstNameOrUser_LastName(String user_firstName, String user_lastName);
+    List<Report> findAllByUser_FirstNameOrUser_LastName(String user_firstName, String user_lastName);
 
-    Optional<List<Report>> findAllById(Long parseInt);
+    List<Report> findAllById(Long parseInt);
 
-    Optional<List<Report>> findAllByUser_Ipn(String parseInt);
+    List<Report> findAllByUser_Ipn(String parseInt);
 
 
 }

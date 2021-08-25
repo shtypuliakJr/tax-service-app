@@ -78,7 +78,7 @@
         </tr>
         <tr>
             <td><b>Personality: </b></td>
-            <td><span th:utext="${userInfo.personality.getPersonalityName()}"></span></td>
+            <td><span th:utext="#{${'user.data.dto.personality.name.' + userInfo.personality}}"></span></td>
         </tr>
         <tr>
             <td><b>Address: </b></td>

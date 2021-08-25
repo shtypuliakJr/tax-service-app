@@ -1,11 +1,13 @@
 package com.taxserviceapp.web.controller;
 
 import com.taxserviceapp.business.service.InspectorService;
+import com.taxserviceapp.business.service.ReportService;
 import com.taxserviceapp.business.service.UserService;
 import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.exceptions.NoReportsFoundException;
+import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
 import com.taxserviceapp.web.dto.StatisticDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +28,13 @@ import java.util.List;
 public class InspectorController {
 
     private final InspectorService inspectorService;
+    private final ReportService reportService;
     private final UserService userService;
 
     @Autowired
-    public InspectorController(InspectorService inspectorService, UserService userService) {
+    public InspectorController(InspectorService inspectorService, ReportService reportService, UserService userService) {
         this.inspectorService = inspectorService;
+        this.reportService = reportService;
         this.userService = userService;
     }
 
@@ -53,6 +57,7 @@ public class InspectorController {
         List<Report> reports = inspectorService.getReportsByRequestParam(id, date, period, status, sortField);
         model.addAttribute("reports", reports);
 
+        model.addAttribute("lastSelectedDate", date);
         model.addAttribute("lastSelectedPeriod", period);
         model.addAttribute("lastSelectedStatus", status);
         model.addAttribute("lastSelectedSort", sortField);
@@ -65,15 +70,13 @@ public class InspectorController {
                                      Model model) {
 
         try {
-            System.out.println("pre");
-            List<Report> reports = inspectorService.getReportsBySearchParameter(searchParam.trim());
-            System.out.println("Reports size" + reports.size());
-            System.out.println("after");
+            List<ReportDTO> reports = inspectorService.getReportsBySearchParameter(searchParam.trim());
             model.addAttribute("reports", reports);
         } catch (NoReportsFoundException exception) {
-            System.out.println("error" + exception.getMessage());
             model.addAttribute("errorNoResult", exception.getMessage());
         }
+
+        model.addAttribute("search", searchParam);
 
         return "inspector/reports";
     }

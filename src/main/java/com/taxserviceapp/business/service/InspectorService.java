@@ -6,6 +6,8 @@ import com.taxserviceapp.data.entity.*;
 import com.taxserviceapp.exceptions.NoReportsFoundException;
 import com.taxserviceapp.exceptions.NoUserFoundException;
 import com.taxserviceapp.exceptions.ReportNotFoundException;
+import com.taxserviceapp.utility.PojoConverter;
+import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
 import com.taxserviceapp.web.dto.StatisticDTO;
 import org.apache.tomcat.util.buf.StringUtils;
@@ -115,39 +117,42 @@ public class InspectorService {
                         Collectors.reducing(0, report -> 1, Integer::sum)));
     }
 
-    public List<Report> getReportsBySearchParameter(String searchParam) throws NoReportsFoundException {
+    public List<ReportDTO> getReportsBySearchParameter(String searchParam) throws NoReportsFoundException {
+
+        List<ReportDTO> reportDTOS = findReportsBySearchParam(searchParam).stream()
+                .map(PojoConverter::convertReportEntityToDTO)
+                .collect(Collectors.toList());
+
+        if (reportDTOS.isEmpty())
+            throw new NoReportsFoundException("No reports found by search");
+
+        return reportDTOS;
+    }
+
+    private List<Report> findReportsBySearchParam(String searchParam) throws NoReportsFoundException {
 
         if (searchParam.isEmpty())
             return reportRepository.findAll();
+        if (searchParam.matches("[0-9]+")) {
+            if (searchParam.matches("^[0-9]{12}"))
+                return reportRepository.findAllByUser_Ipn(searchParam);
 
-        if (searchParam.matches("^[a-zA-Z\\s]+")) {
+            if (searchParam.matches("^[0-9]+"))
+                return reportRepository.findAllById(Long.parseLong(searchParam));
+
+        }
+
+        if (searchParam.matches("[\\w]+[\\s]?[\\w]+")) {
 
             StringTokenizer fullName = new StringTokenizer(searchParam, " ");
             if (fullName.countTokens() == 1) {
                 String nameOrSurname = fullName.nextToken();
-
-                return reportRepository
-                        .findAllByUser_FirstNameOrUser_LastName(nameOrSurname, nameOrSurname)
-                        .orElseThrow(() -> new NoReportsFoundException("No results found by " + searchParam));
+                return reportRepository.findAllByUser_FirstNameOrUser_LastName(nameOrSurname, nameOrSurname);
             } else {
                 return reportRepository
-                        .findAllByUser_FirstNameAndUser_LastName(fullName.nextToken(), fullName.nextToken())
-                        .orElseThrow(() -> new NoReportsFoundException("No results found by full name" + searchParam));
+                        .findAllByUser_FirstNameAndUser_LastName(fullName.nextToken(), fullName.nextToken());
             }
         }
-        if (searchParam.matches("[0-9]+")) {
-            if (searchParam.matches("^[0-9]{12}"))
-                return reportRepository
-                        .findAllByUser_Ipn(searchParam)
-                        .orElseThrow(() -> new ReportNotFoundException("No reports found by ipn " + searchParam));
-
-            if (searchParam.matches("^[0-9]+"))
-                return reportRepository
-                        .findAllById(Long.parseLong(searchParam))
-                        .orElseThrow(() -> new NoReportsFoundException("No reports found by id " + searchParam));
-
-        }
-        System.out.println("No report found by search");
-        throw new NoReportsFoundException("No report found by search");
+        throw new NoReportsFoundException("No reports found by search");
     }
 }

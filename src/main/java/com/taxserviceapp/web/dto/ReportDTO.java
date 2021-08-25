@@ -35,6 +35,7 @@ public class ReportDTO {
     @Max(value = 2021, message = "Year is not valid")
     private Integer year;
 
+    private User user;
     private Long userId;
 
     Date reportDate;

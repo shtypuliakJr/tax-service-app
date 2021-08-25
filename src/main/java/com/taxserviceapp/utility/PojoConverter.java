@@ -40,6 +40,7 @@ public class PojoConverter {
                 .status(report.getStatus())
                 .reportDate(report.getReportDate())
                 .comment(report.getComment())
+                .user(report.getUser())
                 .build();
     }
 
