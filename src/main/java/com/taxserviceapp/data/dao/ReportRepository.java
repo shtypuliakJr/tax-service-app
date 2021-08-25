@@ -4,6 +4,8 @@ import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,6 +27,13 @@ public interface ReportRepository extends JpaRepository<Report, Long>, JpaSpecif
     List<Report> findAllByUser_FirstNameAndUser_LastName(String user_firstName, String user_lastName);
 
     List<Report> findAllByUser_FirstNameOrUser_LastName(String user_firstName, String user_lastName);
+
+    @Query("SELECT r from Report r where user.firstName like %:firstName% and user.lastName like %:lastName%")
+    List<Report> findAllByFirstAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
+
+    @Query("SELECT r from Report r where user.firstName like %:firstName% or user.lastName like %:lastName%")
+    List<Report> findAllByFirstOrLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
+
 
     List<Report> findAllById(Long parseInt);
 

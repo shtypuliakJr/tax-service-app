@@ -147,10 +147,11 @@ public class InspectorService {
             StringTokenizer fullName = new StringTokenizer(searchParam, " ");
             if (fullName.countTokens() == 1) {
                 String nameOrSurname = fullName.nextToken();
-                return reportRepository.findAllByUser_FirstNameOrUser_LastName(nameOrSurname, nameOrSurname);
+                return reportRepository.findAllByFirstOrLastName(nameOrSurname, nameOrSurname);
+//                return reportRepository.findAllByUser_FirstNameOrUser_LastName(nameOrSurname, nameOrSurname);
             } else {
-                return reportRepository
-                        .findAllByUser_FirstNameAndUser_LastName(fullName.nextToken(), fullName.nextToken());
+                return reportRepository.findAllByFirstAndLastName(fullName.nextToken(),fullName.nextToken());
+//                        .findAllByUser_FirstNameAndUser_LastName(fullName.nextToken(), fullName.nextToken());
             }
         }
         throw new NoReportsFoundException("No reports found by search");
