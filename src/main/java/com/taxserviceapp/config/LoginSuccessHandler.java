@@ -18,8 +18,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     private final GrantedAuthority inspectorAuthority = new SimpleGrantedAuthority(UserRole.INSPECTOR.getAuthority());
     private final GrantedAuthority userAuthority = new SimpleGrantedAuthority(UserRole.USER.getAuthority());
 
-//    private RequestCache requestCache = new HttpSessionRequestCache();
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
@@ -32,8 +30,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
             successfulURL = "/user/user";
         }
 
-        //clearAuthenticationAttributes(request);
         getRedirectStrategy().sendRedirect(request, response, successfulURL);
-
     }
 }

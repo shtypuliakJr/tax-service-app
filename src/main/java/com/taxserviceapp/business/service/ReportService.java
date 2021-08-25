@@ -60,7 +60,7 @@ public class ReportService {
     public List<Report> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,
                                                  Status status, SortField sortField) throws NoResultException {
 
-        Specification<Report> specification = Specification
+        Specification<Report>  specification = Specification
                 .where(filterField(id, "user")
                         .and(filterField(status, "status"))
                         .and(filterField(reportDate, "reportDate"))

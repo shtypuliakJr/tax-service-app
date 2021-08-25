@@ -79,7 +79,7 @@
                 </select>
 
                 <select id="status" name="status" class="form-select" aria-label="Default select example">
-                    <option selected value="">Select period</option>
+                    <option selected value="">Select status</option>
                     <option th:each="status : ${T(com.taxserviceapp.data.entity.Status).values()}"
                             th:text="${status.getStatusName()}"
                             th:value="${status.name()}"
