@@ -41,8 +41,7 @@ public class UserController {
         Long id = ((User) authentication.getPrincipal()).getId();
 
         try {
-            List<ReportDTO> reports = reportService.getReportsByRequestParam(id, date, period, status, sortField)
-                    .stream().map(PojoConverter::convertReportEntityToDTO).collect(Collectors.toList());
+            List<ReportDTO> reports = reportService.getReportsByRequestParam(id, date, period, status, sortField);
             model.addAttribute("reportList", reports);
         } catch (NoReportsFoundException e) {
             model.addAttribute("errorNoResult", e.getMessage());

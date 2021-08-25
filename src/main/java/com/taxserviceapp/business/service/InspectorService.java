@@ -46,35 +46,29 @@ public class InspectorService {
     public List<ReportDTO> getReportsByParameters(Long id, Date reportDate, TaxPeriod period,
                                                   Status status, SortField sortField) throws NoReportsFoundException {
 
-        List<Report> reports =
-                reportService.getReportsByRequestParam(id, reportDate, period, status, sortField);
+//        List<ReportDTO> reportDTOS = reportService
+//                .getReportsByRequestParam(id, reportDate, period, status, sortField).stream()
+//                .map(PojoConverter::convertReportEntityToDTO)
+//                .collect(Collectors.toList());
+//
+//        if (reportDTOS.isEmpty())
+//            throw new NoReportsFoundException("No reports found");
 
-        if (!reports.isEmpty()) {
-            return reports.stream()
-                    .map(PojoConverter::convertReportEntityToDTO)
-                    .collect(Collectors.toList());
-        }
+        return reportService.getReportsByRequestParam(id, reportDate, period, status, sortField);
+//        return reportDTOS;
 
-        throw new NoReportsFoundException("No reports found by filter");
     }
 
     public ReportDTO getReportById(Long reportId) throws ReportNotFoundException {
         return reportService.findReportById(reportId);
-//        return reportRepository.findById(reportId)
-//                .map(PojoConverter::convertReportEntityToDTO)
-//                .orElseThrow(() -> new NoReportFoundById("No report found by id"));
     }
 
     public List<ReportDTO> getReportsBySearchParameter(String searchParam) throws NoReportsFoundException {
 
-        List<ReportDTO> reportDTOS = findReportsBySearchParam(searchParam).stream()
+        return findReportsBySearchParam(searchParam).stream()
                 .map(PojoConverter::convertReportEntityToDTO)
                 .collect(Collectors.toList());
 
-        if (reportDTOS.isEmpty())
-            throw new NoReportsFoundException("No reports found by search");
-
-        return reportDTOS;
     }
 
     //ToDo: refactoring

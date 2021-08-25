@@ -132,8 +132,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${reportList.isEmpty()}">
-                    <td colspan="8">No result</td>
+                <tr>
+                    <td class="text-center" colspan="8">
+                        <div th:if="${reportList != null}" th:text="${errorNoResult}">
+                            Error no result
+                        </div>
+                    </td>
                 </tr>
                 <tr th:each="report: ${reportList}">
                     <td><span th:text="${report.income}">income</span></td>
@@ -165,7 +169,3 @@
 </div>
 </body>
 </html>
-
-<!--ToDo: 1) sortField choice and find-->
-<!--ToDo: 2) every report has link to page with info and functions (edit, push)-->
-<!--ToDo: 3) add localization-->

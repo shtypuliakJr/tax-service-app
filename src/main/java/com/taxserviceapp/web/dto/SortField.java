@@ -2,11 +2,11 @@ package com.taxserviceapp.web.dto;
 
 public enum SortField {
 
-    YEAR_OLD("Year old", "year", "desc"),
-    YEAR_NEW("Year new", "year", "asc"),
+    YEAR_OLD("Year old", "year", "asc"),
+    YEAR_NEW("Year new", "year", "desc"),
 
-    DATE_OLD("Date old", "reportDate", "desc"),
-    DATE_NEW("Date new", "reportDate", "asc");
+    DATE_OLD("Date old", "reportDate", "asc"),
+    DATE_NEW("Date new", "reportDate", "desc");
 
     public String sortName;
     public String fieldInTable;

@@ -132,12 +132,10 @@
                 <td><span th:text="${report.reportDate}">Report Date</span></td>
                 <td><span th:text="${report.year}">Year</span></td>
                 <td><span th:text="${report.taxPeriod.getPeriod()}">Report Period</span></td>
-                <!--            ToDo: add yes or no for comment exists-->
                 <td><span th:text="${report.comment}">Comment</span></td>
                 <td><span th:text="${report.status.getStatusName()}">status</span></td>
                 <td>
                     <div>
-
                         <form action="#" th:action="@{/inspector/report-view}" th:method="GET">
                             <input type="hidden" id="report" name="reportId" th:value="${report.id}">
                             <input type="submit" value="View"/>

@@ -90,7 +90,7 @@
         </tbody>
     </table>
     <div>
-        <form action="#" th:action="@{/inspector/reports}" th:method="get">
+        <form action="#" th:action="@{/inspector/reports}" th:method="GET">
             <input type="hidden" th:id="userId" th:name="userId" th:value="${userInfo.userId}"/>
             <button type="submit" class="btn btn-outline-primary">Show reports</button>
         </form>

@@ -114,9 +114,9 @@
                     </option>
                 </select>
             </div>
-                        <div th:if="${error != null}" class="alert alert-danger">
-                            <label data-th-text="${error}" class="validation-message"></label>
-                        </div>
+            <div th:if="${error != null}" class="alert alert-danger">
+                <label data-th-text="${error}" class="validation-message"></label>
+            </div>
             <div>
                 <input type="hidden" th:id="reportId" th:name="reportId" th:value="${report.id}"/>
                 <input type="submit" value="Add comment" class="btn btn-outline-primary"/>

@@ -34,7 +34,6 @@ public interface ReportRepository extends JpaRepository<Report, Long>, JpaSpecif
     @Query("SELECT r from Report r where user.firstName like %:firstName% or user.lastName like %:lastName%")
     List<Report> findAllByFirstOrLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 
-
     List<Report> findAllById(Long parseInt);
 
     List<Report> findAllByUser_Ipn(String parseInt);

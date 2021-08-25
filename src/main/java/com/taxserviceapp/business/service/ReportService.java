@@ -1,5 +1,7 @@
 package com.taxserviceapp.business.service;
 
+import com.fasterxml.jackson.databind.cfg.MapperBuilder;
+import com.fasterxml.jackson.databind.ext.OptionalHandlerFactory;
 import com.taxserviceapp.data.dao.ReportRepository;
 import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
@@ -12,13 +14,16 @@ import com.taxserviceapp.web.dto.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.util.Optionals;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReportService {
@@ -48,15 +53,27 @@ public class ReportService {
 
     @Transactional
     public Report updateReport(Report report) throws ReportNotFoundException {
-        if (reportRepository.existsById(report.getId())) {
-            return reportRepository.save(report);
-        } else {
-            throw new ReportNotFoundException("No report found");
-        }
+
+        return Optional.of(reportRepository.existsById(report.getId()))
+                .filter(isExist -> isExist)
+                .map((isExist) -> reportRepository.save(report))
+                .orElseThrow(() -> new ReportNotFoundException("No report found"));
+
+//        return reportRepository.findById(report.getId())
+//                .map(rep -> reportRepository.save(report))
+//                .orElseThrow(() -> new ReportNotFoundException("No report found"));
+
+
+//        if (reportRepository.existsById(report.getId())) {
+//
+//            return reportRepository.save(report);
+//        } else {
+//            throw new ReportNotFoundException("No report found");
+//        }
     }
 
-    public List<Report> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,
-                                                 Status status, SortField sortField) throws NoReportsFoundException {
+    public List<ReportDTO> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,
+                                                    Status status, SortField sortField) throws NoReportsFoundException {
 
         Specification<Report> specification = Specification
                 .where(filterField(id, "user")
@@ -64,16 +81,15 @@ public class ReportService {
                         .and(filterField(reportDate, "reportDate"))
                         .and(filterField(period, "taxPeriod")));
 
-        Optional<List<Report>> reports;
-
-        if (sortField != null) {
-            reports = Optional.of(reportRepository.findAll(specification,
-                    Sort.by(getDirection(sortField.direction), sortField.getFieldInTable())));
-        } else {
-            reports = Optional.of(reportRepository.findAll(specification));
-        }
-
-        return reports.orElseThrow(() -> new NoReportsFoundException("No reports found by parameters"));
+        return Optional.of(Optional.ofNullable(sortField)
+                        .map(sortF -> reportRepository.findAll(specification,
+                                Sort.by(getDirection(sortField.direction), sortField.getFieldInTable())))
+                        .orElse(reportRepository.findAll(specification)))
+                .filter(collection -> !collection.isEmpty())
+                .map((reports) -> reports.stream()
+                        .map(PojoConverter::convertReportEntityToDTO)
+                        .collect(Collectors.toList()))
+                .orElseThrow(() -> new NoReportsFoundException("No reports found"));
     }
 
     Sort.Direction getDirection(String direction) {
@@ -82,10 +98,14 @@ public class ReportService {
 
     private <T> Specification<Report> filterField(T param, String fieldName) {
         return (reportRoot, criteriaQuery, criteriaBuilder) -> {
-            if (param == null) {
-                return criteriaBuilder.conjunction();
-            }
-            return criteriaBuilder.equal(reportRoot.get(fieldName), param);
+
+            return Optional.ofNullable(param)
+                    .map((p) -> criteriaBuilder.equal(reportRoot.get(fieldName), param))
+                    .orElseGet(criteriaBuilder::conjunction);
+//            if (param == null) {
+//                return criteriaBuilder.conjunction();
+//            }
+//            return criteriaBuilder.equal(reportRoot.get(fieldName), param);
         };
     }
 }
