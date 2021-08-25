@@ -57,4 +57,18 @@ public class PojoConverter {
                 .user(user)
                 .build();
     }
+
+    public static UserDTO convertUserEntityToDto(User user) {
+        return UserDTO.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .age(String.valueOf(user.getAge()))
+                .ipn(user.getIpn())
+                .dateOfRegistration(Date.valueOf(LocalDate.now()))
+                .address(user.getAddress())
+                .personality(user.getPersonality())
+                .build();
+    }
 }

@@ -75,7 +75,7 @@
             </div>
 
             <div align="right">
-                <form action="#" th:action="@{/user/user}" th:method="get">
+                <form action="#" th:action="@{/user/user}" th:method="GET">
 
                     <label for="date">
                         Select date:
@@ -151,7 +151,7 @@
                             <a style="text-decoration: none" th:href="@{report-edit/{id}(id=${report.id})}">
                                 <input type="button" value="Edit"/>
                             </a>
-                            <a style="text-decoration: none" th:href="@{report-delet/{id}(id=${report.id})}">
+                            <a style="text-decoration: none" th:href="@{report-delete/{id}(id=${report.id})}">
                                 <input type="button" value="Delete"/>
                             </a>
                         </div>

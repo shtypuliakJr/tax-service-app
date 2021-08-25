@@ -4,7 +4,10 @@ import com.taxserviceapp.data.dao.ReportRepository;
 import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
+import com.taxserviceapp.exceptions.NoReportsFoundException;
 import com.taxserviceapp.exceptions.ReportNotFoundException;
+import com.taxserviceapp.utility.PojoConverter;
+import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -14,7 +17,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.util.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,10 +34,10 @@ public class ReportService {
         reportRepository.save(report);
     }
 
-    public Report findReportById(Long id) throws ReportNotFoundException {
+    public ReportDTO findReportById(Long id) throws ReportNotFoundException {
 
-        return reportRepository
-                .findById(id)
+        return reportRepository.findById(id)
+                .map(PojoConverter::convertReportEntityToDTO)
                 .orElseThrow(() -> new ReportNotFoundException("No report found"));
     }
 
@@ -53,12 +55,8 @@ public class ReportService {
         }
     }
 
-    public List<Report> getAllReports() {
-        return reportRepository.findAll();
-    }
-
     public List<Report> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,
-                                                 Status status, SortField sortField) throws NoResultException {
+                                                 Status status, SortField sortField) throws NoReportsFoundException {
 
         Specification<Report>  specification = Specification
                 .where(filterField(id, "user")
@@ -75,10 +73,8 @@ public class ReportService {
             reports = Optional.of(reportRepository.findAll(specification));
         }
 
-        return reports.orElseThrow(() -> new ReportNotFoundException("No result"));
+        return reports.orElseThrow(() -> new NoReportsFoundException("No reports found by parameters"));
     }
-
-
 
     Sort.Direction getDirection(String direction) {
             return direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -93,5 +89,3 @@ public class ReportService {
         };
     }
 }
-
-// ToDo: add paging

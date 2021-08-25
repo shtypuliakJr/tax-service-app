@@ -4,11 +4,13 @@ import com.taxserviceapp.data.entity.Personality;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.*;
+import java.sql.Date;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserDTO {
 
     @NotBlank(message = "{user.data.dto.firstName.error.null}")
@@ -40,5 +42,8 @@ public class UserDTO {
 
     @NotBlank(message = "{user.data.dto.address.error}")
     private String address;
+
+    private Date dateOfRegistration;
+
 
 }

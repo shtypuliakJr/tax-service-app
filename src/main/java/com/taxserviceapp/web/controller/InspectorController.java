@@ -8,9 +8,11 @@ import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.data.entity.User;
 import com.taxserviceapp.exceptions.NoReportsFoundException;
+import com.taxserviceapp.exceptions.NoUserFoundException;
 import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
 import com.taxserviceapp.web.dto.StatisticDTO;
+import com.taxserviceapp.web.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -62,7 +64,7 @@ public class InspectorController {
                                  Model model) {
 
         try {
-            List<ReportDTO> reports = inspectorService.getReportsByRequestParam(id, date, period, status, sortField);
+            List<ReportDTO> reports = inspectorService.getReportsByParameters(id, date, period, status, sortField);
             model.addAttribute("reports", reports);
         } catch (NoReportsFoundException exception) {
             model.addAttribute("errorNoResult", exception.getMessage());
@@ -96,13 +98,12 @@ public class InspectorController {
     public String getUserInfo(@RequestParam(name = "userId") Long userId, Model model) {
 
         try {
-            User userInfoById = userService.getUserInfoById(userId);
+            UserDTO userInfoById = userService.getUserInfoById(userId);
             model.addAttribute("userInfo", userInfoById);
 
-         } catch (NoReportsFoundException exception) {
+         } catch (NoUserFoundException exception) {
             model.addAttribute("errorNoResult", exception.getMessage());
         }
-
 
         return "inspector/user-view";
     }

@@ -1,10 +1,13 @@
 package com.taxserviceapp.web.controller;
 
 import com.taxserviceapp.business.service.ReportService;
+import com.taxserviceapp.business.service.UserService;
 import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.data.entity.User;
+import com.taxserviceapp.exceptions.NoReportsFoundException;
+import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,7 +22,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user")
-public class UserPageController {
+public class UserController {
 
     @Autowired
     ReportService reportService;
@@ -30,12 +33,17 @@ public class UserPageController {
                               @RequestParam(name = "period", required = false) TaxPeriod period,
                               @RequestParam(name = "status", required = false) Status status,
                               @RequestParam(name = "sortField", required = false) SortField sortField,
-                              Authentication authentication, Model model) {
+                              Authentication authentication, Model model){
 
         Long id = ((User) authentication.getPrincipal()).getId();
-        List<Report> reportsByUserId = reportService.getReportsByRequestParam(id, date, period, status, sortField);
+        List<Report> reportsByUserId;
 
-        model.addAttribute("reportList", reportsByUserId);
+        try {
+            reportsByUserId = reportService.getReportsByRequestParam(id, date, period, status, sortField);
+            model.addAttribute("reportList", reportsByUserId);
+        } catch (NoReportsFoundException e) {
+            model.addAttribute("errorNoResult", e.getMessage());
+        }
 
         return "user/user";
     }

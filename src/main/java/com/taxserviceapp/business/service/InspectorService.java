@@ -2,17 +2,17 @@ package com.taxserviceapp.business.service;
 
 import com.taxserviceapp.data.dao.ReportRepository;
 import com.taxserviceapp.data.dao.UserRepository;
-import com.taxserviceapp.data.entity.*;
+import com.taxserviceapp.data.entity.Report;
+import com.taxserviceapp.data.entity.Status;
+import com.taxserviceapp.data.entity.TaxPeriod;
+import com.taxserviceapp.data.entity.UserRole;
 import com.taxserviceapp.exceptions.NoReportFoundById;
 import com.taxserviceapp.exceptions.NoReportsFoundException;
-import com.taxserviceapp.exceptions.ReportNotFoundException;
 import com.taxserviceapp.utility.PojoConverter;
 import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
 import com.taxserviceapp.web.dto.StatisticDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class InspectorService {
+
+    @Autowired
+    private ReportService reportService;
 
     private final UserRepository userRepository;
     private final ReportRepository reportRepository;
@@ -41,49 +44,26 @@ public class InspectorService {
                 .collect(Collectors.toList());
     }
 
-    public List<ReportDTO> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,
-                                                    Status status, SortField sortField) throws NoReportsFoundException {
+    public List<ReportDTO> getReportsByParameters(Long id, Date reportDate, TaxPeriod period,
+                                                  Status status, SortField sortField) throws NoReportsFoundException {
 
-        Specification<Report> specification = Specification
-                .where(filterField(id, "user")
-                        .and(filterField(status, "status"))
-                        .and(filterField(reportDate, "reportDate"))
-                        .and(filterField(period, "taxPeriod")));
+        List<Report> reports =
+                reportService.getReportsByRequestParam(id, reportDate, period, status, sortField);
 
-        Optional<List<Report>> reports;
-
-        if (sortField != null) {
-            reports = Optional.of(reportRepository.findAll(specification,
-                    Sort.by(getDirection(sortField.direction), sortField.getFieldInTable())));
-        } else {
-            reports = Optional.of(reportRepository.findAll(specification));
-        }
-
-        List<Report> reportList = reports.get();
-
-        if (!reportList.isEmpty())
-            return reportList.stream()
+        if (!reports.isEmpty()) {
+            return reports.stream()
                     .map(PojoConverter::convertReportEntityToDTO)
                     .collect(Collectors.toList());
+        }
 
-        throw new ReportNotFoundException("No reports found by filter");
-
+        throw new NoReportsFoundException("No reports found by filter");
     }
-//
-//    public Report updateCommentAndStatusById(Long id) {
-//        reportRepository.()
-//        return
-//    }
-
-    Sort.Direction getDirection(String direction) {
-        return direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
-    }
-
 
     public ReportDTO getReportById(Long reportId) throws NoReportsFoundException {
-        return reportRepository.findById(reportId)
-                .map(PojoConverter::convertReportEntityToDTO)
-                .orElseThrow(() -> new NoReportFoundById("No report found by id"));
+        return reportService.findReportById(reportId);
+//        return reportRepository.findById(reportId)
+//                .map(PojoConverter::convertReportEntityToDTO)
+//                .orElseThrow(() -> new NoReportFoundById("No report found by id"));
     }
 
     public List<ReportDTO> getReportsBySearchParameter(String searchParam) throws NoReportsFoundException {
@@ -97,7 +77,7 @@ public class InspectorService {
 
         return reportDTOS;
     }
-
+    //ToDo: refactoring
     public StatisticDTO getStatisticData() {
 
         List<Report> reports = reportRepository.findAll();
@@ -148,21 +128,10 @@ public class InspectorService {
             if (fullName.countTokens() == 1) {
                 String nameOrSurname = fullName.nextToken();
                 return reportRepository.findAllByFirstOrLastName(nameOrSurname, nameOrSurname);
-//                return reportRepository.findAllByUser_FirstNameOrUser_LastName(nameOrSurname, nameOrSurname);
             } else {
-                return reportRepository.findAllByFirstAndLastName(fullName.nextToken(),fullName.nextToken());
-//                        .findAllByUser_FirstNameAndUser_LastName(fullName.nextToken(), fullName.nextToken());
+                return reportRepository.findAllByFirstAndLastName(fullName.nextToken(), fullName.nextToken());
             }
         }
         throw new NoReportsFoundException("No reports found by search");
-    }
-
-    private <T> Specification<Report> filterField(T param, String fieldName) {
-        return (reportRoot, criteriaQuery, criteriaBuilder) -> {
-            if (param == null) {
-                return criteriaBuilder.conjunction();
-            }
-            return criteriaBuilder.equal(reportRoot.get(fieldName), param);
-        };
     }
 }

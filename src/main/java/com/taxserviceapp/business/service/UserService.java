@@ -1,8 +1,9 @@
 package com.taxserviceapp.business.service;
 
 import com.taxserviceapp.data.dao.UserRepository;
-import com.taxserviceapp.data.entity.User;
-import com.taxserviceapp.exceptions.NoReportsFoundException;
+import com.taxserviceapp.exceptions.NoUserFoundException;
+import com.taxserviceapp.utility.PojoConverter;
+import com.taxserviceapp.web.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,7 +27,8 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("No such user"));
     }
 
-    public User getUserInfoById(Long id) throws NoReportsFoundException {
-        return userRepository.getById(id);
+    public UserDTO getUserInfoById(Long id) throws NoUserFoundException {
+        return userRepository.findById(id).map(PojoConverter::convertUserEntityToDto)
+                .orElseThrow(() -> new NoUserFoundException("No user found by id"));
     }
 }
