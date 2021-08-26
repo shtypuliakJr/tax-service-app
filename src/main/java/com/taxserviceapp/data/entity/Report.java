@@ -1,10 +1,7 @@
 package com.taxserviceapp.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,7 +12,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @Table(name = "report")
@@ -52,81 +50,6 @@ public class Report implements Serializable {
     @Column(name = "comment")
     private String comment;
 
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public Integer getIncome() {
-        return income;
-    }
-
-    public void setIncome(Integer income) {
-        this.income = income;
-    }
-
-    public Integer getTaxRate() {
-        return taxRate;
-    }
-
-    public void setTaxRate(Integer taxRate) {
-        this.taxRate = taxRate;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public TaxPeriod getTaxPeriod() {
-        return taxPeriod;
-    }
-
-    public void setTaxPeriod(TaxPeriod taxPeriod) {
-        this.taxPeriod = taxPeriod;
-    }
-
-    public Date getReportDate() {
-        return reportDate;
-    }
-
-    public void setReportDate(Date reportDate) {
-        this.reportDate = reportDate;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     @Override
     public String toString() {
         return "Report{" +
@@ -141,5 +64,4 @@ public class Report implements Serializable {
                 ", comment='" + comment + '\'' +
                 '}';
     }
-
 }

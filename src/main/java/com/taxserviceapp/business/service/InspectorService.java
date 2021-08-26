@@ -54,10 +54,9 @@ public class InspectorService {
 //
 //        if (reportDTOS.isEmpty())
 //            throw new NoReportsFoundException("No reports found");
-
-        return reportService.getReportsByRequestParam(id, reportDate, period, status, sortField);
 //        return reportDTOS;
 
+        return reportService.getReportsByRequestParam(id, reportDate, period, status, sortField);
     }
 
     public ReportDTO getReportById(Long reportId) throws ReportNotFoundException {
@@ -75,6 +74,11 @@ public class InspectorService {
     //ToDo: refactoring
     @Transactional
     public StatisticDTO getStatisticData() {
+
+//        List<Long> countOfStatusList =
+//                reportRepository.getCountsReportsByStatus().stream()
+//                        .flatMap(List::stream)
+//                        .collect(Collectors.toList());
 
         List<Report> reports = reportRepository.findAll();
         Map<Integer, Integer> countsByYearSortedMap = new TreeMap<>(getCountByYear(reports));

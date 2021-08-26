@@ -110,8 +110,7 @@ public class InspectorController {
     @GetMapping("/statistic")
     public String getStatistic(Model model) {
 
-        StatisticDTO statisticDTO = inspectorService.getStatisticData();
-        model.addAttribute("statistic", statisticDTO);
+        model.addAttribute("statistic", inspectorService.getStatisticData());
 
         return "inspector/statistic";
     }

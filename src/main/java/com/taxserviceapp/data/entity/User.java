@@ -71,7 +71,7 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "user",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    @Fetch(value = FetchMode.SELECT)
+//    @Fetch(value = FetchMode.SELECT)
     private List<Report> reports;
 
     @Builder

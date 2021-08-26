@@ -40,11 +40,12 @@ public interface ReportRepository extends JpaRepository<Report, Long>, JpaSpecif
 
     List<Report> findAllByUser_Ipn(String parseInt);
 
-    @Query(value = "SELECT COUNT(*) as totalReportCount," +
-            "       SUM(CASE WHEN r.status = 'PROCESSING' THEN 1 END)," +
-            "       SUM(CASE WHEN r.status = 'APPROVED' THEN 1 END)," +
-            "       SUM(CASE WHEN r.status = 'DISAPPROVED' THEN 1 END)" +
-            "       FROM report as r", nativeQuery = true)
+    @Query(value = "SELECT COUNT(r)," +
+            "       SUM(CASE WHEN r.status = 'PROCESSING' THEN 1 ELSE 0 END)," +
+            "       SUM(CASE WHEN r.status = 'APPROVED' THEN 1 ELSE 0 END)," +
+            "       SUM(CASE WHEN r.status = 'DISAPPROVED' THEN 1 ELSE 0 END)" +
+            "       FROM Report as r")
     List<List<Long>> getCountsReportsByStatus();
+
 }
 
