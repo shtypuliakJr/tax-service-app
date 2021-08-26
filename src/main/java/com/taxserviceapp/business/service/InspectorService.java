@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,15 +48,6 @@ public class InspectorService {
     public List<ReportDTO> getReportsByParameters(Long id, Date reportDate, TaxPeriod period,
                                                   Status status, SortField sortField) throws NoReportsFoundException {
 
-//        List<ReportDTO> reportDTOS = reportService
-//                .getReportsByRequestParam(id, reportDate, period, status, sortField).stream()
-//                .map(PojoConverter::convertReportEntityToDTO)
-//                .collect(Collectors.toList());
-//
-//        if (reportDTOS.isEmpty())
-//            throw new NoReportsFoundException("No reports found");
-//        return reportDTOS;
-
         return reportService.getReportsByRequestParam(id, reportDate, period, status, sortField);
     }
 
@@ -68,43 +60,33 @@ public class InspectorService {
         return findReportsBySearchParam(searchParam).stream()
                 .map(PojoConverter::convertReportEntityToDTO)
                 .collect(Collectors.toList());
-
     }
 
-    //ToDo: refactoring
-    @Transactional
     public StatisticDTO getStatisticData() {
 
-//        List<Long> countOfStatusList =
-//                reportRepository.getCountsReportsByStatus().stream()
-//                        .flatMap(List::stream)
-//                        .collect(Collectors.toList());
-
-        List<Report> reports = reportRepository.findAll();
-        Map<Integer, Long> countsByYearSortedMap = new TreeMap<>(getCountByYear(reports));
-
-        Long countOfUsers = Long.valueOf(userRepository.countAllByUserRole(UserRole.USER));
-        Long countOfInspectors = Long.valueOf(userRepository.countAllByUserRole(UserRole.INSPECTOR));
-
-        Long countOrReports = reportRepository.count();
-        Integer reportsProcessing = reportRepository.countAllByStatus(Status.PROCESSING);
-        Integer reportsDisapproved = reportRepository.countAllByStatus(Status.DISAPPROVED);
-        Integer reportsApproved = reportRepository.countAllByStatus(Status.APPROVED);
-
         return StatisticDTO.builder()
-                .countOfReports(countOrReports)
-                .countOfUsers(countOfUsers)
-                .countOfInspectors(countOfInspectors)
-                .processingReports(reportsProcessing)
-                .approvedReports(reportsApproved)
-                .disapprovedReports(reportsDisapproved)
-                .countReportsPerYear(countsByYearSortedMap)
+                .countOfReports(reportRepository.count())
+                .countOfUsers(Long.valueOf(userRepository.countAllByUserRole(UserRole.USER)))
+                .countOfInspectors(Long.valueOf(userRepository.countAllByUserRole(UserRole.INSPECTOR)))
+                .processingReports(reportRepository.countAllByStatus(Status.PROCESSING))
+                .approvedReports(reportRepository.countAllByStatus(Status.APPROVED))
+                .disapprovedReports(reportRepository.countAllByStatus(Status.DISAPPROVED))
+                .countReportsPerYear(new TreeMap<>(getCountByYear(reportRepository.findAll())))
                 .build();
     }
 
     private Map<Integer, Long> getCountByYear(List<Report> mealList) {
-        return mealList.stream()
-                .collect(Collectors.groupingBy(Report::getYear, Collectors.counting()));
+
+        return mealList.stream().collect(Collectors.groupingBy(Report::getYear, Collectors.counting()));
+    }
+
+    private TreeMap<Integer, Long> getTreeMapCountByYear(List<Report> reports) {
+
+        return reports.stream()
+                .collect(Collectors.groupingBy(Report::getYear, Collectors.counting()))
+                .entrySet().stream()
+                .collect(Collectors.groupingBy(Map.Entry::getKey, TreeMap::new,
+                        Collectors.mapping(Map.Entry::getValue, Collectors.counting())));
     }
 
     private List<Report> findReportsBySearchParam(String searchParam) throws NoReportsFoundException {
@@ -170,4 +152,5 @@ public class InspectorService {
                 }).map(PojoConverter::convertReportEntityToDTO)
                 .orElseThrow(() -> new ReportNotFoundException("No report found"));
     }
+
 }

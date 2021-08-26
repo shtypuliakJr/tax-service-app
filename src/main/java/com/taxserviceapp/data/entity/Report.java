@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @Table(name = "report")
 public class Report implements Serializable {
@@ -50,18 +51,4 @@ public class Report implements Serializable {
     @Column(name = "comment")
     private String comment;
 
-    @Override
-    public String toString() {
-        return "Report{" +
-                "id=" + id +
-                ", taxPeriod=" + taxPeriod +
-                ", year=" + year +
-                ", income=" + income +
-                ", taxRate=" + taxRate +
-                ", reportDate=" + reportDate +
-                ", user=" + user +
-                ", status='" + status + '\'' +
-                ", comment='" + comment + '\'' +
-                '}';
-    }
 }
