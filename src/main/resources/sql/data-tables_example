@@ -24,3 +24,39 @@ create table report
         primary key (id)
 );
 
+#------------------New----------------------------#
+create table user
+(
+    id bigint auto_increment
+        primary key,
+    age int not null,
+    date datetime(6) not null,
+    email varchar(255) not null,
+    active bit not null,
+    first_name varchar(255) not null,
+    ipn varchar(255) not null,
+    last_name varchar(255) not null,
+    user_password varchar(255) not null,
+    user_role varchar(255) not null,
+    address varchar(255) not null,
+    personality varchar(255) not null,
+    constraint UK_ob8kqyqqgmefl0aco34akdtpe
+        unique (email)
+);
+
+create table report
+(
+    id bigint auto_increment
+        primary key,
+    comment varchar(255) null,
+    income int null,
+    status varchar(255) null,
+    report_date date null,
+    tax_period varchar(255) null,
+    tax_rate int null,
+    year int null,
+    user_id bigint null,
+    constraint FKj62onw73yx1qnmd57tcaa9q3a
+        foreign key (user_id) references user (id)
+);
+

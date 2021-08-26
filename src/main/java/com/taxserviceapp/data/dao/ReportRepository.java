@@ -8,8 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long>, JpaSpecificationExecutor<Report> {
@@ -37,5 +39,12 @@ public interface ReportRepository extends JpaRepository<Report, Long>, JpaSpecif
     List<Report> findAllById(Long parseInt);
 
     List<Report> findAllByUser_Ipn(String parseInt);
+
+    @Query(value = "SELECT COUNT(*) as totalReportCount," +
+            "       SUM(CASE WHEN r.status = 'PROCESSING' THEN 1 END)," +
+            "       SUM(CASE WHEN r.status = 'APPROVED' THEN 1 END)," +
+            "       SUM(CASE WHEN r.status = 'DISAPPROVED' THEN 1 END)" +
+            "       FROM report as r", nativeQuery = true)
+    List<List<Long>> getCountsReportsByStatus();
 }
 

@@ -14,6 +14,7 @@ import com.taxserviceapp.web.dto.StatisticDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,19 +73,19 @@ public class InspectorService {
     }
 
     //ToDo: refactoring
+    @Transactional
     public StatisticDTO getStatisticData() {
 
         List<Report> reports = reportRepository.findAll();
+        Map<Integer, Integer> countsByYearSortedMap = new TreeMap<>(getCountByYear(reports));
 
         Long countOfUsers = Long.valueOf(userRepository.countAllByUserRole(UserRole.USER));
-        Long countOrReports = reportRepository.count();
         Long countOfInspectors = Long.valueOf(userRepository.countAllByUserRole(UserRole.INSPECTOR));
 
+        Long countOrReports = reportRepository.count();
         Integer reportsProcessing = reportRepository.countAllByStatus(Status.PROCESSING);
         Integer reportsDisapproved = reportRepository.countAllByStatus(Status.DISAPPROVED);
         Integer reportsApproved = reportRepository.countAllByStatus(Status.APPROVED);
-
-        Map<Integer, Integer> countsByYearSortedMap = new TreeMap<>(getCountByYear(reports));
 
         return StatisticDTO.builder()
                 .countOfReports(countOrReports)

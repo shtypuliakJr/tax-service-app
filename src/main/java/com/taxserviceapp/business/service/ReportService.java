@@ -54,22 +54,7 @@ public class ReportService {
     @Transactional
     public Report updateReport(Report report) throws ReportNotFoundException {
 
-        return Optional.of(reportRepository.existsById(report.getId()))
-                .filter(isExist -> isExist)
-                .map((isExist) -> reportRepository.save(report))
-                .orElseThrow(() -> new ReportNotFoundException("No report found"));
-
-//        return reportRepository.findById(report.getId())
-//                .map(rep -> reportRepository.save(report))
-//                .orElseThrow(() -> new ReportNotFoundException("No report found"));
-
-
-//        if (reportRepository.existsById(report.getId())) {
-//
-//            return reportRepository.save(report);
-//        } else {
-//            throw new ReportNotFoundException("No report found");
-//        }
+        return reportRepository.save(report);
     }
 
     public List<ReportDTO> getReportsByRequestParam(Long id, Date reportDate, TaxPeriod period,

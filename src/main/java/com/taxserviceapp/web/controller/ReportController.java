@@ -65,6 +65,7 @@ public class ReportController {
             model.addAttribute("report", reportDTO);
             return "user/report-edit";
         }
+
         reportService.updateReport(PojoConverter.convertReportDTOToEntity(reportDTO,
                 (User) authentication.getPrincipal()));
 
