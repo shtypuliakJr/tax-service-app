@@ -81,7 +81,7 @@ public class InspectorService {
 //                        .collect(Collectors.toList());
 
         List<Report> reports = reportRepository.findAll();
-        Map<Integer, Integer> countsByYearSortedMap = new TreeMap<>(getCountByYear(reports));
+        Map<Integer, Long> countsByYearSortedMap = new TreeMap<>(getCountByYear(reports));
 
         Long countOfUsers = Long.valueOf(userRepository.countAllByUserRole(UserRole.USER));
         Long countOfInspectors = Long.valueOf(userRepository.countAllByUserRole(UserRole.INSPECTOR));
@@ -102,10 +102,9 @@ public class InspectorService {
                 .build();
     }
 
-    private Map<Integer, Integer> getCountByYear(List<Report> mealList) {
+    private Map<Integer, Long> getCountByYear(List<Report> mealList) {
         return mealList.stream()
-                .collect(Collectors.groupingBy(Report::getYear,
-                        Collectors.reducing(0, report -> 1, Integer::sum)));
+                .collect(Collectors.groupingBy(Report::getYear, Collectors.counting()));
     }
 
     private List<Report> findReportsBySearchParam(String searchParam) throws NoReportsFoundException {

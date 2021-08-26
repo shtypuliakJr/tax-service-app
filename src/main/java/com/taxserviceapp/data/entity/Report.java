@@ -34,7 +34,7 @@ public class Report implements Serializable {
     private Integer income;
 
     @Column(name = "tax_rate")
-    private Integer taxRate; // 3 or 5 or 15%
+    private Integer taxRate;
 
     @Column(name = "report_date")
     private Date reportDate;

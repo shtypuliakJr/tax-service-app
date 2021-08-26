@@ -70,12 +70,13 @@ public class User implements UserDetails, Serializable {
 
     @OneToMany(mappedBy = "user",
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL, targetEntity = Report.class)
 //    @Fetch(value = FetchMode.SELECT)
     private List<Report> reports;
 
     @Builder
-    public User(String firstName, String lastName, String email, String password, Integer age, String ipn, Date dateOfRegistration, UserRole userRole, boolean enabled, Personality personality, String address) {
+    public User(String firstName, String lastName, String email, String password, Integer age, String ipn,
+                Date dateOfRegistration, UserRole userRole, boolean enabled, Personality personality, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

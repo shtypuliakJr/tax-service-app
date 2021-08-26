@@ -21,5 +21,5 @@ public class StatisticDTO {
     private Integer approvedReports;
     private Integer disapprovedReports;
 
-    Map<Integer, Integer> countReportsPerYear;
+    Map<Integer, Long> countReportsPerYear;
 }
