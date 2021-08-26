@@ -33,8 +33,8 @@ public class PojoConverter {
 
         return ReportDTO.builder()
                 .id(report.getId())
-                .income(report.getIncome())
-                .taxRate(report.getTaxRate())
+                .income(report.getIncome().toString())
+                .taxRate(report.getTaxRate().toString())
                 .taxPeriod(report.getTaxPeriod())
                 .year(report.getYear())
                 .status(report.getStatus())
@@ -48,8 +48,8 @@ public class PojoConverter {
 
         return Report.builder()
                 .id(reportDTO.getId())
-                .income(reportDTO.getIncome())
-                .taxRate(reportDTO.getTaxRate())
+                .income(Integer.parseInt(reportDTO.getIncome()))
+                .taxRate(Integer.parseInt(reportDTO.getTaxRate()))
                 .taxPeriod(reportDTO.getTaxPeriod())
                 .year(reportDTO.getYear())
                 .status(Status.PROCESSING)
