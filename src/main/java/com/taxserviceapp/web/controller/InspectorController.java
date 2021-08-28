@@ -126,6 +126,8 @@ public class InspectorController {
         return "inspector/report-view";
     }
 
+
+    //rewrite with session
     @PostMapping("/report-view")
     public String getReportProcess(@ModelAttribute(name = "report") ReportDTO reportDTO, Model model) {
 

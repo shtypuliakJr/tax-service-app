@@ -36,13 +36,21 @@ public class InspectorService {
 
     public List<ReportDTO> getReports() throws NoReportsFoundException {
 
-        List<Report> reports = reportRepository.findAll();
-        if (reports.isEmpty()) {
-            throw new NoReportsFoundException("No reports Found");
-        }
-        return reports.stream()
-                .map(PojoConverter::convertReportEntityToDTO)
-                .collect(Collectors.toList());
+
+        return Optional.of(reportRepository.findAll())
+                .filter(collection -> !collection.isEmpty())
+                .map((report) -> report.stream().map(PojoConverter::convertReportEntityToDTO)
+                        .collect(Collectors.toList()))
+                .orElseThrow(() -> new NoReportsFoundException("No reports found"));
+
+//        List<Report> reports = reportRepository.findAll();
+//
+//        if (reports.isEmpty()) {
+//            throw new NoReportsFoundException("No reports Found");
+//        }
+//        return reports.stream()
+//                .map(PojoConverter::convertReportEntityToDTO)
+//                .collect(Collectors.toList());
     }
 
     public List<ReportDTO> getReportsByParameters(Long id, Date reportDate, TaxPeriod period,
@@ -63,6 +71,7 @@ public class InspectorService {
     }
 
     public StatisticDTO getStatisticData() {
+// todo: rewrite
 
         return StatisticDTO.builder()
                 .countOfReports(reportRepository.count())
@@ -113,25 +122,6 @@ public class InspectorService {
             }
         }
         throw new NoReportsFoundException("No reports found by search");
-    }
-
-    public ReportDTO setReportStatus(Long reportId, String comment, Status status) {
-
-        if (status == null)
-            throw new ReportStatusException("Require status");
-
-        if (status == Status.DISAPPROVED && comment == null)
-            throw new ReportStatusException("Require comment if status will be disapproved");
-
-        Optional<Report> report = reportRepository.findById(reportId);
-
-        return report.map(rep -> {
-                    rep.setComment(comment);
-                    rep.setStatus(status);
-                    reportRepository.save(rep);
-                    return rep;
-                }).map(PojoConverter::convertReportEntityToDTO)
-                .orElseThrow(() -> new ReportNotFoundException("No report found"));
     }
 
     public ReportDTO setReportStatus(ReportDTO reportDTO) {

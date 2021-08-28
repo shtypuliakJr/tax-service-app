@@ -70,7 +70,7 @@ public class ReportService {
                         .map(sortF -> reportRepository.findAll(specification,
                                 Sort.by(getDirection(sortField.direction), sortField.getFieldInTable())))
                         .orElse(reportRepository.findAll(specification)))
-                .filter(collection -> !collection.isEmpty())
+                .filter(reportList -> !reportList.isEmpty())
                 .map((reports) -> reports.stream()
                         .map(PojoConverter::convertReportEntityToDTO)
                         .collect(Collectors.toList()))

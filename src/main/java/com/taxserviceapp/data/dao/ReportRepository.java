@@ -45,7 +45,7 @@ public interface ReportRepository extends JpaRepository<Report, Long>, JpaSpecif
             "       SUM(CASE WHEN r.status = 'APPROVED' THEN 1 ELSE 0 END)," +
             "       SUM(CASE WHEN r.status = 'DISAPPROVED' THEN 1 ELSE 0 END)" +
             "       FROM Report as r")
-    List<List<Long>> getCountsReportsByStatus();
+    List<Long> getCountsReportsByStatus();
 
 }
 
