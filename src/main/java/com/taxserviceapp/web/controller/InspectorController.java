@@ -116,9 +116,10 @@ public class InspectorController {
     }
 
     @GetMapping("/report-view")
-    public String getReport(@RequestParam(name = "reportId") Long reportId, Model model) {
+    public String getReport(@RequestParam(name = "reportId") Long reportId, HttpServletRequest request, Model model) {
         try {
             ReportDTO report = inspectorService.getReportById(reportId);
+            request.getSession().setAttribute("report", report);
             model.addAttribute("report", report);
         } catch (ReportNotFoundException e) {
             model.addAttribute("errorNoReport", e.getMessage());
@@ -127,18 +128,20 @@ public class InspectorController {
     }
 
 
-    //rewrite with session
     @PostMapping("/report-view")
-    public String getReportProcess(@ModelAttribute(name = "report") ReportDTO reportDTO, Model model) {
+    public String getReportProcess(@ModelAttribute(name = "report") ReportDTO reportDTO,
+                                   HttpServletRequest request, Model model) {
 
         try {
             inspectorService.setReportStatus(reportDTO);
+            request.getSession().removeAttribute("report");
             return "redirect:/inspector/reports";
         } catch (ReportStatusException reportStatusException) {
-            ReportDTO report = inspectorService.getReportById(reportDTO.getId());
-            report.setComment(reportDTO.getComment());
-            report.setStatus(reportDTO.getStatus());
-            model.addAttribute("report", report);
+
+            ReportDTO report1 = (ReportDTO) request.getSession().getAttribute("report");
+            report1.setComment(reportDTO.getComment());
+            report1.setStatus(reportDTO.getStatus());
+            model.addAttribute("report", report1);
             model.addAttribute("error", reportStatusException.getMessage());
             return "/inspector/report-view";
         }
