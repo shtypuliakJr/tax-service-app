@@ -28,7 +28,8 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDTO getUserInfoById(Long id) throws NoUserFoundException {
-        return userRepository.findById(id).map(PojoConverter::convertUserEntityToDto)
+        return userRepository.findById(id)
+                .map(PojoConverter::convertUserEntityToDto)
                 .orElseThrow(() -> new NoUserFoundException("No user found by id"));
     }
 }

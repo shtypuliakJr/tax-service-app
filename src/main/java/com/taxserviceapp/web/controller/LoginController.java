@@ -3,6 +3,7 @@ package com.taxserviceapp.web.controller;
 import com.taxserviceapp.config.LoginSuccessHandler;
 import com.taxserviceapp.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -25,12 +26,19 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login(HttpServletRequest req, HttpServletResponse resp, Authentication authentication) {
-        System.out.println(authentication);
+//        if (authentication != null) {
+//            User user = (User) authentication.getPrincipal();
+//            System.out.println(user.getAddress());
+//            System.out.println(user.getUsername());
+//            System.out.println(authentication.getDetails());
+//            System.out.println(authentication.getCredentials());
+//            System.out.println(authentication.getAuthorities());
+//        }
         if (authentication != null) {
             try {
                 loginSuccessHandler.onAuthenticationSuccess(req, resp, authentication);
             } catch (ServletException | IOException e) {
-                return "/error/error";
+                return "/login";
             }
         }
 
