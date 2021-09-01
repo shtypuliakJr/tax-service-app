@@ -10,6 +10,7 @@ import com.taxserviceapp.exceptions.NoReportsFoundException;
 import com.taxserviceapp.utility.PojoConverter;
 import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
@@ -23,12 +24,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
+    private final ReportService reportService;
+
     @Autowired
-    ReportService reportService;
+    public UserController(ReportService reportService) {
+        this.reportService = reportService;
+    }
 
     @GetMapping("reports")
     public String getUserPage(@RequestParam(name = "date", required = false)
@@ -57,6 +63,7 @@ public class UserController {
     public String getUserInfoPage(Authentication authentication, Model model) {
 
         User user = ((User) authentication.getPrincipal());
+        log.info("View user info by: " + ((User)authentication.getPrincipal()).getEmail());
 
         model.addAttribute("user", user);
 

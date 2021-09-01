@@ -3,40 +3,40 @@ package com.taxserviceapp.web.controller;
 import com.taxserviceapp.business.service.InspectorService;
 import com.taxserviceapp.business.service.ReportService;
 import com.taxserviceapp.business.service.UserService;
-import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.data.entity.User;
-import com.taxserviceapp.exceptions.*;
+import com.taxserviceapp.exceptions.NoReportsFoundException;
+import com.taxserviceapp.exceptions.NoUserFoundException;
+import com.taxserviceapp.exceptions.ReportNotFoundException;
+import com.taxserviceapp.exceptions.ReportStatusException;
 import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
-import com.taxserviceapp.web.dto.StatisticDTO;
 import com.taxserviceapp.web.dto.UserDTO;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.NoResultException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
+@Log4j
 @Controller
 @RequestMapping("/inspector")
 public class InspectorController {
 
     private final InspectorService inspectorService;
-    private final ReportService reportService;
     private final UserService userService;
 
     @Autowired
-    public InspectorController(InspectorService inspectorService, ReportService reportService, UserService userService) {
+    public InspectorController(InspectorService inspectorService, UserService userService) {
         this.inspectorService = inspectorService;
-        this.reportService = reportService;
         this.userService = userService;
     }
 
@@ -68,6 +68,8 @@ public class InspectorController {
         } catch (NoReportsFoundException exception) {
             model.addAttribute("errorNoResult", exception.getMessage());
         }
+        log.info("Inspector reports page: filter by parameters: " + "id = " + id + ",date = " + date + ",period = " + period +
+                ",status = " + status + ",sortField = " + sortField);
 
         model.addAttribute("lastSelectedPeriod", period);
         model.addAttribute("lastSelectedStatus", status);
@@ -86,6 +88,7 @@ public class InspectorController {
         } catch (NoReportsFoundException exception) {
             model.addAttribute("errorNoResult", exception.getMessage());
         }
+        log.info("Search by param: " + searchParam);
 
         model.addAttribute("search", searchParam);
 
@@ -107,9 +110,11 @@ public class InspectorController {
     }
 
     @GetMapping("/statistic")
-    public String getStatistic(Model model) {
+    public String getStatistic(@AuthenticationPrincipal User user, Model model) {
 
         model.addAttribute("statistic", inspectorService.getStatisticData());
+        log.info("Get statistic by inspector " +
+                user.getFirstName() + " " + user.getLastName() + " with id: " + user.getId());
 
         return "inspector/statistic";
     }
@@ -134,6 +139,9 @@ public class InspectorController {
         try {
             inspectorService.setReportStatus(reportDTO);
             request.getSession().removeAttribute("report");
+
+            log.info("Set status and comment for report with id = " + reportDTO.getId());
+
             return "redirect:/inspector/reports";
         } catch (ReportStatusException reportStatusException) {
 
@@ -142,6 +150,9 @@ public class InspectorController {
             report1.setStatus(reportDTO.getStatus());
             model.addAttribute("report", report1);
             model.addAttribute("error", reportStatusException.getMessage());
+
+            log.error("Invalid input in report view; report id = " + reportDTO.getId());
+
             return "/inspector/report-view";
         }
     }

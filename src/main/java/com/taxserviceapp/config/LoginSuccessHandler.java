@@ -1,6 +1,8 @@
 package com.taxserviceapp.config;
 
+import com.taxserviceapp.data.entity.User;
 import com.taxserviceapp.data.entity.UserRole;
+import lombok.extern.log4j.Log4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Log4j
 @Component
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
@@ -23,7 +26,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
                                         Authentication authentication) throws ServletException, IOException {
 
         String successfulURL = null;
-
         if (authentication.getAuthorities().contains(inspectorAuthority)) {
             successfulURL = "/inspector";
         } else if (authentication.getAuthorities().contains(userAuthority)) {

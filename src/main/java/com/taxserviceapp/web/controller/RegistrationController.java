@@ -4,6 +4,7 @@ import com.taxserviceapp.business.service.RegistrationService;
 import com.taxserviceapp.exceptions.UserAlreadyExistsException;
 import com.taxserviceapp.utility.PojoConverter;
 import com.taxserviceapp.web.dto.UserDTO;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
+@Log4j
 @Controller
 public class RegistrationController {
 
@@ -41,6 +43,7 @@ public class RegistrationController {
 
         try {
             registrationService.registerNewUser(PojoConverter.convertUserDtoToEntity(user));
+            log.info("New user with id: " + user.getUserId());
         } catch (UserAlreadyExistsException e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("user", user);

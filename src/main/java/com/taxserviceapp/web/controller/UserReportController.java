@@ -5,6 +5,7 @@ import com.taxserviceapp.data.entity.User;
 import com.taxserviceapp.exceptions.ReportNotFoundException;
 import com.taxserviceapp.utility.PojoConverter;
 import com.taxserviceapp.web.dto.ReportDTO;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Log4j
 @Controller
 @RequestMapping("/user")
 public class UserReportController {
@@ -38,8 +40,8 @@ public class UserReportController {
 
     @PostMapping(value = "/report-add")
     public String receiveReport(@Valid @ModelAttribute("report") ReportDTO reportDTO,
-                                 BindingResult result,
-                                 Model model) {
+                                BindingResult result,
+                                Model model) {
         if (result.hasErrors()) {
             model.addAttribute("report", reportDTO);
             return "user/report-form";
@@ -47,7 +49,7 @@ public class UserReportController {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         reportService.saveNewReport(PojoConverter.convertReportDTOToEntity(reportDTO, user));
-
+        log.info("Added new report by " + user.getEmail());
         return "redirect:/user/reports";
     }
 
@@ -69,11 +71,14 @@ public class UserReportController {
                              Model model, Authentication authentication) {
         if (result.hasErrors()) {
             model.addAttribute("report", reportDTO);
+            log.error("Invalid input in edit form; report id = " + reportDTO.getId());
+
             return "user/report-edit";
         }
 
         reportService.updateReport(PojoConverter.convertReportDTOToEntity(reportDTO,
                 (User) authentication.getPrincipal()));
+        log.info("Edited report with id = " + reportDTO.getId());
 
         return "redirect:/user/reports";
     }
@@ -82,6 +87,7 @@ public class UserReportController {
     public String deleteReportFromUserPage(@RequestParam("id") Long id) {
 
         reportService.deleteReport(id);
+        log.info("Deleted report with id = " + id);
 
         return "redirect:/user/reports";
     }
