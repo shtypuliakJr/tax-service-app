@@ -4,82 +4,99 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>User info</title>
-    <style>
-        .user-main {
-            width: 400px;
-            height: 330px;
-            background: lightskyblue;
-            padding: 10px;
-            padding-right: 10px;
-            border: #ffffff;
-            float: outside;
-            border-radius: 25px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .main-input {
-            border: white solid 1px;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            background-color: #008CBA;
-        }
-    </style>
-
+    <title th:text="${#authentication.name}">User info</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 </head>
 <body>
-<div align="left">
-    <a th:href="@{/user/reports}">
-        <input type="submit" class="main-input" value="Return to main page"/>
-    </a>
-</div>
-<div class="user-main">
-    <div th:object="${user}" class="box">
-        <p>
-            <b>Full name: </b>
-            <span th:utext="${user.firstName}"></span>
-            <span> </span>
-            <span th:utext="${user.lastName}"></span>
-        </p>
-        <p>
-            <b>Email: </b>
-            <span th:utext="${user.email}"></span>
-        </p>
-        <p>
-            <b>Age: </b>
-            <span th:utext="${user.age}"></span>
-        </p>
-        <p>
-            <b>Registration date: </b>
-            <span th:utext="${user.dateOfRegistration}"></span>
-        </p>
-        <p>
-            <b>IPN: </b>
-            <span th:text="${user.ipn}"></span>
-        </p>
-        <p>
-            <b>Personality: </b>
-            <span th:text="${user.personality}"></span>
-        </p>
-        <p>
-            <b>Address: </b>
-            <span th:text="${user.address}"></span>
-        </p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-        <div class="div-button-apply">
-            <a th:href="@{/logout}">
-                <input type="submit" class="main-input" value="Logout"/>
-            </a>
+    <div class="form-group row">
+        <div class="col-md-7">
+            <form style="display: inline;" action="#" th:action="@{/user/report-form}" th:method="GET">
+                <button type="submit" class="btn btn-primary" th:text="#{user.navbar.report.apply}">
+                    Apply new report
+                </button>
+            </form>
+        </div>
+        <div class="col-md-5">
+            <form style="display: inline;" action="#" th:action="@{/user/reports}" th:method="GET">
+                <button type="submit" class="btn btn-primary" th:text="#{user.navbar.reports}">Reports</button>
+            </form>
         </div>
     </div>
-</div>
 
+    <div class="navbar-nav ml-auto">
+        <div class="form-group row">
+            <div class="col-md-5">
+                <a th:href="@{?lang=en}" th:text="#{lang.en}"></a>
+            </div>
+            <div class="col-md-5">
+                <a th:href="@{?lang=ua}" th:text="#{lang.ua}"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="navbar-nav ml-auto">
+        <div class="form-group row">
+            <div class="col-sm-8">
+                <form style="display: inline;" action="#" th:action="@{/user/user-info}" th:method="GET">
+                    <input class="btn btn-info" type="submit" th:value="${#authentication.name}"/>
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <form style="display: inline;" action="#" th:action="@{/logout}" th:method="POST">
+                    <input class="btn btn-danger" type="submit" th:value="#{user.navbar.logout}"/>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</nav>
+
+<div class="container">
+    <div style="text-align: center">
+        <h1 th:text="#{user.info.information}">User Information</h1>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody th:object="${user}">
+        <tr>
+            <td><b th:text="#{user.info.fullname}">Full name: </b></td>
+            <td><span th:utext="${user.firstName} + ' '+ ${user.lastName}"></span></td>
+        </tr>
+        <tr>
+            <td><b th:text="#{user.info.email}">Email: </b></td>
+            <td><span th:utext="${user.email}"></span></td>
+        </tr>
+        <tr>
+            <td><b th:text="#{user.info.age}">Age: </b></td>
+            <td><span th:utext="${user.age}"></span></td>
+        </tr>
+        <tr>
+            <td><b th:text="#{user.info.registration.date}">Registration date: </b></td>
+            <td><span th:utext="${user.dateOfRegistration}"></span></td>
+        </tr>
+        <tr>
+            <td><b th:text="#{user.info.ipn}">IPN: </b></td>
+            <td><span th:utext="${user.ipn}"></span></td>
+        </tr>
+        <tr>
+            <td><b th:text="#{user.info.personality}">Personality: </b></td>
+            <td><span th:utext="#{${'user.data.dto.personality.name.' + user.personality}}"></span></td>
+        </tr>
+        <tr>
+            <td><b th:text="#{user.info.address}">Address: </b></td>
+            <td><span th:utext="${user.address}"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
