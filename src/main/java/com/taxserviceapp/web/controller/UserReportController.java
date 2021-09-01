@@ -17,10 +17,14 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
-public class ReportController {
+public class UserReportController {
+
+    private final ReportService reportService;
 
     @Autowired
-    private ReportService reportService;
+    public UserReportController(ReportService reportService) {
+        this.reportService = reportService;
+    }
 
     @GetMapping(value = "/report-form")
     public String addReport(Model model, Authentication authentication) {
@@ -49,10 +53,12 @@ public class ReportController {
 
     @GetMapping(value = "/report-edit/{id}")
     public String getEditFormFromUserPage(@PathVariable(value = "id") Long id, Model model) {
-
-        ReportDTO reportDTO = reportService.findReportById(id);
-        model.addAttribute("report", reportDTO);
-
+        try {
+            ReportDTO reportDTO = reportService.findReportById(id);
+            model.addAttribute("report", reportDTO);
+        } catch (ReportNotFoundException e) {
+            model.addAttribute("reportNotFound", e.getMessage());
+        }
         return "/user/report-edit";
     }
 
@@ -72,8 +78,8 @@ public class ReportController {
         return "redirect:/user/reports";
     }
 
-    @GetMapping(value = "/report-delete/{id}")
-    public String deleteReportFromUserPage(@PathVariable("id") Long id) {
+    @PostMapping(value = "/report-delete")
+    public String deleteReportFromUserPage(@RequestParam("id") Long id) {
 
         reportService.deleteReport(id);
 
@@ -87,7 +93,7 @@ public class ReportController {
             ReportDTO reportDTO = reportService.findReportById(id);
             model.addAttribute("report", reportDTO);
         } catch (ReportNotFoundException e) {
-            model.addAttribute("errorNoResult", e.getMessage());
+            model.addAttribute("reportNotFound", e.getMessage());
         }
 
         return "user/report-view";

@@ -46,6 +46,9 @@ public class UserController {
         } catch (NoReportsFoundException e) {
             model.addAttribute("errorNoResult", e.getMessage());
         }
+        model.addAttribute("lastSelectedPeriod", period);
+        model.addAttribute("lastSelectedStatus", status);
+        model.addAttribute("lastSelectedSort", sortField);
 
         return "user/reports";
     }

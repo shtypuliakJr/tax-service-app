@@ -69,7 +69,6 @@ public class InspectorController {
             model.addAttribute("errorNoResult", exception.getMessage());
         }
 
-        model.addAttribute("lastSelectedDate", date);
         model.addAttribute("lastSelectedPeriod", period);
         model.addAttribute("lastSelectedStatus", status);
         model.addAttribute("lastSelectedSort", sortField);
