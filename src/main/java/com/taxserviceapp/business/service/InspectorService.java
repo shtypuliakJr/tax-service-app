@@ -71,7 +71,6 @@ public class InspectorService {
     }
 
     public StatisticDTO getStatisticData() {
-// todo: rewrite
 
         return StatisticDTO.builder()
                 .countOfReports(reportRepository.count())
