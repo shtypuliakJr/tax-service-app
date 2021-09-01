@@ -4,81 +4,172 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-        .report {
-            width: 290px;
-            height: 500px;
-            background: lightskyblue;
-            padding: 10px;
-            padding-right: 10px;
-            border: #ffffff;
-            float: outside;
-            border-radius: 25px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        input, label, select {
-            width: 280px;
-            height: 25px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-    </style>
+    <title th:text="#{user.report.form.edit.title}">Report edit form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 </head>
+
 <body>
-<div class="report">
-    <div style="text-align: center">
-        <label>Report form</label>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <div class="form-group row">
+        <div class="col-md-7">
+            <form style="display: inline;" action="#" th:action="@{/user/report-form}" th:method="GET">
+                <button type="submit" class="btn btn-primary" th:text="#{user.navbar.report.apply}">
+                    Apply new report
+                </button>
+            </form>
+        </div>
+        <div class="col-md-5">
+            <form style="display: inline;" action="#" th:action="@{/user/reports}" th:method="GET">
+                <button type="submit" class="btn btn-primary" th:text="#{user.navbar.reports}">Reports</button>
+            </form>
+        </div>
     </div>
 
-    <form action="#" th:object="${report}" th:action="@{/user/report-edit}" method="post">
-
-        <input type="hidden" id="id" th:field="*{id}"/>
-        <input type="hidden" id="userId" th:field="*{userId}"/>
-        <input type="hidden" id="status" th:field="*{status}"/>
-        <input type="hidden" id="comment" th:field="*{comment}"/>
-
-        <label>Income, $:
-            <input type="text" placeholder="Income" th:field="*{income}" required/>
-        </label>
-
-        <label>Tax rate, %:
-            <input type="text" th:field="*{taxRate}" required/>
-        </label>
-
-        <label>Tax period:
-            <select th:field="*{taxPeriod}">
-                <option th:each="period : ${T(com.taxserviceapp.data.entity.TaxPeriod).values()}"
-                        th:text="${period.getPeriod()}"
-                        th:value="${period.name()}">
-                    ..
-                </option>
-            </select>z
-        </label>
-
-        <label>Year:
-            <input type="text" th:field="*{year}" required/>
-        </label>
-        <div style="text-align: center">
-            <input class="center-block" type="submit" value="Apply">
+    <div class="navbar-nav ml-auto">
+        <div class="form-group row">
+            <div class="col-md-5">
+                <a th:href="@{?lang=en}" th:text="#{lang.en}"></a>
+            </div>
+            <div class="col-md-5">
+                <a th:href="@{?lang=ua}" th:text="#{lang.ua}"></a>
+            </div>
         </div>
-        <div>
-            <fieldset>
-                <legend>Comment:</legend>
-                <span th:text="${report.comment}">..</span>
-            </fieldset>
-        </div>
-        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
-            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
-        </div>
+    </div>
 
-    </form>
+    <div class="navbar-nav ml-auto">
+        <div class="form-group row">
+            <div class="col-sm-8">
+                <form style="display: inline;" action="#" th:action="@{/user/user-info}" th:method="GET">
+                    <input class="btn btn-info" type="submit" th:value="${#authentication.name}"/>
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <form style="display: inline;" action="#" th:action="@{/logout}" th:method="POST">
+                    <input class="btn btn-danger" type="submit" th:value="#{user.navbar.logout}"/>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</nav>
+
+
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-10 col-md-4">
+            <div class="container alert alert-primary">
+                <div style="text-align: center">
+                    <h1 th:text="#{user.report.form.form}">Report form</h1>
+                </div>
+                <div>
+                    <form action="#" th:object="${report}" th:action="@{/user/report-edit}" method="post">
+
+                        <input type="hidden" id="id" th:field="*{id}"/>
+                        <input type="hidden" id="userId" th:field="*{userId}"/>
+                        <input type="hidden" id="status" th:field="*{status}"/>
+                        <input type="hidden" id="comment" th:field="*{comment}"/>
+
+                        <div class="form-group ">
+                            <label for="income" th:text="#{user.report.income}">Income:</label>
+                            <input id="income" type="text" th:field="*{income}" class="form-control" required/>
+                            <div th:if="${#fields.hasErrors('income')}" class="alert alert-danger">
+                                <label th:errors="*{income}" class="validation-message"></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rate" th:text="#{user.report.rate}">Tax rate:</label>
+                            <input id="rate" type="text" th:field="*{taxRate}" class="form-control" required/>
+                            <div th:if="${#fields.hasErrors('taxRate')}" class="alert alert-danger">
+                                <label th:errors="*{taxRate}" class="validation-message"></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="period" th:text="#{user.report.period}">Tax period: </label>
+
+                            <select id="period" th:field="*{taxPeriod}">
+                                <option th:each="period : ${T(com.taxserviceapp.data.entity.TaxPeriod).values()}"
+                                        th:text="#{${'reports.period.' + period}}"
+                                        th:value="${period.name()}">
+                                    ..
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="year" th:text="#{user.report.year}">Year:</label>
+                            <input id="year" type="text" th:field="*{year}" class="form-control" required/>
+                            <div th:if="${#fields.hasErrors('year')}" class="alert alert-danger">
+                                <label th:errors="*{year}" class="validation-message"></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div style="text-align: center">
+                                <input type="submit" class="btn btn-primary center-block"
+                                       th:value="#{user.report.form.apply}"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<!--<div class="report">-->
+<!--    <div style="text-align: center">-->
+<!--        <label>Report form</label>-->
+<!--    </div>-->
+
+<!--    <form action="#" th:object="${report}" th:action="@{/user/report-edit}" method="post">-->
+
+<!--        <input type="hidden" id="id" th:field="*{id}"/>-->
+<!--        <input type="hidden" id="userId" th:field="*{userId}"/>-->
+<!--        <input type="hidden" id="status" th:field="*{status}"/>-->
+<!--        <input type="hidden" id="comment" th:field="*{comment}"/>-->
+
+<!--        <label>Income, $:-->
+<!--            <input type="text" placeholder="Income" th:field="*{income}" required/>-->
+<!--        </label>-->
+
+<!--        <label>Tax rate, %:-->
+<!--            <input type="text" th:field="*{taxRate}" required/>-->
+<!--        </label>-->
+
+<!--        <label>Tax period:-->
+<!--            <select th:field="*{taxPeriod}">-->
+<!--                <option th:each="period : ${T(com.taxserviceapp.data.entity.TaxPeriod).values()}"-->
+<!--                        th:text="${period.getPeriod()}"-->
+<!--                        th:value="${period.name()}">-->
+<!--                    ..-->
+<!--                </option>-->
+<!--            </select>z-->
+<!--        </label>-->
+
+<!--        <label>Year:-->
+<!--            <input type="text" th:field="*{year}" required/>-->
+<!--        </label>-->
+<!--        <div style="text-align: center">-->
+<!--            <input class="center-block" type="submit" value="Apply">-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <fieldset>-->
+<!--                <legend>Comment:</legend>-->
+<!--                <span th:text="${report.comment}">..</span>-->
+<!--            </fieldset>-->
+<!--        </div>-->
+<!--        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">-->
+<!--            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>-->
+<!--        </div>-->
+
+<!--    </form>-->
+<!--</div>-->
 
 </body>
 </html>

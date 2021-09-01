@@ -108,7 +108,7 @@
     <div class="row">
         <table class="table table-striped">
             <thead>
-            <tr>
+            <tr class="text-center">
                 <th scope="col" th:text="#{report.data.col.income}">Income, $</th>
                 <th scope="col" th:text="#{report.data.col.rate}">Tax rate, %</th>
                 <th scope="col" th:text="#{report.data.col.period}">Period</th>
@@ -143,20 +143,20 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-4">
-                                <form action="#" th:action="@{report-view/{id}(id=${report.id})}"
+                                <form action="#" th:action="@{/user/report-view/{id}(id=${report.id})}"
                                       class='form-inline' th:method="GET">
                                     <input type="submit" th:value="#{reports.action.view}"/>
                                 </form>
                             </div>
                             <div class="col-4">
-                                <form action="#" th:action="@{report-edit/{id}(id=${report.id})}"
+                                <form action="#" th:action="@{/user/report-edit/{id}(id=${report.id})}"
                                       class='form-inline' th:method="GET">
                                     <input type="submit" th:value="#{reports.action.edit}"/>
                                 </form>
                             </div>
                             <div class="col-4">
-                                <form action="#" th:action="@{report-delete/{id}(id=${report.id})}"
-                                      class='form-inline' th:method="POST">
+                                <form action="#" th:action="@{/user/report-delete}" class='form-inline' th:method="POST">
+                                    <input type="hidden" th:name="id" th:value="${report.id}">
                                     <input type="submit" th:value="#{reports.action.delete}"/>
                                 </form>
                             </div>
