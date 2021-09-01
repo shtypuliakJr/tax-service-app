@@ -19,11 +19,11 @@ public class ErrorPageController implements ErrorController {
         Integer statusCode = (Integer) httpRequest.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         if (statusCode != null) {
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
-                attribute = "404";
+                attribute = "Error 404. Resource no found.";
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                attribute = "500";
+                attribute = "Error 500. Internal server error.";
             } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
-                attribute = "403";
+                attribute = "Error 403. You have no permission.";
             }
         }
         model.addAttribute("errorCode", attribute);

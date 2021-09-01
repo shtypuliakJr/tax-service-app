@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .center {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-my error page 403
+<div class="center">
+    <p><b th:text="${errorCode}">Error</b></p>
+    <a th:href="@{/}">Go to home page</a>
+</div>
 </body>
 </html>
-<!--ToDo: make error page-->
