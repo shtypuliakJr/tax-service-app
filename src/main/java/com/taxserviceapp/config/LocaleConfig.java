@@ -17,34 +17,10 @@ import java.util.Locale;
 
 @Configuration
 public class LocaleConfig implements WebMvcConfigurer {
-//    @Bean(name = "messageSource")
-//    public MessageSource getMessageResource() {
-//        ReloadableResourceBundleMessageSource messageResource = new ReloadableResourceBundleMessageSource();
-//
-//        messageResource.setBasename("classpath:message");
-//        messageResource.setDefaultEncoding("UTF-8");
-//        return messageResource;
-//    }
-//
-//
-//    @Bean(name = "localeResolver")
-//    public LocaleResolver getLocaleResolver()  {
-//        CookieLocaleResolver resolver= new CookieLocaleResolver();
-//        resolver.setCookieDomain("taxServiceLanguageCookie");
-//        resolver.setCookieMaxAge(60*60);
-//        return resolver;
-//    }
-//
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-//        interceptor.setParamName("lang");
-//        registry.addInterceptor(interceptor).addPathPatterns("/*");
-//    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor())
-                .addPathPatterns("/*", "/login/*");
+        registry.addInterceptor(localeChangeInterceptor());
     }
 
     @Bean
