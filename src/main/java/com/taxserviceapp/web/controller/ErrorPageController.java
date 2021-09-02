@@ -24,6 +24,10 @@ public class ErrorPageController implements ErrorController {
                 attribute = "Error 500. Internal server error.";
             } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
                 attribute = "Error 403. You have no permission.";
+            } else if (statusCode == HttpStatus.BAD_GATEWAY.value()) {
+                attribute = "Error 400. Bad request.";
+            } else {
+                attribute = String.valueOf(HttpStatus.valueOf(statusCode).value());
             }
         }
         model.addAttribute("errorCode", attribute);
@@ -31,6 +35,4 @@ public class ErrorPageController implements ErrorController {
         return "error/error";
     }
 }
-
-// ToDo: error model attribute display with text
 

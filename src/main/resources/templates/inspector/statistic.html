@@ -4,7 +4,7 @@
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Statistic</title>
+    <title th:text="#{inspector.statistic.title}">Statistic</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -14,31 +14,38 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="form-group row">
-        <div class="col-md-5">
+        <div class="col-md-7">
             <form style="display: inline;" action="#" th:action="@{/inspector/statistic}" th:method="GET">
-                <button type="submit" class="btn btn-primary">Statistic</button>
+                <button type="submit" class="btn btn-primary"
+                        th:text="#{inspector.statistic.title}">Statistic</button>
             </form>
         </div>
         <div class="col-md-5">
             <form style="display: inline;" action="#" th:action="@{/inspector/reports}" th:method="GET">
-                <button type="submit" class="btn btn-primary">Reports</button>
+                <button type="submit" class="btn btn-primary" th:text="#{inspector.reports.title}">Reports</button>
             </form>
         </div>
     </div>
-    <div class="col-md">
-        <div style="text-align: center;">
-            <h1>Statistic</h1>
+
+    <div class="navbar-nav ml-auto">
+        <div class="form-group row">
+            <div class="col-md-5">
+                <a th:href="@{?lang=en}" th:text="#{lang.en}"></a>
+            </div>
+            <div class="col-md-5">
+                <a th:href="@{?lang=ua}" th:text="#{lang.ua}"></a>
+            </div>
         </div>
     </div>
 
     <div class="navbar-nav ml-auto">
         <div class="form-group row">
             <div class="col-sm-8">
-                <span data-th-text="'Inpector: ' + ${#authentication.name}"></span>
+                <span data-th-text="#{inspector.inspector.title} + ': ' + ${#authentication.name}"></span>
             </div>
             <div class="col-sm-4">
                 <form style="display: inline;" action="#" th:action="@{/logout}" th:method="POST">
-                    <input class="btn btn-danger" type="submit" value="Logout"/>
+                    <input class="btn btn-danger" type="submit" th:value="#{user.navbar.logout}"/>
                 </form>
             </div>
         </div>
@@ -47,7 +54,11 @@
 </nav>
 
 <div class="container">
-
+    <div class="col-md">
+        <div style="text-align: center;">
+            <h1 th:text="#{inspector.statistic.title}">Statistic</h1>
+        </div>
+    </div>
     <div>
         <table class="table table-striped">
             <thead>
@@ -59,27 +70,27 @@
             </thead>
             <tbody>
             <tr>
-                <td><b>Inspector count: </b></td>
+                <td><b th:text="#{inspector.statistic.inspectors.count}">Inspectors count: </b></td>
                 <td><span th:utext="${statistic.countOfInspectors}"></span></td>
             </tr>
             <tr>
-                <td><b>Users count: </b></td>
+                <td><b th:text="#{inspector.statistic.users.count}">Users count: </b></td>
                 <td><span th:utext="${statistic.countOfUsers}"></span></td>
             </tr>
             <tr>
-                <td><b>Reports count: </b></td>
+                <td><b th:text="#{inspector.statistic.users.count}">Reports count: </b></td>
                 <td><span th:utext="${statistic.countOfReports}"></span></td>
             </tr>
             <tr>
-                <td><b>Reports processing: </b></td>
+                <td><b th:text="#{inspector.statistic.reports.processing}">Reports processing: </b></td>
                 <td><span th:utext="${statistic.processingReports}"></span></td>
             </tr>
             <tr>
-                <td><b>Reports approved: </b></td>
+                <td><b th:text="#{inspector.statistic.reports.approved}">Reports approved: </b></td>
                 <td><span th:utext="${statistic.approvedReports}"></span></td>
             </tr>
             <tr>
-                <td><b>Reports disapproved: </b></td>
+                <td><b th:text="#{inspector.statistic.reports.disapproved}">Reports disapproved: </b></td>
                 <td><span th:utext="${statistic.disapprovedReports}"></span></td>
             </tr>
             </tbody>
@@ -88,7 +99,7 @@
         <br/>
         <div>
             <div style="text-align: center">
-                <h1>Reports per each year</h1>
+                <h1 th:text="#{inspector.statistic.reports.per.year}">Reports per each year</h1>
             </div>
             <table class="table table-striped">
                 <thead>
@@ -106,7 +117,6 @@
                     </td>
                 </tr>
                 </tbody>
-
             </table>
         </div>
     </div>

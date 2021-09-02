@@ -95,8 +95,8 @@ public class InspectorController {
         return "inspector/reports";
     }
 
-    @GetMapping("/user-view")
-    public String getUserInfo(@RequestParam(name = "userId") Long userId, Model model) {
+    @GetMapping("/user-view/{userId}")
+    public String getUserInfo(@PathVariable(name = "userId") Long userId, Model model) {
 
         try {
             UserDTO userInfoById = userService.getUserInfoById(userId);

@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
-// ToDo: add normal income validation
 @Getter
 @Setter
 @Builder

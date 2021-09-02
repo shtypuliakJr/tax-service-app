@@ -15,14 +15,14 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
     <div class="form-group row">
-        <div class="col-md-7">
+        <div class="col-md-5">
             <form style="display: inline;" action="#" th:action="@{/user/report-form}" th:method="GET">
                 <button type="submit" class="btn btn-primary" th:text="#{user.navbar.report.apply}">
                     Apply new report
                 </button>
             </form>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-7">
             <form style="display: inline;" action="#" th:action="@{/user/reports}" th:method="GET">
                 <button type="submit" class="btn btn-primary" th:text="#{user.navbar.reports}">Reports</button>
             </form>

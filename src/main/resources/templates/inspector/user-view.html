@@ -4,7 +4,7 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Reports</title>
+    <title th:text="#{inspector.user.info.title}">User info</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -14,26 +14,38 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="form-group row">
-        <div class="col-md-5">
+        <div class="col-md-7">
             <form style="display: inline;" action="#" th:action="@{/inspector/statistic}" th:method="GET">
-                <button type="submit" class="btn btn-primary">Statistic</button>
+                <button type="submit" class="btn btn-primary"
+                        th:text="#{inspector.statistic.title}">Statistic</button>
             </form>
         </div>
         <div class="col-md-5">
             <form style="display: inline;" action="#" th:action="@{/inspector/reports}" th:method="GET">
-                <button type="submit" class="btn btn-primary">Reports</button>
+                <button type="submit" class="btn btn-primary" th:text="#{inspector.reports.title}">Reports</button>
             </form>
         </div>
     </div>
 
     <div class="navbar-nav ml-auto">
         <div class="form-group row">
+            <div class="col-md-5">
+                <a th:href="@{?lang=en}" th:text="#{lang.en}"></a>
+            </div>
+            <div class="col-md-5">
+                <a th:href="@{?lang=ua}" th:text="#{lang.ua}"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="navbar-nav ml-auto">
+        <div class="form-group row">
             <div class="col-sm-8">
-                <span data-th-text="'Inpector: ' + ${#authentication.name}"></span>
+                <span data-th-text="#{inspector.inspector.title} + ': ' + ${#authentication.name}"></span>
             </div>
             <div class="col-sm-4">
                 <form style="display: inline;" action="#" th:action="@{/logout}" th:method="POST">
-                    <input class="btn btn-danger" type="submit" value="Logout"/>
+                    <input class="btn btn-danger" type="submit" th:value="#{user.navbar.logout}"/>
                 </form>
             </div>
         </div>
@@ -42,13 +54,13 @@
 </nav>
 <div class="container">
     <div style="text-align: center">
-        <h1>User Information</h1>
+        <h1 th:text="#{inspector.user.info.title}">User Information</h1>
     </div>
     <table class="table table-striped">
         <thead>
         <tr>
             <td class="text-center" colspan="2">
-                <div th:if="${errorNoResult != null}" th:text="${errorNoResult}">
+                <div th:if="${errorNoResult}" th:text="${errorNoResult}">
                     Error no result
                 </div>
             </td>
@@ -58,33 +70,33 @@
             <th scope="col"></th>
         </tr>
         </thead>
-        <tbody>
+        <tbody th:if="${userInfo}">
         <tr>
-            <td><b>Full name: </b></td>
+            <td><b th:text="#{user.info.fullname}">Full name: </b></td>
             <td><span th:utext="${userInfo.firstName} + ' '+ ${userInfo.lastName}"></span></td>
         </tr>
         <tr>
-            <td><b>Email: </b></td>
+            <td><b th:text="#{user.info.email}">Email: </b></td>
             <td><span th:utext="${userInfo.email}"></span></td>
         </tr>
         <tr>
-            <td><b>Age: </b></td>
+            <td><b th:text="#{user.info.age}">Age: </b></td>
             <td><span th:utext="${userInfo.age}"></span></td>
         </tr>
         <tr>
-            <td><b>Registration date: </b></td>
+            <td><b th:text="#{user.info.registration.date}">Registration date: </b></td>
             <td><span th:utext="${userInfo.dateOfRegistration}"></span></td>
         </tr>
         <tr>
-            <td><b>IPN: </b></td>
+            <td><b th:text="#{user.info.ipn}">IPN: </b></td>
             <td><span th:utext="${userInfo.ipn}"></span></td>
         </tr>
         <tr>
-            <td><b>Personality: </b></td>
+            <td><b th:text="#{user.info.personality}">Personality: </b></td>
             <td><span th:utext="#{${'user.data.dto.personality.name.' + userInfo.personality}}"></span></td>
         </tr>
         <tr>
-            <td><b>Address: </b></td>
+            <td><b th:text="#{user.info.address}">Address: </b></td>
             <td><span th:utext="${userInfo.address}"></span></td>
         </tr>
         </tbody>
@@ -92,7 +104,8 @@
     <div>
         <form action="#" th:action="@{/inspector/reports}" th:method="GET">
             <input type="hidden" th:id="userId" th:name="userId" th:value="${userInfo.userId}"/>
-            <button type="submit" class="btn btn-outline-primary">Show reports</button>
+            <button type="submit" class="btn btn-outline-primary" th:text="#{inspector.user.reports}">
+                Show reports</button>
         </form>
     </div>
 </div>
