@@ -18,7 +18,8 @@
         <div class="col-md-7">
             <form style="display: inline;" action="#" th:action="@{/inspector/statistic}" th:method="GET">
                 <button type="submit" class="btn btn-primary"
-                        th:text="#{inspector.statistic.title}">Statistic</button>
+                        th:text="#{inspector.statistic.title}">Statistic
+                </button>
             </form>
         </div>
         <div class="col-md-5">
@@ -56,29 +57,30 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-4">
+        <div class="col-lg-4">
             <div class="input-group">
                 <form action="#" th:action="@{/inspector/search}" th:method="GET">
                     <div class="d-flex flex-row">
                         <input th:id="search" th:name="search" th:value="${search}"
-                               class="form-control rounded" placeholder="Enter id, ipn, name, surname"
+                               class="form-control rounded" th:placeholder="#{inspector.reports.search.placeholder}"
                                aria-label="Search" aria-describedby="search-addon"/>
-                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                        <button type="submit" class="btn btn-outline-primary" th:text="#{inspector.reports.search}">
+                            Search
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div class="col-8">
+        <div class="col-lg-8">
             <form action="#" th:action="@{/inspector/reports}" th:method="GET">
                 <label for="date">
-                    Select date:
                     <input type="date" id="date" name="date" min="2010-01-01" max="2021-12-31"/>
                 </label>
                 <select id="period" name="period" class="form-select" aria-label="Default select example">
-                    <option selected value="">Select period</option>
+                    <option selected value="" th:text="#{reports.search.select.period}">Select period</option>
                     <option th:each="period : ${T(com.taxserviceapp.data.entity.TaxPeriod).values()}"
-                            th:text="${period.getPeriod()}"
+                            th:text="#{${'reports.period.' + period}}"
                             th:value="${period.name()}"
                             th:selected="${period} == ${lastSelectedPeriod}">
                         ..
@@ -86,9 +88,9 @@
                 </select>
 
                 <select id="status" name="status" class="form-select" aria-label="Default select example">
-                    <option selected value="">Select status</option>
+                    <option selected value="" th:text="#{reports.search.select.status}">Select status</option>
                     <option th:each="status : ${T(com.taxserviceapp.data.entity.Status).values()}"
-                            th:text="${status.getStatusName()}"
+                            th:text="#{${'reports.status.' + status}}"
                             th:value="${status.name()}"
                             th:selected="${status} == ${lastSelectedStatus}">
                         ..
@@ -96,16 +98,18 @@
                 </select>
 
                 <select id="sortField" name="sortField" class="form-select" aria-label="Default select example">
-                    <option value="">Select sorting field</option>
+                    <option selected value="" th:text="#{reports.search.select.sorting.field}">
+                        Select sorting field
+                    </option>
                     <option th:each="sortField : ${T(com.taxserviceapp.web.dto.SortField).values()}"
-                            th:text="${sortField.getSortName()}"
+                            th:text="#{${'reports.sortField.' + sortField}}"
                             th:value="${sortField.name()}"
                             th:selected="${sortField} == ${lastSelectedSort}">
                         ..
                     </option>
                 </select>
 
-                <button type="submit" class="btn btn-outline-primary">Filter</button>
+                <button type="submit" class="btn btn-outline-primary" th:text="#{report.filter}">Filter</button>
             </form>
         </div>
 
@@ -114,15 +118,15 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">Report id</th>
-                <th scope="col">User full name</th>
-                <th scope="col">IPN</th>
-                <th scope="col">Report date</th>
-                <th scope="col">Year</th>
-                <th scope="col">Period</th>
-                <th scope="col">Comment</th>
-                <th scope="col">Status</th>
-                <th scope="col">Action</th>
+                <th scope="col" th:text="#{report.report.id}">Report id</th>
+                <th scope="col" th:text="#{report.user.fullname}">User full name</th>
+                <th scope="col" th:text="#{report.user.ipn}">IPN</th>
+                <th scope="col" th:text="#{report.data.col.date}">Report date</th>
+                <th scope="col" th:text="#{report.data.col.year}">Year</th>
+                <th scope="col" th:text="#{report.data.col.period}">Period</th>
+                <th scope="col" th:text="#{report.data.col.comment}">Comment</th>
+                <th scope="col" th:text="#{report.data.col.status}">Status</th>
+                <th scope="col" th:text="#{report.data.col.action}">Action</th>
             </tr>
             </thead>
 
@@ -143,13 +147,17 @@
                 <td><span th:text="${report.user.ipn}">IPN</span></td>
                 <td><span th:text="${report.reportDate}">Report Date</span></td>
                 <td><span th:text="${report.year}">Year</span></td>
-                <td><span th:text="${report.taxPeriod.getPeriod()}">Report Period</span></td>
-                <td><span th:text="${report.comment}">Comment</span></td>
-                <td><span th:text="${report.status.getStatusName()}">status</span></td>
+                <td><span th:text="#{${'reports.period.' + report.taxPeriod}}">Report Period</span></td>
+                <td>
+                    <div th:if="${report.comment != null}">
+                        <span th:text="#{report.has.comment}">has comment</span>
+                    </div>
+                </td>
+                <td><span th:text="#{${'reports.status.' + report.status}}">status</span></td>
                 <td>
                     <div>
-                        <form action="#" th:action="@{/inspector/report-view}" th:method="GET">
-                            <input type="hidden" id="report" name="reportId" th:value="${report.id}">
+                        <form action="#" th:action="@{/inspector/report-view/{reportId}(reportId=${report.id})}"
+                              th:method="GET">
                             <input type="submit" value="View"/>
                         </form>
                     </div>

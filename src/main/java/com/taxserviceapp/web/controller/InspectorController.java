@@ -68,8 +68,8 @@ public class InspectorController {
         } catch (NoReportsFoundException exception) {
             model.addAttribute("errorNoResult", exception.getMessage());
         }
-        log.info("Inspector reports page: filter by parameters: " + "id = " + id + ",date = " + date + ",period = " + period +
-                ",status = " + status + ",sortField = " + sortField);
+        log.info("Inspector reports page: filter by parameters: " + "id = " + id + ",date = " +
+                date + ",period = " + period + ",status = " + status + ",sortField = " + sortField);
 
         model.addAttribute("lastSelectedPeriod", period);
         model.addAttribute("lastSelectedStatus", status);
@@ -119,8 +119,8 @@ public class InspectorController {
         return "inspector/statistic";
     }
 
-    @GetMapping("/report-view")
-    public String getReport(@RequestParam(name = "reportId") Long reportId, HttpServletRequest request, Model model) {
+    @GetMapping("/report-view/{reportId}")
+    public String getReport(@PathVariable(name = "reportId") Long reportId, HttpServletRequest request, Model model) {
         try {
             ReportDTO report = inspectorService.getReportById(reportId);
             request.getSession().setAttribute("report", report);

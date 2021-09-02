@@ -75,8 +75,6 @@
                                 th:selected="${period} == ${lastSelectedPeriod}">
                             ..
                         </option>
-                        ..
-                        </option>
                     </select>
 
                     <select id="status" name="status" class="form-select" aria-label="Default select example">
@@ -90,8 +88,8 @@
                     </select>
 
                     <select id="sortField" name="sortField" class="form-select" aria-label="Default select example">
-                        <option selected value="" th:text="#{reports.search.select.sorting.field}">Select sorting
-                            field
+                        <option selected value="" th:text="#{reports.search.select.sorting.field}">
+                            Select sorting field
                         </option>
                         <option th:each="sortField : ${T(com.taxserviceapp.web.dto.SortField).values()}"
                                 th:text="#{${'reports.sortField.' + sortField}}"

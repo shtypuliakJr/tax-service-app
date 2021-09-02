@@ -64,36 +64,36 @@
             </thead>
             <tbody>
             <tr>
-                <td><b>User: </b></td>
+                <td><b th:text="#{user.info.fullname}">Full name: </b></td>
                 <td><span th:utext="${report.user.firstName} + ' ' + ${report.user.lastName}"></span></td>
             </tr>
             <tr>
-                <td><b>IPN: </b></td>
+                <td><b th:text="#{user.info.ipn}">IPN: </b></td>
                 <td><span th:utext="${report.user.ipn}"></span></td>
             </tr>
             <tr>
-                <td><b>Personality: </b></td>
+                <td><b th:text="#{user.info.personality}">Personality: </b></td>
                 <td><span th:utext="#{${'user.data.dto.personality.name.' + report.user.personality}}"></span></td>
             </tr>
             <tr>
-                <td><b>Income: </b></td>
+                <td><p th:text="#{user.report.income}">Income</p></td>
                 <td><span th:utext="${report.income} + '$'"></span></td>
             </tr>
             <tr>
-                <td><b>Tax rate: </b></td>
-                <td><span th:utext="${report.taxRate} + '%'"></span></td>
+                <td><p th:text="#{user.report.rate} + ',%'">Tax rate</p></td>
+                <td><span th:utext="${report.taxRate}"></span></td>
             </tr>
             <tr>
-                <td><b>Report date: </b></td>
+                <td><p th:text="#{user.report.date}">Report date</p></td>
                 <td><span th:utext="${report.reportDate}"></span></td>
             </tr>
             <tr>
-                <td><b>Year: </b></td>
+                <td><p th:text="#{user.report.year}">Year</p></td>
                 <td><span th:utext="${report.year}"></span></td>
             </tr>
             <tr>
-                <td><b>Period: </b></td>
-                <td><span th:utext="${report.taxPeriod.period}"></span></td>
+                <td><p th:text="#{user.report.period}">Period</p></td>
+                <td><span th:text="#{${'reports.period.' + report.taxPeriod}}">Tax period</span></td>
             </tr>
             </tbody>
         </table>
@@ -103,19 +103,20 @@
         <form action="#" th:action="@{/inspector/report-view}" th:object="${report}" th:method="POST">
             <input type="hidden" th:field="*{id}">
             <div class="form-group">
-                <label for="comment">Comment</label>
+                <label for="comment" th:text="#{inspector.report.view.comment}">Comment</label>
                 <textarea id="comment" th:name="comment" th:field="*{comment}"
                           class="form-control rounded-0" rows="3">Comment</textarea>
             </div>
             <div>
                 <select id="status" th:name="status" th:field="*{status}">
-                    <option value="">Select status</option>
-                    <option th:text="${T(com.taxserviceapp.data.entity.Status).APPROVED.getStatusName()}"
+                    <option value="" th:text="#{inspector.report.view.select.status}">Select status</option>
+
+                    <option th:text="#{reports.status.APPROVED}"
                             th:value="${T(com.taxserviceapp.data.entity.Status).APPROVED.name()}">
                         ..
                     </option>
 
-                    <option th:text="${T(com.taxserviceapp.data.entity.Status).DISAPPROVED.getStatusName()}"
+                    <option th:text="#{reports.status.DISAPPROVED}"
                             th:value="${T(com.taxserviceapp.data.entity.Status).DISAPPROVED.name()}">
                         ..
                     </option>
@@ -126,7 +127,7 @@
             </div>
             <div>
                 <input type="hidden" th:id="reportId" th:name="reportId" th:value="${report.id}"/>
-                <input type="submit" value="Add comment" class="btn btn-outline-primary"/>
+                <input type="submit" th:value="#{inspector.report.view.add.comment}" class="btn btn-outline-primary"/>
             </div>
         </form>
     </div>
