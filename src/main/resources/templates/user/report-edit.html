@@ -64,7 +64,10 @@
                 <div style="text-align: center">
                     <h1 th:text="#{user.report.form.form}">Report form</h1>
                 </div>
-                <div>
+                <div th:if="${reportNotFound}">
+                    <span th:text="${reportNotFound}"></span>
+                </div>
+                <div th:if="${report}">
                     <form action="#" th:object="${report}" th:action="@{/user/report-edit}" method="post">
 
                         <input type="hidden" id="id" th:field="*{id}"/>
@@ -115,61 +118,15 @@
                             </div>
                         </div>
                     </form>
+
+                    <div>
+                        <b th:text="#{report.data.col.comment}"></b>
+                        <p th:text="${report.comment}"></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<!--<div class="report">-->
-<!--    <div style="text-align: center">-->
-<!--        <label>Report form</label>-->
-<!--    </div>-->
-
-<!--    <form action="#" th:object="${report}" th:action="@{/user/report-edit}" method="post">-->
-
-<!--        <input type="hidden" id="id" th:field="*{id}"/>-->
-<!--        <input type="hidden" id="userId" th:field="*{userId}"/>-->
-<!--        <input type="hidden" id="status" th:field="*{status}"/>-->
-<!--        <input type="hidden" id="comment" th:field="*{comment}"/>-->
-
-<!--        <label>Income, $:-->
-<!--            <input type="text" placeholder="Income" th:field="*{income}" required/>-->
-<!--        </label>-->
-
-<!--        <label>Tax rate, %:-->
-<!--            <input type="text" th:field="*{taxRate}" required/>-->
-<!--        </label>-->
-
-<!--        <label>Tax period:-->
-<!--            <select th:field="*{taxPeriod}">-->
-<!--                <option th:each="period : ${T(com.taxserviceapp.data.entity.TaxPeriod).values()}"-->
-<!--                        th:text="${period.getPeriod()}"-->
-<!--                        th:value="${period.name()}">-->
-<!--                    ..-->
-<!--                </option>-->
-<!--            </select>z-->
-<!--        </label>-->
-
-<!--        <label>Year:-->
-<!--            <input type="text" th:field="*{year}" required/>-->
-<!--        </label>-->
-<!--        <div style="text-align: center">-->
-<!--            <input class="center-block" type="submit" value="Apply">-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <fieldset>-->
-<!--                <legend>Comment:</legend>-->
-<!--                <span th:text="${report.comment}">..</span>-->
-<!--            </fieldset>-->
-<!--        </div>-->
-<!--        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">-->
-<!--            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>-->
-<!--        </div>-->
-
-<!--    </form>-->
-<!--</div>-->
-
 </body>
 </html>

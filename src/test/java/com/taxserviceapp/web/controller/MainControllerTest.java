@@ -16,13 +16,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(MainController.class)
 class MainControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
 
     @Test
     public void testMainPage() throws Exception {
-        this.mockMvc.perform(get("/main"))
-                .andExpect(status().isOk());
-//                .andExpect(view().name(""));
+        this.mockMvc.perform(get("/"))
+//                .andExpect(status().isOk())
+                .andExpect(view().name("/main.html"));
 
     }
 

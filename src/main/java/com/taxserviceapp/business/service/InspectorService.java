@@ -6,7 +6,9 @@ import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.data.entity.UserRole;
-import com.taxserviceapp.exceptions.*;
+import com.taxserviceapp.exceptions.NoReportsFoundException;
+import com.taxserviceapp.exceptions.ReportNotFoundException;
+import com.taxserviceapp.exceptions.ReportStatusException;
 import com.taxserviceapp.utility.PojoConverter;
 import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
@@ -14,9 +16,7 @@ import com.taxserviceapp.web.dto.StatisticDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service

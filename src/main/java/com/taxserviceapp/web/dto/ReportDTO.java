@@ -1,6 +1,8 @@
 package com.taxserviceapp.web.dto;
 
-import com.taxserviceapp.data.entity.*;
+import com.taxserviceapp.data.entity.Status;
+import com.taxserviceapp.data.entity.TaxPeriod;
+import com.taxserviceapp.data.entity.User;
 import lombok.*;
 
 import javax.validation.constraints.Max;

@@ -8,10 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long>, JpaSpecificationExecutor<Report> {

@@ -1,7 +1,15 @@
-INSERT INTO user(first_name, last_name, username, user_password, email, age, ipn, date)
-VALUES ('Arthur', 'Shtypuliak', 'rifleman', '1234', 'shtepa@gmail.com', '20','123456789123', NOW());
+INSERT INTO user(first_name, last_name, email, user_password, ipn, user_role, age, date, active, address, personality)
+VALUES ('Arthur', 'Shtypuliak', 'shtepa.jr@gmail.com', 'shtepa.jr@gmail.com',
+'123456789123', 'USER', 20, CURRENT_DATE(), true, 'Khmelnitsky', 'NATURAL_PERSON');
 
+INSERT INTO user(first_name, last_name, email, user_password, ipn, user_role, age, date, active, address, personality)
+VALUES ('Arthur', 'Shtypuliak', '213213@gmail.com', '213213@gmail.com',
+'123321123321', 'INSPECTOR', 20, CURRENT_DATE(), true, 'Khmelnitsky', 'NATURAL_PERSON');
 
-INSERT INTO temp (first_name, last_name, username) VALUES ('Arthur', 'Shtypuliak', 'rifleman');
+INSERT INTO user(first_name, last_name, email, user_password, ipn, user_role, age, date, active, address, personality)
+VALUES ('Usersurname', 'Username', '123@gmail.com', '123@gmail.com',
+'123456789123', 'USER', 40, CURRENT_DATE(), true, 'Khmelnitsky', 'NATURAL_PERSON');
 
-
+INSERT INTO user(first_name, last_name, email, user_password, ipn, user_role, age, date, active, address, personality)
+VALUES ('Usersurname', 'Username', '123@gmail.com', '123@gmail.com',
+'123123123123', 'USER', 35, CURRENT_DATE(), true, 'Kiev', 'LEGAL_PERSON');

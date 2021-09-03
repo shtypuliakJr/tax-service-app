@@ -1,7 +1,5 @@
 package com.taxserviceapp.business.service;
 
-import com.fasterxml.jackson.databind.cfg.MapperBuilder;
-import com.fasterxml.jackson.databind.ext.OptionalHandlerFactory;
 import com.taxserviceapp.data.dao.ReportRepository;
 import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
@@ -14,14 +12,11 @@ import com.taxserviceapp.web.dto.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.util.Optionals;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -35,8 +30,8 @@ public class ReportService {
         this.reportRepository = reportRepository;
     }
 
-    public void saveNewReport(Report report) {
-        reportRepository.save(report);
+    public Report saveNewReport(Report report) {
+        return reportRepository.save(report);
     }
 
     public ReportDTO findReportById(Long id) throws ReportNotFoundException {
@@ -81,7 +76,7 @@ public class ReportService {
         return direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
     }
 
-    private <T> Specification<Report> filterField(T param, String fieldName) {
+    protected  <T> Specification<Report> filterField(T param, String fieldName) {
         return (reportRoot, criteriaQuery, criteriaBuilder) -> {
 
             return Optional.ofNullable(param)

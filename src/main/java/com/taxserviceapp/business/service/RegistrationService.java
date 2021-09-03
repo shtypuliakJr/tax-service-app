@@ -2,13 +2,9 @@ package com.taxserviceapp.business.service;
 
 import com.taxserviceapp.data.dao.UserRepository;
 import com.taxserviceapp.data.entity.User;
-import com.taxserviceapp.data.entity.UserRole;
 import com.taxserviceapp.exceptions.UserAlreadyExistsException;
-import com.taxserviceapp.web.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 public class RegistrationService {

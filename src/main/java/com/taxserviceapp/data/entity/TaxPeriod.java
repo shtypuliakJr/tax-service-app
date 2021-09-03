@@ -1,6 +1,7 @@
 package com.taxserviceapp.data.entity;
 
 public enum TaxPeriod {
+
     FIRST_PERIOD("First period"),
     SECOND_PERIOD("Second period"),
     THIRD_PERIOD("Third period"),

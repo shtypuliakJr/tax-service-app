@@ -9,7 +9,6 @@ import com.taxserviceapp.web.dto.UserDTO;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class PojoConverter {
 
@@ -54,6 +53,7 @@ public class PojoConverter {
                 .year(reportDTO.getYear())
                 .status(Status.PROCESSING)
                 .reportDate(Date.valueOf(LocalDate.now()))
+                .comment(reportDTO.getComment())
                 .user(user)
                 .build();
     }

@@ -1,13 +1,10 @@
 package com.taxserviceapp.web.controller;
 
 import com.taxserviceapp.business.service.ReportService;
-import com.taxserviceapp.business.service.UserService;
-import com.taxserviceapp.data.entity.Report;
 import com.taxserviceapp.data.entity.Status;
 import com.taxserviceapp.data.entity.TaxPeriod;
 import com.taxserviceapp.data.entity.User;
 import com.taxserviceapp.exceptions.NoReportsFoundException;
-import com.taxserviceapp.utility.PojoConverter;
 import com.taxserviceapp.web.dto.ReportDTO;
 import com.taxserviceapp.web.dto.SortField;
 import lombok.extern.log4j.Log4j;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Log4j
 @Controller
@@ -63,7 +59,7 @@ public class UserController {
     public String getUserInfoPage(Authentication authentication, Model model) {
 
         User user = ((User) authentication.getPrincipal());
-        log.info("View user info by: " + ((User)authentication.getPrincipal()).getEmail());
+        log.info("View user info by: " + ((User) authentication.getPrincipal()).getEmail());
 
         model.addAttribute("user", user);
 

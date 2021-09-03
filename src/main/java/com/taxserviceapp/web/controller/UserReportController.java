@@ -55,6 +55,7 @@ public class UserReportController {
 
     @GetMapping(value = "/report-edit/{id}")
     public String getEditFormFromUserPage(@PathVariable(value = "id") Long id, Model model) {
+
         try {
             ReportDTO reportDTO = reportService.findReportById(id);
             model.addAttribute("report", reportDTO);
@@ -75,7 +76,6 @@ public class UserReportController {
 
             return "user/report-edit";
         }
-
         reportService.updateReport(PojoConverter.convertReportDTOToEntity(reportDTO,
                 (User) authentication.getPrincipal()));
         log.info("Edited report with id = " + reportDTO.getId());

@@ -1,6 +1,5 @@
 package com.taxserviceapp.config;
 
-import com.taxserviceapp.data.entity.User;
 import com.taxserviceapp.data.entity.UserRole;
 import lombok.extern.log4j.Log4j;
 import org.springframework.security.core.Authentication;

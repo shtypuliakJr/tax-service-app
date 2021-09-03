@@ -1,14 +1,10 @@
 package com.taxserviceapp.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 
 @Entity
 @NoArgsConstructor

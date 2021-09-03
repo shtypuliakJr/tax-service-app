@@ -24,6 +24,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "FROM user u", nativeQuery = true)
     List<List<Long>> getCountsOfUsersByStatus();
 
-
-
 }

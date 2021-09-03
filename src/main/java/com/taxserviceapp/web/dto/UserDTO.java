@@ -1,11 +1,14 @@
 package com.taxserviceapp.web.dto;
 
 import com.taxserviceapp.data.entity.Personality;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+
 import javax.validation.constraints.*;
 import java.sql.Date;
-
 
 @Data
 @NoArgsConstructor
@@ -30,7 +33,7 @@ public class UserDTO {
     private String email;
 
     @NotBlank(message = "{user.data.dto.age.error.null}")
-    @Pattern(regexp = "[1-9][0-9]{2}",message = "{user.data.dto.age.error.valid}")
+    @Pattern(regexp = "[1-9][0-9]{2}", message = "{user.data.dto.age.error.valid}")
     private String age;
 
     @NotEmpty(message = "{user.data.dto.ipn.error.null}")
